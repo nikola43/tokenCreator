@@ -261,9 +261,8 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async burnTokens(tokenAddress: string, amount) {
-    const token = new window.web3.eth.Contract(TokenGeneratorAbi, tokenAddress);
-    // token.burn();
-
+    const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
+    token.burn(amount).send({from: this.account});
   }
 
   // tslint:disable-next-line:typedef
@@ -319,7 +318,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async lockLiquidity(tokenAddress: string, time) {
-    const token = await new window.web3.eth.Contract(TokenAbi, '0xA27d7D73DD59a21DDfa12A7Fb409D7F371acf840');
+    const token = await new window.web3.eth.Contract(TokenAbi, tokenAddress);
     console.log(token);
 
     const a = await token.methods.lock(time).send({from: this.account});

@@ -1,0 +1,553 @@
+<br>
+<div style="width: 60%; margin: auto">
+  <mat-accordion>
+
+    <mat-expansion-panel expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span style="font-weight: bold">1. Create Token</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+
+      <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form-container">
+        <mat-form-field appearance="legacy">
+          <mat-label>Token Name</mat-label>
+          <input matInput maxlength="30" placeholder="e.g. My Token" formControlName="tokenName">
+          <mat-hint align="end">{{formGroup.controls['tokenName'].value?.length || 0}}/30</mat-hint>
+          <mat-hint style="color: #39C0ED">
+            <mat-icon>info</mat-icon>
+            Name of your token
+          </mat-hint>
+          <mat-error *ngIf="!formGroup.controls['tokenName'].valid && formGroup.controls['tokenName'].touched">
+            This field required
+          </mat-error>
+        </mat-form-field>
+        <br>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Token Symbol</mat-label>
+          <input [disabled]="account === undefined" matInput maxlength="10" placeholder="e.g. MTKN"
+                 formControlName="tokenSymbol">
+          <mat-hint align="end">{{formGroup.controls['tokenSymbol'].value?.length || 0}}/10</mat-hint>
+          <mat-hint style="color: #39C0ED">
+            <mat-icon>info</mat-icon>
+            Symbol of your token
+          </mat-hint>
+          <mat-error *ngIf="!formGroup.controls['tokenSymbol'].valid && formGroup.controls['tokenSymbol'].touched">
+            This field required
+          </mat-error>
+        </mat-form-field>
+        <br>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Token Supply</mat-label>
+          <input matInput appTwoDigitDecimaNumber maxlength="16" placeholder="e.g. 100000000000"
+                 formControlName="tokenSupply"
+                 (keydown)="numberFieldKeydown($event, 1000000000000000, 'tokenSupply')">
+          <mat-hint align="end">{{formGroup.controls['tokenSupply'].value?.length || 0}}/16</mat-hint>
+          <mat-hint style="color: #39C0ED">
+            <mat-icon>info</mat-icon>
+            Enter the total supply that will be minted at the start (1-1000000000000000)
+          </mat-hint>
+          <mat-error *ngIf="!formGroup.controls['tokenSupply'].valid && formGroup.controls['tokenSupply'].touched">
+            This field required
+          </mat-error>
+        </mat-form-field>
+        <br>
+
+        <mat-form-field appearance="legacy">
+          <mat-label>Decimals</mat-label>
+          <input matInput maxlength="2" placeholder="e.g. 18" formControlName="tokenDecimals"
+                 (keyup)="numberFieldKeyup($event, 18, 'tokenDecimals')"
+                 (keydown)="numberFieldKeydown($event, 18, 'tokenDecimals')">
+          <mat-hint align="end">{{formGroup.controls['tokenDecimals'].value?.length || 0}}/2</mat-hint>
+          <mat-hint style="color: #39C0ED">
+            <mat-icon>info</mat-icon>
+            Enter the decimal precision (1-18). If you are unsure what it means, use 18
+          </mat-hint>
+          <mat-error
+            *ngIf="!formGroup.controls['tokenDecimals'].valid && formGroup.controls['tokenDecimals'].touched">
+            This field required
+          </mat-error>
+        </mat-form-field>
+        <br>
+
+        <span></span>
+        <mat-slide-toggle (change)="onSwitchChange($event)">Show advanced settings</mat-slide-toggle>
+
+        <ng-container *ngIf="showAdvancedSettings">
+          <mat-form-field appearance="legacy">
+            <mat-label>Tx Fee % to Holders</mat-label>
+            <input matInput maxlength="2" placeholder="e.g. 5" formControlName="TxFeePercentToHolders"
+                   (keyup)="numberFieldKeyup($event, 10, 'TxFeePercentToHolders')"
+                   (keydown)="numberFieldKeydown($event, 10, 'TxFeePercentToHolders')">
+            <mat-hint align="end">{{formGroup.controls['TxFeePercentToHolders'].value?.length || 0}}/2</mat-hint>
+            <mat-error
+              *ngIf="!formGroup.controls['TxFeePercentToHolders'].valid && formGroup.controls['TxFeePercentToHolders'].touched">
+              This field required
+            </mat-error>
+            <mat-hint style="color: #39C0ED">
+              <mat-icon>info</mat-icon>
+              Enter the transaction fee % that would be distributed to holders (0-10)
+            </mat-hint>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="legacy">
+            <mat-label>Tx Fee % to LP</mat-label>
+            <input matInput maxlength="2" placeholder="e.g. 5" formControlName="TxFeePercentToLP"
+                   (keyup)="numberFieldKeyup($event, 10, 'TxFeePercentToLP')"
+                   (keydown)="numberFieldKeydown($event, 10, 'TxFeePercentToLP')">
+            <mat-hint align="end">{{formGroup.controls['TxFeePercentToLP'].value?.length || 0}}/2</mat-hint>
+            <mat-error
+              *ngIf="!formGroup.controls['TxFeePercentToLP'].valid && formGroup.controls['TxFeePercentToLP'].touched">
+              This field required
+            </mat-error>
+            <mat-hint style="color: #39C0ED">
+              <mat-icon>info</mat-icon>
+              Enter the transaction fee % that would be used to add liquidity (0-10)
+            </mat-hint>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="legacy">
+            <mat-label>Tx Fee % Burned</mat-label>
+            <input matInput maxlength="2" placeholder="e.g. 5" formControlName="TxFeePercentToBurned"
+                   (keyup)="numberFieldKeyup($event, 10, 'TxFeePercentToBurned')"
+                   (keydown)="numberFieldKeydown($event, 10, 'TxFeePercentToBurned')">
+            <mat-hint align="end">{{formGroup.controls['TxFeePercentToBurned'].value?.length || 0}}/2</mat-hint>
+            <mat-error
+              *ngIf="!formGroup.controls['TxFeePercentToBurned'].valid && formGroup.controls['TxFeePercentToBurned'].touched">
+              This field required
+            </mat-error>
+            <mat-hint style="color: #39C0ED">
+              <mat-icon>info</mat-icon>
+              Enter the transaction fee % that would be burned (0-10)
+            </mat-hint>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="legacy">
+            <mat-label>Tx Fee % to Wallet</mat-label>
+            <input matInput maxlength="2" placeholder="e.g. 5" formControlName="TxFeePercentToWallet"
+                   (keyup)="numberFieldKeyup($event, 10, 'TxFeePercentToWallet')"
+                   (keydown)="numberFieldKeydown($event, 10, 'TxFeePercentToWallet')">
+            <mat-hint align="end">{{formGroup.controls['TxFeePercentToWallet'].value?.length || 0}}/2</mat-hint>
+            <mat-error
+              *ngIf="!formGroup.controls['TxFeePercentToWallet'].valid && formGroup.controls['TxFeePercentToWallet'].touched">
+              This field required
+            </mat-error>
+            <mat-hint style="color: #39C0ED">
+              <mat-icon>info</mat-icon>
+              Enter the transaction fee % that would be sent to a marketing or charity wallet (0-10)
+            </mat-hint>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="legacy">
+            <mat-label>Wallet address for above Tx Fee</mat-label>
+            <input matInput maxlength="42" placeholder="e.g. 0xB06a4327FF7dB3D82b51bbD692063E9a180b79D9"
+                   formControlName="FeeReceiverWallet">
+            <mat-hint align="end">{{formGroup.controls['FeeReceiverWallet'].value?.length || 0}}/42</mat-hint>
+            <mat-error
+              *ngIf="!formGroup.controls['FeeReceiverWallet'].valid && formGroup.controls['FeeReceiverWallet'].touched">
+              This field required
+            </mat-error>
+            <mat-hint style="color: #39C0ED">
+              <mat-icon>info</mat-icon>
+              Enter the wallet address
+            </mat-hint>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="legacy">
+            <mat-label>Tx Fee % to Buyback Tokens</mat-label>
+            <input matInput maxlength="2" placeholder="e.g. 5" formControlName="TxFeePercentToBuybackTokens"
+                   (keyup)="numberFieldKeyup($event, 10, 'TxFeePercentToBuybackTokens')"
+                   (keydown)="numberFieldKeydown($event, 10, 'TxFeePercentToBuybackTokens')">
+            <mat-hint align="end">{{formGroup.controls['TxFeePercentToBuybackTokens'].value?.length || 0}}/2</mat-hint>
+            <mat-error
+              *ngIf="!formGroup.controls['TxFeePercentToBuybackTokens'].valid && formGroup.controls['TxFeePercentToBuybackTokens'].touched">
+              This field required
+            </mat-error>
+            <mat-hint style="color: #39C0ED">
+              <mat-icon>info</mat-icon>
+              Enter the transaction fee % that would be used to buyback tokens on sell (Hyper-deflation) (0-10)
+            </mat-hint>
+          </mat-form-field>
+          <br>
+
+          <mat-form-field appearance="legacy">
+            <mat-label>Max Wallet % :</mat-label>
+            <input matInput maxlength="3" placeholder="e.g. 5" formControlName="MaxWalletPercent"
+                   (keyup)="numberFieldKeyup($event, 100, 'MaxWalletPercent')"
+                   (keydown)="numberFieldKeydown($event, 100, 'MaxWalletPercent')">
+            <mat-hint align="end">{{formGroup.controls['MaxWalletPercent'].value?.length || 0}}/3</mat-hint>
+            <mat-error
+              *ngIf="!formGroup.controls['MaxWalletPercent'].valid && formGroup.controls['MaxWalletPercent'].touched">
+              This field required
+            </mat-error>
+            <mat-hint style="color: #39C0ED">
+              <mat-icon>info</mat-icon>
+              Enter the maximum supply % that a wallet can hold (1-100). Anti-Whale mechanics
+            </mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="legacy">
+            <mat-label>Max Transaction %</mat-label>
+            <input matInput maxlength="3" placeholder="e.g. 5" formControlName="MaxTxPercent"
+                   (keyup)="numberFieldKeyup($event, 100, 'MaxTxPercent')"
+                   (keydown)="numberFieldKeydown($event, 100, 'MaxTxPercent')">
+            <mat-hint align="end">{{formGroup.controls['MaxTxPercent'].value?.length || 0}}/3</mat-hint>
+            <mat-error *ngIf="!formGroup.controls['MaxTxPercent'].valid && formGroup.controls['MaxTxPercent'].touched">
+              This field required
+            </mat-error>
+            <mat-hint style="color: #39C0ED">
+              <mat-icon>info</mat-icon>
+              Enter the maximum transaction allowed as % of supply (1-100). Anti-Whale mechanics
+            </mat-hint>
+          </mat-form-field>
+        </ng-container>
+        <br>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Network</mat-label>
+          <mat-select #matRef (selectionChange)="networkSelectChange($event)" [(value)]="currentNetwork">
+            <mat-select-trigger>
+              <img style="width: 25px; height: 25px" [src]="networks[currentNetwork].image">
+              <span
+                style="margin-left: 5px !important; font-weight: bold">{{networks[currentNetwork].name}}</span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let network of networks" [value]="network.index">
+              <img style="width: 25px; height: 25px" [src]="network.image"> <span
+              style="margin-left: 5px !important; font-weight: bold">{{network.name}}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br>
+        <button [disabled]="isLoading" color="primary" type="submit" mat-raised-button> <span *ngIf="isLoading"
+                                                                                              class="spinner-border spinner-border-sm mr-1"
+                                                                                              style="color: white"></span>
+          <angular-emojis *ngIf="!isLoading && !this.createdTokenAddress" [name]="'rocket'" size="25"></angular-emojis>
+          {{createButtonLabel}}
+        </button>
+
+        <br *ngIf="this.createdTokenAddress.length > 0">
+        <span *ngIf="this.createdTokenAddress.length > 0" style="color: #39C0ED">
+          <fa-icon [icon]="approveButtonIcon"></fa-icon> Token created successfully
+          <a target="_blank" [href]="'https://testnet.bscscan.com/address/'+this.createdTokenAddress">https://testnet.bscscan.com/token/{{this.createdTokenAddress}}</a>
+        </span>
+
+        <span *ngIf="this.createdTokenAddress.length > 0 && this.tokenVerified === false" style="color: #39C0ED">
+          <span
+            class="spinner-border spinner-border-sm mr-1"
+            style="color: #39C0ED"></span>
+          Verifying token
+        </span>
+
+
+        <span *ngIf="this.createdTokenAddress.length > 0 && this.tokenVerified === true" style="color: #39C0ED">
+           <fa-icon *ngIf="tokenVerified" [icon]="approveButtonIcon"></fa-icon> Token verified successfully
+        </span>
+
+        <br *ngIf="tokenVerified">
+        <button *ngIf="tokenVerified" (click)="addTokenToMetamask()"
+                color="primary" type="button" mat-raised-button>
+          <fa-icon *ngIf="tokenVerified && tokenAddedToMetamask" [icon]="approveButtonIcon"></fa-icon>
+          {{addToMetamaskButtonLabel}}
+        </button>
+
+        <!--
+        <a target="_blank" *ngIf="createdTokenAddress && createdTokenAddress.length > 0" class="bnt"
+           [href]="'https://pancakeswap.finance/add/BNB/'+ this.createdTokenAddress" [disabled]="isLoading"
+           color="primary" type="button" mat-raised-button>
+          Add liquidity
+        </a>
+        -->
+        <br *ngIf="tokenVerified">
+      </form>
+
+    </mat-expansion-panel>
+
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span style="font-weight: bold">2. Add Tokens To Liquidity Pool</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div class="liquidity-form-container">
+        <form [formGroup]="tokenAddressInputFormGroup" class="form-container">
+          <mat-form-field appearance="legacy">
+            <mat-label>Token address</mat-label>
+            <input (keyup)="onLiquidityTokenAddressKeyup()" matInput maxlength="42"
+                   placeholder="e.g. 0xB06a4327FF7dB3D82b51bbD692063E9a180b79D9"
+                   formControlName="liquidityTokenAddress">
+            <mat-hint align="end">{{tokenAddressInputFormGroup.controls['liquidityTokenAddress'].value?.length || 0}}
+              /42
+            </mat-hint>
+            <mat-error
+              *ngIf="!tokenAddressInputFormGroup.controls['liquidityTokenAddress'].valid && tokenAddressInputFormGroup.controls['liquidityTokenAddress'].touched">
+              This field required
+            </mat-error>
+            <mat-hint style="color: #39C0ED">
+              <mat-icon>info</mat-icon>
+              Enter the wallet address
+            </mat-hint>
+          </mat-form-field>
+        </form>
+        <br>
+        <mat-card class="lock-liquidity-form-container">
+          <div class="input-label">
+            <span style="font-weight: bold">BNB</span>
+            <span style="font-weight: bold">{{bnbBalance}}</span>
+          </div>
+          <br>
+          <div class="input-label">
+            <input [(ngModel)]="addLiquidityForm.bnbAmount"
+                   appTwoDigitDecimaNumber
+                   matInput
+                   maxlength="16"
+                   placeholder="e.g. 1000"
+                   (keyup)="bnbInputKeyUp()">
+            <button (click)="setBnbPercent(25)" color="primary" type="button" mat-raised-button>
+              25%
+            </button>
+            <div style="width: 1rem;">
+            </div>
+            <button (click)="setBnbPercent(50)" color="primary" type="button" mat-raised-button>
+              50%
+            </button>
+            <div style="width: 1rem;">
+            </div>
+            <button (click)="setBnbPercent(75)" color="primary" type="button" mat-raised-button>
+              75%
+            </button>
+            <div style="width: 1rem;">
+            </div>
+            <button (click)="setBnbPercent(100)" color="primary" type="button" mat-raised-button>
+              100%
+            </button>
+          </div>
+          <br>
+          <mat-slider
+            min="0"
+            step="1"
+            thumbLabel
+            (input)="onSlide($event)"
+            #addLiquidityBnbSlider
+            [displayWith]="formatLabel"
+            max="100"></mat-slider>
+        </mat-card>
+        <br>
+        <mat-card class="lock-liquidity-form-container">
+          <div class="input-label">
+            <span style="font-weight: bold">TOKEN</span>
+            <span style="font-weight: bold">{{tokenBalance}}</span>
+          </div>
+          <br>
+          <div class="input-label">
+            <input [(ngModel)]="addLiquidityForm.tokenAmount"
+                   appTwoDigitDecimaNumber
+                   matInput
+                   maxlength="16"
+                   placeholder="e.g. 1000"
+                   (keyup)="tokenInputKeyUp()">
+            <button [disabled]="tokenBalance === undefined || tokenBalance === 0"
+                    (click)="setTokenPercent(25)" color="primary" type="button" mat-raised-button>
+              25%
+            </button>
+            <div style="width: 1rem;">
+            </div>
+            <button [disabled]="tokenBalance === undefined || tokenBalance === 0"
+                    (click)="setTokenPercent(50)" color="primary" type="button" mat-raised-button>
+              50%
+            </button>
+            <div style="width: 1rem;">
+            </div>
+            <button [disabled]="tokenBalance === undefined  || tokenBalance === 0"
+                    (click)="setTokenPercent(75)" color="primary" type="button" mat-raised-button>
+              75%
+            </button>
+            <div style="width: 1rem;">
+            </div>
+            <button [disabled]="tokenBalance === undefined  || tokenBalance === 0"
+                    (click)="setTokenPercent(100)" color="primary" type="button" mat-raised-button>
+              100%
+            </button>
+          </div>
+          <br>
+          <mat-slider
+            min="0"
+            step="1"
+            thumbLabel
+            #slider
+            (input)="onSlideToken($event)"
+            [displayWith]="formatLabel"
+            max="100"></mat-slider>
+        </mat-card>
+        <br>
+
+        <div class="liquidity-form-buttons-container">
+          <button [disabled]="tokenBalance === undefined  || tokenBalance === 0 || isApproving" color="primary"
+                  type="button" mat-raised-button
+                  (click)="approveToken()">
+            <span
+              *ngIf="isApproving"
+              class="spinner-border spinner-border-sm mr-1"
+              style="color: white"></span>
+            <fa-icon *ngIf="tokenApproved" [icon]="approveButtonIcon"></fa-icon>
+            {{approveButtonLabel}}
+          </button>
+          <button [disabled]="!tokenApproved" color="primary" type="button" mat-raised-button
+                  (click)="addLiquidity()"> <span
+            *ngIf="isLoading"
+            class="spinner-border spinner-border-sm mr-1"
+            style="color: white"></span>
+            Add Liquidity
+          </button>
+        </div>
+
+      </div>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span style="font-weight: bold">3. Lock Your Liquidity</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <form [formGroup]="lockLiquidityTokenAddressInputFormGroup" class="form-container">
+        <mat-form-field appearance="legacy">
+          <mat-label>Token address</mat-label>
+          <input (keyup)="onLockLiquidityTokenAddressKeyup()" matInput maxlength="42"
+                 placeholder="e.g. 0xB06a4327FF7dB3D82b51bbD692063E9a180b79D9"
+                 formControlName="lockLiquidityTokenAddress">
+          <mat-hint
+            align="end">{{lockLiquidityTokenAddressInputFormGroup.controls['lockLiquidityTokenAddress'].value?.length || 0}}
+            /42
+          </mat-hint>
+          <mat-error
+            *ngIf="!lockLiquidityTokenAddressInputFormGroup.controls['lockLiquidityTokenAddress'].valid && lockLiquidityTokenAddressInputFormGroup.controls['lockLiquidityTokenAddress'].touched">
+            This field required
+          </mat-error>
+          <mat-hint style="color: #39C0ED">
+            <mat-icon>info</mat-icon>
+            Enter the token address
+          </mat-hint>
+        </mat-form-field>
+      </form>
+      <br>
+      <mat-card class="lock-liquidity-form-container">
+        <div class="input-label">
+          <span style="font-weight: bold">LP TOKEN</span>
+          <span style="font-weight: bold">{{lpTokenBalance}}</span>
+        </div>
+
+        <div class="input-label">
+          <input [(ngModel)]="lockLiquidityForm.lpAmount"
+                 appTwoDigitDecimaNumber
+                 matInput
+                 maxlength="18"
+                 placeholder="e.g. 1000"
+                 (keyup)="tokenInputKeyUp()">
+          <button color="primary" type="button" mat-raised-button>
+            Max
+          </button>
+        </div>
+        <br>
+        <mat-slider
+          min="0"
+          step="1"
+          thumbLabel
+          (input)="onSlideLockLP($event)"
+          [displayWith]="formatLabel"
+          max="100"></mat-slider>
+      </mat-card>
+      <br>
+      <mat-card class="lock-liquidity-form-container">
+        <div class="input-label">
+          <span style="font-weight: bold"> <angular-emojis [name]="'clock1'" size="25"></angular-emojis> Timelock</span>
+        </div>
+
+        <mat-form-field>
+          <input matInput [matDatepicker]="picker" placeholder="Input & change events"
+                 (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+      </mat-card>
+      <br>
+      <button color="primary" type="button" mat-raised-button
+              (click)="lockLiquidity(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value, this.lockLiquidityForm.locktime)">
+        <angular-emojis [name]="'lock'" size="25"></angular-emojis>
+        Lock Liquidity
+      </button>
+    </mat-expansion-panel>
+
+
+    <mat-expansion-panel (opened)="panelOpenState = true"
+                         (closed)="panelOpenState = false">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <span style="font-weight: bold">4. Burn Tokens</span>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <div>
+        <form [formGroup]="burnTokenAddressInputFormGroup" class="form-container">
+          <mat-form-field appearance="legacy">
+            <mat-label>Token address</mat-label>
+            <input (keyup)="burnTokenInputKeyUp()" matInput maxlength="42"
+                   placeholder="e.g. 0xB06a4327FF7dB3D82b51bbD692063E9a180b79D9"
+                   formControlName="burnTokenAddress">
+            <mat-hint align="end">{{burnTokenAddressInputFormGroup.controls['burnTokenAddress'].value?.length || 0}}
+              /42
+            </mat-hint>
+            <mat-error
+              *ngIf="!burnTokenAddressInputFormGroup.controls['burnTokenAddress'].valid && burnTokenAddressInputFormGroup.controls['burnTokenAddress'].touched">
+              This field required
+            </mat-error>
+            <mat-hint style="color: #39C0ED">
+              <mat-icon>info</mat-icon>
+              Enter the token address
+            </mat-hint>
+          </mat-form-field>
+        </form>
+        <br>
+        <mat-card class="lock-liquidity-form-container">
+          <div class="input-label">
+            <span style="font-weight: bold">TOKEN</span>
+            <span style="font-weight: bold">{{tokenBalance}}</span>
+          </div>
+          <br>
+          <div class="input-label">
+            <input [(ngModel)]="burnTokenForm.amount"
+                   appTwoDigitDecimaNumber matInput maxlength="16" placeholder="e.g. 1000">
+            <button color="primary" type="button" mat-raised-button>
+              Max
+            </button>
+          </div>
+          <br>
+          <mat-slider
+            min="0"
+            step="1"
+            thumbLabel
+            (input)="onSlideBurn($event)"
+            [displayWith]="formatLabel"
+            max="100"></mat-slider>
+        </mat-card>
+        <br>
+        <button color="primary" type="button" mat-raised-button
+                (click)="burnTokens()">
+          <angular-emojis [name]="'fire'" size="25"></angular-emojis>
+
+          Burn
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+<br>
+
+<router-outlet></router-outlet>

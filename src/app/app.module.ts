@@ -10,11 +10,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {TwoDigitDecimaNumberDirective} from './two-digit-decima-number.directive';
 import {AngularEmojisModule} from 'angular-emojis';
+import {TokenGeneratorComponent} from './components/token-generator/token-generator.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    TwoDigitDecimaNumberDirective
+    TwoDigitDecimaNumberDirective,
+    TokenGeneratorComponent
   ],
   imports: [
     BrowserModule,
