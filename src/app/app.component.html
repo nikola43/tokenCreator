@@ -1,8 +1,10 @@
-<mat-toolbar color="primary">
-  <span class="example-spacer"><a style="text-decoration: none" routerLink="/token-generator" routerLinkActive="active">Token Generator</a></span>
-  <span class="example-spacer"><a style="text-decoration: none" routerLink="/token-generator" routerLinkActive="active">Bridge</a></span>
-  <span class="example-spacer"><a style="text-decoration: none" routerLink="/token-generator" routerLinkActive="active">Bridge</a></span>
-  <button color="primary" type="button" mat-raised-button
-          (click)="connectWeb3()">{{buttonLabel}}</button>
+<div style="height: 25px"></div>
+<mat-toolbar class="mat-custom-nav">
+  <mat-toolbar-row>
+    <span>Second Line</span>
+    <span class="example-spacer"></span>
+    <button color="primary" type="button" mat-raised-button (click)="connectWeb3()">{{buttonLabel}}</button>
+  </mat-toolbar-row>
 </mat-toolbar>
+
 <router-outlet></router-outlet>

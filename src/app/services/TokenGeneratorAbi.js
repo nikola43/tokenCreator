@@ -1,4 +1,4 @@
-export const TokenGeneratorAddress = '0x56CB2FE8a37327CcDba0feCd18ef806ee1C63CE8';
+export const TokenGeneratorAddress = '0x5393C67bD33e33131465a443bC8F801DE3580AD9';
 
 export const TokenGeneratorAbi = [
   {
@@ -32,10 +32,6 @@ export const TokenGeneratorAbi = [
     ],
     "name": "TokenCreated",
     "type": "event"
-  },
-  {
-    "stateMutability": "payable",
-    "type": "fallback"
   },
   {
     "inputs": [
@@ -111,19 +107,6 @@ export const TokenGeneratorAbi = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "geUnlockTime",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -134,19 +117,6 @@ export const TokenGeneratorAbi = [
     "name": "lock",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -184,20 +154,35 @@ export const TokenGeneratorAbi = [
         "type": "uint256"
       }
     ],
-    "name": "withdraw",
+    "name": "updateTokenCreationPrice",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
     "inputs": [],
-    "name": "withdrawAll",
-    "outputs": [],
-    "stateMutability": "nonpayable",
+    "name": "geUnlockTime",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
-    "stateMutability": "payable",
-    "type": "receive"
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
   }
 ];

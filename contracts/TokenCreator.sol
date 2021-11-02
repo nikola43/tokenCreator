@@ -6,6 +6,7 @@ pragma solidity 0.7.6;
 
 contract TokenCreator is Ownable {
   event TokenCreated(bool enabled);
+  uint256 creationTokenPrice = 0;
 
   function createNewToken(address tokenOwner,
     string memory tokenName,
@@ -21,8 +22,7 @@ contract TokenCreator is Ownable {
     uint8 MaxTxPercent,
     address payable _feeWallet) public payable {
 
-    //require(msg.value == 200000000000000000, "createNewToken: send value must be equal 0.2 ETH.");
-
+    require(msg.sender == owner() ? msg.value == 0 : creationTokenPrice, "createNewToken: value is lower than minting price");
 
     Token newToken = new Token(tokenOwner, tokenName, tokenSymbol, decimal, amountOfTokenWei, MaxTxPercent, MaxWalletPercent, _feeWallet);
     newToken.setAllFeePercent(TxFeePercentToHolders,TxFeePercentToLP,TxFeePercentToBurned,TxFeePercentToWallet,TxFeePercentToBuybackTokens);

@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 const abi = require('ethereumjs-abi');
 
@@ -7,16 +7,16 @@ const Web3 = require('web3');
 declare let require: any;
 declare let window: any;
 
-import {TokenGeneratorAddress, TokenGeneratorAbi} from './TokenGeneratorAbi.js';
-import {TokenSourceCode} from './TokenSourceCode.js';
-import {TokenAbi} from './TokenAbi.js';
-import {PancakeRouterAddress, PancakeRouterAbi} from './PancakeRouterAbi.js';
-import {PancakeFactoryAddress, PancakeFactoryAbi} from './PancakeFactoryAbi.js';
-import {PancakePairAddress, PancakePairAbi} from './PancakePairAbi.js';
-import {BnbTokenAddress, BnbTokenAbi} from './BnbTokenAbi.js';
-import {LPTokenAbi} from './LPTokenAbi.js';
-import {Observable} from 'rxjs';
-import {compareSegments} from '@angular/compiler-cli/ngcc/src/sourcemaps/segment_marker';
+import { TokenGeneratorAddress, TokenGeneratorAbi } from './TokenGeneratorAbi.js';
+import { TokenSourceCode } from './TokenSourceCode.js';
+import { TokenAbi } from './TokenAbi.js';
+import { PancakeRouterAddress, PancakeRouterAbi } from './PancakeRouterAbi.js';
+import { PancakeFactoryAddress, PancakeFactoryAbi } from './PancakeFactoryAbi.js';
+import { PancakePairAddress, PancakePairAbi } from './PancakePairAbi.js';
+import { BnbTokenAddress, BnbTokenAbi } from './BnbTokenAbi.js';
+import { LPTokenAbi } from './LPTokenAbi.js';
+import { Observable } from 'rxjs';
+import { compareSegments } from '@angular/compiler-cli/ngcc/src/sourcemaps/segment_marker';
 
 
 @Injectable({
@@ -146,21 +146,21 @@ export class Web3Service {
         MaxWalletPercent,
         MaxTxPercent,
         FeeReceiverWallet,
-      ).send({from: this.account});
+      ).send({ from: this.account, value: "300000000000000000" });
 
     console.log(create);
 
     await this.sleep(2000);
 
     const a = await window.web3.eth.getTransaction(create.transactionHash);
-    console.log({a});
+    console.log({ a });
 
 
     const b = await window.web3.eth.getTransactionReceipt(create.transactionHash);
-    console.log({b});
+    console.log({ b });
 
     const contractAddress = b.logs[0].address;
-    console.log({contractAddress});
+    console.log({ contractAddress });
     create.contractAddress = contractAddress;
 
     this.verifyContract({
@@ -247,6 +247,8 @@ export class Web3Service {
     return this.http.post('https://api-testnet.bscscan.com/api', formData);
   }
 
+
+
   // tslint:disable-next-line:typedef
   async getPair(tokenAddressA, tokenAddressB) {
     const pancakeFactory = new window.web3.eth.Contract(PancakeFactoryAbi, PancakeFactoryAddress);
@@ -255,14 +257,14 @@ export class Web3Service {
       tokenAddressB,
     ).call();
 
-    console.log({getPairResult});
+    console.log({ getPairResult });
     return getPairResult;
   }
 
   // tslint:disable-next-line:typedef
   async burnTokens(tokenAddress: string, amount) {
     const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
-    token.burn(amount).send({from: this.account});
+    token.burn(amount).send({ from: this.account });
   }
 
   // tslint:disable-next-line:typedef
@@ -308,7 +310,7 @@ export class Web3Service {
       Web3.utils.toWei(amountAMin.toString(), 'ether'),     // minA
       to,
       deadline
-    ).send({from: this.account, value: Web3.utils.toWei(bnbAmount.toString(), 'ether')});
+    ).send({ from: this.account, value: Web3.utils.toWei(bnbAmount.toString(), 'ether') });
 
     console.log(addLiquidityResult);
 
@@ -321,7 +323,7 @@ export class Web3Service {
     const token = await new window.web3.eth.Contract(TokenAbi, tokenAddress);
     console.log(token);
 
-    const a = await token.methods.lock(time).send({from: this.account});
+    const a = await token.methods.lock(time).send({ from: this.account });
     console.log(a);
 
 
@@ -343,7 +345,7 @@ export class Web3Service {
   async approveBnbToken(amount: string) {
     const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3';
     const token = new window.web3.eth.Contract(BnbTokenAbi, BnbTokenAddress);
-    const approveResult = await token.methods.approve(routerAddress, '115792089237316195423570985008687907853269984665640564039457584007913129639935').send({from: this.account});
+    const approveResult = await token.methods.approve(routerAddress, '115792089237316195423570985008687907853269984665640564039457584007913129639935').send({ from: this.account });
     console.log(approveResult);
     return approveResult;
   }
@@ -352,7 +354,7 @@ export class Web3Service {
   async approveToken(address: string, amount: string) {
     const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3';
     const token = new window.web3.eth.Contract(TokenAbi, address);
-    const approveResult = await token.methods.approve(routerAddress, '115792089237316195423570985008687907853269984665640564039457584007913129639935').send({from: this.account});
+    const approveResult = await token.methods.approve(routerAddress, '115792089237316195423570985008687907853269984665640564039457584007913129639935').send({ from: this.account });
     console.log(approveResult);
     return approveResult;
   }

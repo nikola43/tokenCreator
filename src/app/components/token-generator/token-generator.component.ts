@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-
 import {HttpClient} from '@angular/common/http';
 import {faCheck, faExclamationTriangle, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
@@ -17,15 +16,16 @@ import {BnbTokenAddress} from '../../services/BnbTokenAbi';
 })
 export class TokenGeneratorComponent implements OnInit {
 
-
   constructor(public web3Service: Web3Service, private formBuilder: FormBuilder, private http: HttpClient) {
     this.createForm();
     this.connectWeb3().then((r) => {
       console.log(r);
     });
 
+
     /*
-    this.web3Service.provider.on('accountsChanged', (accounts: string[]) => {
+    this.web3Service.web3.provider.on('accountsChanged', (accounts: string[]) => {
+      //alert("sdsd");
       console.log(accounts);
       if (accounts.length === 0) {
         this.account = undefined;
@@ -35,6 +35,8 @@ export class TokenGeneratorComponent implements OnInit {
         this.buttonLabel = accounts[0];
       }
     });
+    */
+    /*
 
     this.web3Service.provider.on('networkChanged', (accounts: string[]) => {
       console.log(accounts);
@@ -586,7 +588,6 @@ export class TokenGeneratorComponent implements OnInit {
       this.tokenBalance = 0;
     }
   }
-
 
   // tslint:disable-next-line:typedef
   async addTokenToMetamask() {
