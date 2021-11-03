@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.7.6;
-pragma experimental ABIEncoderV2;
+pragma solidity 0.8.9;
 
 interface IERC20 {
 
@@ -232,7 +231,7 @@ library SafeMath {
 
 abstract contract Context {
   function _msgSender() internal view virtual returns (address payable) {
-    return msg.sender;
+    return payable(address(msg.sender));
   }
 
   function _msgData() internal view virtual returns (bytes memory) {
@@ -719,7 +718,7 @@ contract Token is Context, IERC20, Ownable {
   mapping (address => bool) private _isExcluded;
   address[] private _excluded;
 
-  address public router = 0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3;
+  address public router = 0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3;   // bsc
   //address public router = 0x10ED43C718714eb63d5aA57B78B54704E256024E;
   //address public router = 0xD99D1c33F9fC3444f8101754aBC46c52416550D1;
 
@@ -1308,8 +1307,11 @@ contract Token is Context, IERC20, Ownable {
   }
 
   function _tokenTransferNoFee(address sender, address recipient, uint256 amount) private {
-    _rOwned[sender] = _rOwned[sender].sub(amount);
-    _rOwned[recipient] = _rOwned[recipient].add(amount);
+    uint256 currentRate =  _getRate();
+    uint256 rAmount = amount.mul(currentRate);
+
+    _rOwned[sender] = _rOwned[sender].sub(rAmount);
+    _rOwned[recipient] = _rOwned[recipient].add(rAmount);
 
     if (_isExcluded[sender]) {
       _tOwned[sender] = _tOwned[sender].sub(amount);

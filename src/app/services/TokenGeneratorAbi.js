@@ -1,4 +1,4 @@
-export const TokenGeneratorAddress = '0x5393C67bD33e33131465a443bC8F801DE3580AD9';
+export const TokenGeneratorAddress = '0xA4b20F8cfc6A0f7639B0575abD850a14568401Ae';
 
 export const TokenGeneratorAbi = [
   {
@@ -41,6 +41,11 @@ export const TokenGeneratorAbi = [
         "type": "address"
       },
       {
+        "internalType": "address payable",
+        "name": "_feeWallet",
+        "type": "address"
+      },
+      {
         "internalType": "string",
         "name": "tokenName",
         "type": "string"
@@ -51,54 +56,19 @@ export const TokenGeneratorAbi = [
         "type": "string"
       },
       {
-        "internalType": "uint8",
-        "name": "decimal",
-        "type": "uint8"
-      },
-      {
         "internalType": "uint256",
         "name": "amountOfTokenWei",
         "type": "uint256"
       },
       {
         "internalType": "uint8",
-        "name": "TxFeePercentToHolders",
+        "name": "decimal",
         "type": "uint8"
       },
       {
-        "internalType": "uint8",
-        "name": "TxFeePercentToLP",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "TxFeePercentToBurned",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "TxFeePercentToWallet",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "TxFeePercentToBuybackTokens",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "MaxWalletPercent",
-        "type": "uint8"
-      },
-      {
-        "internalType": "uint8",
-        "name": "MaxTxPercent",
-        "type": "uint8"
-      },
-      {
-        "internalType": "address payable",
-        "name": "_feeWallet",
-        "type": "address"
+        "internalType": "uint8[]",
+        "name": "fees",
+        "type": "uint8[]"
       }
     ],
     "name": "createNewToken",
@@ -140,6 +110,10 @@ export const TokenGeneratorAbi = [
     "type": "function"
   },
   {
+    "stateMutability": "payable",
+    "type": "receive"
+  },
+  {
     "inputs": [],
     "name": "unlock",
     "outputs": [],
@@ -154,9 +128,26 @@ export const TokenGeneratorAbi = [
         "type": "uint256"
       }
     ],
-    "name": "updateTokenCreationPrice",
+    "name": "updateCreatePrice",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "stateMutability": "payable",
+    "type": "fallback"
+  },
+  {
+    "inputs": [],
+    "name": "creationTokenPrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

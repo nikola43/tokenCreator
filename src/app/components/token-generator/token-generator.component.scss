@@ -7,7 +7,7 @@
 }
 
 ::ng-deep .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
-  color:  #39C0ED;
+  color:  white;
 }
 
 input {
@@ -42,14 +42,36 @@ mat-error {
 
 .mat-hints {
   color: #39C0ED;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center !important;
 }
 
 .mat-panel-title-span {
-  font-weight: normal;
   margin: auto;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   color: #39C0ED;
+  font-weight: bold;
+}
+
+#submit-button {
+
+  color: white;
+
+}
+
+/*
+#submit-button:hover {
+  background: linear-gradient(-45deg, #ee7752, #ff79ab, #47cfff, #23d5ab) !important;
+  font-size: 1.2rem;
+
+}
+
+*/
+
+.button-label {
+  font-size: 1.2rem !important;
 }
 
 .form-container {
@@ -110,7 +132,6 @@ mat-error {
 
 mat-expansion-panel {
   background: #212121;
-  background: linear-gradient(312deg, #212121, #444444, 212121 100%);
   border-radius: 16px !important;
 }
 

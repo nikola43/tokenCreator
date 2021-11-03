@@ -8,6 +8,9 @@ import {MatSliderChange} from '@angular/material/slider';
 import {Web3Service} from '../../services/web3.service';
 import {DevNetworks} from '../../services/Networks.js';
 import {BnbTokenAddress} from '../../services/BnbTokenAbi';
+import Typewriter from 'typewriter-effect/dist/core';
+import {NotificationUtils, SnackBarColorEnum} from '../../../utils/NotificationUtil';
+
 
 @Component({
   selector: 'app-token-generator',
@@ -15,41 +18,14 @@ import {BnbTokenAddress} from '../../services/BnbTokenAbi';
   styleUrls: ['./token-generator.component.scss']
 })
 export class TokenGeneratorComponent implements OnInit {
-
-  constructor(public web3Service: Web3Service, private formBuilder: FormBuilder, private http: HttpClient) {
+  hasError = false;
+  errorLabel = '';
+  constructor(public web3Service: Web3Service, private formBuilder: FormBuilder, private http: HttpClient, private notificationUtils: NotificationUtils) {
     this.createForm();
     this.connectWeb3().then((r) => {
       console.log(r);
     });
 
-
-    /*
-    this.web3Service.web3.provider.on('accountsChanged', (accounts: string[]) => {
-      //alert("sdsd");
-      console.log(accounts);
-      if (accounts.length === 0) {
-        this.account = undefined;
-        this.buttonLabel = 'Connect';
-      } else {
-        this.account = accounts[0];
-        this.buttonLabel = accounts[0];
-      }
-    });
-    */
-    /*
-
-    this.web3Service.provider.on('networkChanged', (accounts: string[]) => {
-      console.log(accounts);
-      if (accounts.length === 0) {
-        this.account = undefined;
-        this.buttonLabel = 'Connect';
-      } else {
-        this.account = accounts[0];
-        this.buttonLabel = accounts[0];
-      }
-
-    });
-    */
     if (this.web3Service.enable) {
       this.web3Service.getAccount().then(async (r) => {
         this.account = r;
@@ -153,6 +129,32 @@ export class TokenGeneratorComponent implements OnInit {
 
   ngOnInit(): void {
 
+    const t = new Typewriter('#typewriter', {
+      autoStart: true,
+      loop: true,
+      delay: 55,
+    });
+    t.pauseFor(100)
+      .typeString('Welcome To Definitive <strong>Token Generation</strong> Platform.')
+      .pauseFor(2000)
+      .deleteAll()
+      .typeString('<strong>Create</strong> Your <strong>Own</strong> Token In <strong>Seconds</strong>.')
+      .pauseFor(2000)
+      .deleteAll()
+      .typeString('Available On <strong class="multiple">Multiple</strong> Blockchains.')
+      .pauseFor(2000)
+      .deleteAll()
+      .typeString('Customize Tokenomics <strong>Easily</strong>.')
+      .pauseFor(2000)
+      .deleteAll()
+      .typeString('Smart Contract <strong><span style="color: #00B74A;">verification</span></strong>  <strong style="text-decoration: underline">fully automated</strong>.')
+      .pauseFor(2000)
+      .deleteAll()
+      .typeString('<strong>Last</strong> Solidity Version <strong>(v0.8.9+commit.e5eed63a)</strong>.')
+      .pauseFor(2000)
+      .deleteAll()
+      .pauseFor(2000)
+      .start();
   }
 
   // tslint:disable-next-line:typedef
@@ -220,14 +222,6 @@ export class TokenGeneratorComponent implements OnInit {
       burnTokenAddress: [null, [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')]],
     });
   }
-
-  // tslint:disable-next-line:typedef
-  public encode() {
-    const v = this.web3Service.encodeTokenConstructor({});
-    console.log({v});
-    return v;
-  }
-
   // tslint:disable-next-line:typedef
   public async connectWeb3() {
     this.web3Service.enableMetaMaskAccount().then(async (r) => {
@@ -276,7 +270,7 @@ export class TokenGeneratorComponent implements OnInit {
       console.log(r);
 
       this.createButtonLabel = 'Verifying Token';
-      await this.sleep(2000);
+      await this.sleep(5000);
 
       if (r.events['1'].address.length > 0) {
         this.createdTokenAddress = r.events['1'].address;
@@ -304,6 +298,7 @@ export class TokenGeneratorComponent implements OnInit {
               }
             },
             (error) => {
+              this.hasError = true;
               console.log('error');
               console.log(error);
             }
@@ -313,7 +308,23 @@ export class TokenGeneratorComponent implements OnInit {
         alert('error creando token');
       }
     }).catch((e) => {
-      console.log(e);
+      console.log({e});
+
+      if (e.code === 4001) {
+        this.notificationUtils.showSnackBar('Error: Transaction rejected by user',
+          SnackBarColorEnum.Red,
+          5000,
+          'top',
+          'center');
+      } else {
+        this.notificationUtils.showSnackBar(e.message,
+          SnackBarColorEnum.Red,
+          5000,
+          'top',
+          'center');
+      }
+      this.createButtonLabel = 'Deploy Token';
+      this.hasError = true;
       this.isLoading = false;
     });
   }

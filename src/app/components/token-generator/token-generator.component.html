@@ -1,13 +1,12 @@
-<div class="container mt-4">
+<div class="container mt-5">
   <div class="row" style="text-align: center;">
     <div class="col-sm">
-      <img style="height: 93px; width: 350px;" src="https://babypunks.com/static/media/logo-primary.6889a956.png"
-           class="logo-main"/>
+      <h1 style="color: white" id="typewriter"></h1>
     </div>
   </div>
 </div>
 
-<div id="team" class="container text-center mt-4">
+<div id="team" class="container text-center mt-5">
   <div class="row">
     <div class="col-lg-12 col-sm-12 col-xs-12 mb-5">
       <mat-accordion>
@@ -24,10 +23,12 @@
               <input matInput maxlength="30" placeholder="e.g. My Token" formControlName="tokenName">
               <mat-hint class="mat-hints" align="end">{{formGroup.controls['tokenName'].value?.length || 0}}/30
               </mat-hint>
+
               <mat-hint class="mat-hints">
                 <mat-icon>info</mat-icon>
                 Name of your token
               </mat-hint>
+
               <mat-error *ngIf="!formGroup.controls['tokenName'].valid && formGroup.controls['tokenName'].touched">
                 This field required
               </mat-error>
@@ -72,7 +73,8 @@
               <input matInput maxlength="2" placeholder="e.g. 18" formControlName="tokenDecimals"
                      (keyup)="numberFieldKeyup($event, 18, 'tokenDecimals')"
                      (keydown)="numberFieldKeydown($event, 18, 'tokenDecimals')">
-              <mat-hint class="mat-hints" align="end">{{formGroup.controls['tokenDecimals'].value?.length || 0}}/2</mat-hint>
+              <mat-hint class="mat-hints" align="end">{{formGroup.controls['tokenDecimals'].value?.length || 0}}/2
+              </mat-hint>
               <mat-hint class="mat-hints">
                 <mat-icon>info</mat-icon>
                 Enter the decimal precision (1-18)
@@ -83,7 +85,10 @@
               </mat-error>
             </mat-form-field>
             <div style="height: 15px"></div>
-            <mat-slide-toggle (change)="onSwitchChange($event)">Show advanced settings</mat-slide-toggle>
+            <div style="margin: auto">
+              <mat-slide-toggle (change)="onSwitchChange($event)"><span
+                class="multiple mx-auto">Show advanced settings</span></mat-slide-toggle>
+            </div>
             <div style="height: 15px"></div>
 
             <ng-container *ngIf="showAdvancedSettings">
@@ -224,12 +229,12 @@
             </ng-container>
             <div style="height: 15px"></div>
 
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" style="text-align: center">
               <mat-label>Network</mat-label>
-              <mat-select #matRef (selectionChange)="networkSelectChange($event)" [(value)]="currentNetwork">
+              <mat-select #matRef (selectionChange)="networkSelectChange($event)" [(value)]="currentNetwork" panelClass="my-select-panel-class">
                 <mat-select-trigger>
                   <img style="width: 25px; height: 25px" [src]="networks[currentNetwork].image">
-                  <span style="margin-left: 5px !important; font-weight: bold">{{networks[currentNetwork].name}}</span>
+                  <span style="margin-left: 5px !important; font-weight: bold; color: white">{{networks[currentNetwork].name}}</span>
                 </mat-select-trigger>
                 <mat-option *ngFor="let network of networks" [value]="network.index">
                   <img style="width: 25px; height: 25px" [src]="network.image"> <span
@@ -238,12 +243,11 @@
               </mat-select>
             </mat-form-field>
             <div style="height: 15px"></div>
-            <button [disabled]="isLoading" color="primary" type="submit" mat-raised-button> <span *ngIf="isLoading"
-                                                                                                  class="spinner-border spinner-border-sm mr-1"
-                                                                                                  style="color: white"></span>
+            <button [disabled]="isLoading" id="submit-button" color="primary" type="submit" mat-raised-button><span
+              *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>
               <angular-emojis *ngIf="!isLoading && !this.createdTokenAddress" [name]="'rocket'"
                               size="25"></angular-emojis>
-              {{createButtonLabel}}
+              <span class="button-label">{{createButtonLabel}}</span>
             </button>
 
             <div style="height: 15px" *ngIf="this.createdTokenAddress.length > 0"></div>
@@ -269,13 +273,13 @@
               {{addToMetamaskButtonLabel}}
             </button>
 
-            <!--
-            <a target="_blank" *ngIf="createdTokenAddress && createdTokenAddress.length > 0" class="bnt"
-               [href]="'https://pancakeswap.finance/add/BNB/'+ this.createdTokenAddress" [disabled]="isLoading"
-               color="primary" type="button" mat-raised-button>
-              Add liquidity
-            </a>
-            -->
+              <!--
+              <a target="_blank" *ngIf="createdTokenAddress && createdTokenAddress.length > 0" class="bnt"
+                 [href]="'https://pancakeswap.finance/add/BNB/'+ this.createdTokenAddress" [disabled]="isLoading"
+                 color="primary" type="button" mat-raised-button>
+                Add liquidity
+              </a>
+              -->
             <br *ngIf="tokenVerified">
           </form>
 
@@ -318,22 +322,23 @@
               <div class="input-label">
                 <input [(ngModel)]="addLiquidityForm.bnbAmount" appTwoDigitDecimaNumber matInput maxlength="16"
                        placeholder="e.g. 1000" (keyup)="bnbInputKeyUp()">
-                <button class="percentButton" (click)="setBnbPercent(25)" color="primary" type="button" mat-raised-button>
+                <button class="percentButton" (click)="setBnbPercent(25)" color="primary" type="button"
+                        mat-raised-button>
                   25%
                 </button>
                 <div style="width: 1rem;">
                 </div>
-                <button (click)="setBnbPercent(50)" color="primary" type="button" mat-raised-button>
+                <button class="percentButton" (click)="setBnbPercent(50)" color="primary" type="button" mat-raised-button>
                   50%
                 </button>
                 <div style="width: 1rem;">
                 </div>
-                <button (click)="setBnbPercent(75)" color="primary" type="button" mat-raised-button>
+                <button class="percentButton" (click)="setBnbPercent(75)" color="primary" type="button" mat-raised-button>
                   75%
                 </button>
                 <div style="width: 1rem;">
                 </div>
-                <button (click)="setBnbPercent(100)" color="primary" type="button" mat-raised-button>
+                <button class="percentButton" (click)="setBnbPercent(100)" color="primary" type="button" mat-raised-button>
                   100%
                 </button>
               </div>
@@ -512,7 +517,7 @@
               </mat-slider>
             </mat-card>
             <br>
-            <div id="fire-container" class="fire-container" >
+            <div id="fire-container" class="fire-container">
               <div class="fire">
                 <div class="fire-left">
                   <div class="main-fire"></div>
@@ -531,7 +536,8 @@
                 </div>
               </div>
             </div>
-            <button class="burnButton" id="burnButton" color="primary" type="button" mat-raised-button (click)="burnTokens()">
+            <button class="burnButton" id="burnButton" color="primary" type="button" mat-raised-button
+                    (click)="burnTokens()">
               <angular-emojis [name]="'fire'" size="25"></angular-emojis>
               Burn
             </button>

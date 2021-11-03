@@ -16,48 +16,60 @@ export class AppComponent {
       console.log(r);
     });
 
-    /*
-    this.web3Service.provider.on('accountsChanged', (accounts: string[]) => {
-      console.log(accounts);
-      if (accounts.length === 0) {
-        this.account = undefined;
-        this.buttonLabel = 'Connect';
-      } else {
-        this.account = accounts[0];
-        this.buttonLabel = accounts[0];
-      }
-    });
-
-    this.web3Service.provider.on('networkChanged', (accounts: string[]) => {
-      console.log(accounts);
-      if (accounts.length === 0) {
-        this.account = undefined;
-        this.buttonLabel = 'Connect';
-      } else {
-        this.account = accounts[0];
-        this.buttonLabel = accounts[0];
-      }
-
-    });
-    */
     if (this.web3Service.enable) {
-      this.web3Service.getAccount().then(async (r) => {
-        this.account = r;
-        this.buttonLabel = r.charAt(0) + '' + r.charAt(1) + '' + r.charAt(2) + '' + r.charAt(4) + r.charAt(5) + '' + r.charAt(6) + '' + '...' + r.charAt(r.length - 4) + '' +  r.charAt(r.length - 3) + '' + r.charAt(r.length - 2) + '' + r.charAt(r.length - 1);
+      this.web3Service.getAccount().then(async (account: string) => {
+        this.account = account;
+        this.buttonLabel = account.charAt(0) + '' + account.charAt(1) + '' +
+          account.charAt(2) + '' + account.charAt(4) + account.charAt(5) + '' +
+          account.charAt(6) + '' + '...' + account.charAt(account.length - 4) + '' +
+          account.charAt(account.length - 3) + '' + account.charAt(account.length - 2) + '' + account.charAt(account.length - 1);
       });
     }
+
+    this.web3Service.web3.on('accountsChanged', (accounts: string[]) => {
+      console.log(accounts);
+      if (accounts.length === 0) {
+        this.account = undefined;
+        this.buttonLabel = 'Connect';
+      } else {
+        this.account = accounts[0];
+        this.buttonLabel = accounts[0].charAt(0) + '' + accounts[0].charAt(1) + '' +
+          accounts[0].charAt(2) + '' + accounts[0].charAt(4) + accounts[0].charAt(5) + '' +
+          accounts[0].charAt(6) + '' + '...' + accounts[0].charAt(accounts[0].length - 4) + '' +
+          accounts[0].charAt(accounts[0].length - 3) + '' + accounts[0].charAt(accounts[0].length - 2) + '' +
+          accounts[0].charAt(accounts[0].length - 1);
+      }
+    });
+
+    this.web3Service.web3.on('networkChanged', (accounts: string[]) => {
+      console.log(accounts);
+      if (accounts.length === 0) {
+        this.account = undefined;
+        this.buttonLabel = 'Connect';
+      } else {
+        this.account = accounts[0];
+        this.buttonLabel = accounts[0].charAt(0) + '' + accounts[0].charAt(1) + '' +
+          accounts[0].charAt(2) + '' + accounts[0].charAt(4) + accounts[0].charAt(5) + '' +
+          accounts[0].charAt(6) + '' + '...' + accounts[0].charAt(accounts[0].length - 4) + '' +
+          accounts[0].charAt(accounts[0].length - 3) + '' + accounts[0].charAt(accounts[0].length - 2) + '' +
+          accounts[0].charAt(accounts[0].length - 1);
+      }
+    });
   }
 
   // tslint:disable-next-line:typedef
   async connectWeb3() {
-    this.web3Service.enableMetaMaskAccount().then(async (r) => {
-      console.log(r);
+    this.web3Service.enableMetaMaskAccount().then(async (account: string) => {
+      console.log(account);
       if (this.web3Service.account?.length === 0) {
         this.account = undefined;
         this.buttonLabel = 'Connect';
       } else {
-        this.account = r;
-        this.buttonLabel = r;
+        this.account = account;
+        this.buttonLabel = account.charAt(0) + '' + account.charAt(1) + '' +
+          account.charAt(2) + '' + account.charAt(4) + account.charAt(5) + '' +
+          account.charAt(6) + '' + '...' + account.charAt(account.length - 4) + '' +
+          account.charAt(account.length - 3) + '' + account.charAt(account.length - 2) + '' + account.charAt(account.length - 1);
       }
     });
   }
