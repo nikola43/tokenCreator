@@ -1,27 +1,7 @@
 // SPDX-License-Identifier: MIT
 
 import "./Token.sol";
-pragma solidity 0.8.9;
-
-
-/*
-  function createNewToken(
-    address tokenOwner,
-    address payable _feeWallet,
-    string memory tokenName,
-    string memory tokenSymbol,
-    uint256 amountOfTokenWei,
-    uint8 decimal,
-    uint8[] fees,
-    uint8 TxFeePercentToHolders, 0
-    uint8 TxFeePercentToLP, 1
-    uint8 TxFeePercentToBurned, 2
-    uint8 TxFeePercentToWallet, 3
-    uint8 TxFeePercentToBuybackTokens, 4
-    uint8 MaxWalletPercent, 5
-    uint8 MaxTxPercent 6
-    ) public payable {
-*/
+pragma solidity 0.8.10;
 
 contract TokenCreator is Ownable {
   event TokenCreated(bool enabled);

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.9;
+pragma solidity 0.8.10;
 
 interface IERC20 {
 
@@ -709,6 +709,8 @@ contract Token is Context, IERC20, Ownable {
   uint8 public minMxTxPercentage = 1;
   uint8 public minMxWalletPercentage = 1;
 
+  mapping (address => bool) private blacklist;
+
   mapping (address => uint256) private _rOwned;
   mapping (address => uint256) private _tOwned;
   mapping (address => mapping (address => uint256)) private _allowances;
@@ -719,15 +721,13 @@ contract Token is Context, IERC20, Ownable {
   address[] private _excluded;
 
   address public router = 0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3;   // bsc
-  //address public router = 0x10ED43C718714eb63d5aA57B78B54704E256024E;
+  //address public router = 0x10ED43C718714eb63d5aA57B78B54704E256024E; // pancake bsc main
   //address public router = 0xD99D1c33F9fC3444f8101754aBC46c52416550D1;
 
   uint256 private constant MAX = ~uint256(0);
   uint256 public _tTotal;
   uint256 private _rTotal;
   uint256 private _tFeeTotal;
-
-  bool public mintedByMudra = true;
 
   string public _name;
   string public _symbol;
@@ -1138,6 +1138,23 @@ contract Token is Context, IERC20, Ownable {
 
     //transfer amount, it will take tax, burn, liquidity fee
     _tokenTransfer(from,to,amount,takeFee);
+  }
+
+
+  function updateBlacklist(address blackListedAddress, bool status) public onlyOwner {
+    blacklist[blackListedAddress] = status;
+  }
+
+
+  function burn(uint256 burnAmount) public {
+    require(burnAmount >= 0, "Burn amount should be greater than zero");
+    require(burnAmount <= _rOwned[msg.sender], "Burn amount should be less than account balance");
+
+    _rOwned[msg.sender] = _rOwned[msg.sender] - burnAmount;
+    _tTotal = _tTotal - burnAmount;
+
+
+    emit Transfer(msg.sender, address(0), burnAmount);
   }
 
   function swapAndLiquify(uint256 contractTokenBalance) private lockTheSwap {

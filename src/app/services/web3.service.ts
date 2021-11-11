@@ -214,7 +214,7 @@ export class Web3Service {
       sourceCode: TokenSourceCode,             // Contract Source Code (Flattened if necessary)
       codeformat: 'solidity-single-file',             // solidity-single-file (default) or solidity-standard-json-input (for std-input-json-format support
       contractname: 'Token',         // ContractName (if codeformat=solidity-standard-json-input, then enter contractname as ex: erc20.sol:erc20)
-      compilerversion: 'v0.8.9+commit.e5eed63a',   // see https://BscScan.com/solcversions for list of support versions
+      compilerversion: 'v0.8.10+commit.fc410830',   // see https://BscScan.com/solcversions for list of support versions
       optimizationUsed: 1, // 0 = No Optimization, 1 = Optimization used (applicable when codeformat=solidity-single-file)
       runs: 200,                                      // set to 200 as default unless otherwise  (applicable when codeformat=solidity-single-file)
       constructorArguements: encodedConstructorArguments,   // if applicable
