@@ -1,4 +1,4 @@
-export const TokenGeneratorAddress = '0xA4b20F8cfc6A0f7639B0575abD850a14568401Ae';
+export const TokenGeneratorAddress = '0x6A99d82ca002a7e1B9fFB5816804951311B0f829';
 
 export const TokenGeneratorAbi = [
   {
@@ -111,7 +111,7 @@ export const TokenGeneratorAbi = [
   },
   {
     "stateMutability": "payable",
-    "type": "receive"
+    "type": "fallback"
   },
   {
     "inputs": [],
@@ -135,7 +135,7 @@ export const TokenGeneratorAbi = [
   },
   {
     "stateMutability": "payable",
-    "type": "fallback"
+    "type": "receive"
   },
   {
     "inputs": [],
