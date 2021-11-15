@@ -135,15 +135,15 @@ export class TokenGeneratorComponent implements OnInit {
   networks: any = DevNetworks;
 
   whitelistContent: any = [
-    {id:1, address: '0xb6e76628BeB7872D2ade6AE9641bb390401c18ef'},
-    {id:2, address: '0xfbAA3c716dA6378A0840754185BFf6A05a20e1C8'},
-    {id:3, address: '0x1010fb622aD9D19F3B62cC82fEfC5cb95a71aA34'},
+    '0xb6e76628BeB7872D2ade6AE9641bb390401c18ef',
+    '0xfbAA3c716dA6378A0840754185BFf6A05a20e1C8',
+    '0x1010fb622aD9D19F3B62cC82fEfC5cb95a71aA34',
   ];
-  
+
   blacklistContent: any = [
-    {id:1, address: '0xb6e76628BeB7872D2ade6AE9641bb390401c18ef'},
-    {id:2, address: '0xfbAA3c716dA6378A0840754185BFf6A05a20e1C8'},
-    {id:3, address: '0x1010fb622aD9D19F3B62cC82fEfC5cb95a71aA34'},
+    '0xb6e76628BeB7872D2ade6AE9641bb390401c18ef',
+    '0xfbAA3c716dA6378A0840754185BFf6A05a20e1C8',
+    '0x1010fb622aD9D19F3B62cC82fEfC5cb95a71aA34',
   ];
 
   // tslint:disable-next-line:typedef
@@ -622,10 +622,7 @@ export class TokenGeneratorComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async addWhitelist() {
-    console.log(
-      this.whitelistInputFormGroup.controls.whitelistAddress.value
-    );
-    this.whitelistContent.push({id: this.whitelistContent.lenght +1, address: this.whitelistInputFormGroup.controls.whitelistAddress.value})
+    this.whitelistContent.push(this.whitelistInputFormGroup.controls.whitelistAddress.value);
     // this.web3Service
     //   .burnTokens(
     //     this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
@@ -641,10 +638,7 @@ export class TokenGeneratorComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async addBlacklist() {
-    console.log(
-      this.blacklistInputFormGroup.controls.blacklistAddress.value
-    );
-    this.blacklistContent.push({id: this.blacklistContent.lenght +1, address: this.blacklistInputFormGroup.controls.whitelistAddress.value})
+    this.blacklistContent.push(this.blacklistInputFormGroup.controls.whitelistAddress.value);
 
     // this.web3Service
     //   .burnTokens(
@@ -659,12 +653,18 @@ export class TokenGeneratorComponent implements OnInit {
     //   });
   }
 
-  async deleteFromWhitelist(id) {
-    this.whitelistContent.splice(id-1,1);
+  async deleteFromWhitelist(address) {
+    const index = this.whitelistContent.indexOf(address);
+    if (index > -1) {
+      this.whitelistContent.splice(index, 1);
+    }
   }
 
-  async deleteFromBlacklist(id) {
-    this.blacklistContent.splice(id-1,1);
+  async deleteFromBlacklist(address) {
+    const index = this.blacklistContent.indexOf(address);
+    if (index > -1) {
+      this.blacklistContent.splice(index, 1);
+    }
   }
 
   // tslint:disable-next-line:typedef

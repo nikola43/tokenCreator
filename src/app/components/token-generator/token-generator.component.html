@@ -560,8 +560,8 @@
             <br>
             <mat-card *ngFor="let element of whitelistContent" class="whitelist-form-container">
               <div class="input-label">
-                <span style="font-weight: bold">{{element.address}}</span>
-                <button (click)="deleteFromWhitelist(element.id)" >Delete</button>
+                <span style="font-weight: bold">{{element}}</span>
+                <button (click)="deleteFromWhitelist(element)" >Delete</button>
               </div>
             </mat-card>
 
@@ -595,8 +595,8 @@
             <br>
             <mat-card *ngFor="let element of blacklistContent" class="whitelist-form-container">
               <div class="input-label">
-                <span style="font-weight: bold">{{element.address}}</span>
-                <button (click)="deleteFromBlacklist(element.id)" >Delete</button>
+                <span style="font-weight: bold">{{element}}</span>
+                <button (click)="deleteFromBlacklist(element)" >Delete</button>
               </div>
             </mat-card>
 
