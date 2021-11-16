@@ -11,3 +11,20 @@
   border: 1px solid rgba( 255, 255, 255, 0.18 );
   color: #ffffff;
 }
+
+/* active tab */
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+  background: linear-gradient(-45deg, #ee7752, #ff79ab, #47cfff, #23d5ab) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  font-weight: bold;
+}
+
+/* ink bar */
+::ng-deep .mat-ink-bar {
+  background-color: var(--primary-color,#39C0ED) !important;
+}
+
+::ng-deep .mat-tab-labels {
+  background-color: rgba(255, 255, 255, 0);
+}

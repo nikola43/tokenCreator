@@ -9,9 +9,10 @@
 <div id="team" class="container text-center mt-5">
   <div class="row">
     <div class="col-lg-12 col-sm-12 col-xs-12 mb-5">
-      <mat-tab-group>
+      <mat-tab-group mat-align-tabs="center">
         <mat-tab label="Create Token">
-          <mat-card>
+          <div style="height: 15px"></div>
+          <mat-card class="create-token-container">
             <form [formGroup]="formGroup" (ngSubmit)="onSubmit(formGroup.value)" class="form-container">
               <mat-form-field appearance="legacy">
                 <mat-label>Token Name <span style="color: #ff3030">*</span></mat-label>
@@ -284,6 +285,7 @@
         </mat-tab>
 
         <mat-tab label="Add Liquidity">
+          <div style="height: 15px"></div>
           <mat-card class="liquidity-form-container">
             <form [formGroup]="tokenAddressInputFormGroup" class="form-container">
               <mat-form-field appearance="legacy">
@@ -399,6 +401,7 @@
 
         <mat-tab label="Lock Liquidity" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
           <mat-card>
+            <div style="height: 15px"></div>
             <form [formGroup]="lockLiquidityTokenAddressInputFormGroup" class="form-container">
               <mat-form-field appearance="legacy">
                 <mat-label>Token address</mat-label>
@@ -464,8 +467,9 @@
         </mat-tab>
 
 
-        <mat-tab label="Burn Tokens" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-tab label="Burn Tokens">
           <mat-card>
+            <div style="height: 15px"></div>
             <form [formGroup]="burnTokenAddressInputFormGroup" class="form-container">
               <mat-form-field appearance="legacy">
                 <mat-label>Token address</mat-label>
@@ -504,25 +508,6 @@
               </mat-slider>
             </mat-card>
             <br>
-            <div id="fire-container" class="fire-container">
-              <div class="fire">
-                <div class="fire-left">
-                  <div class="main-fire"></div>
-                  <div class="particle-fire"></div>
-                </div>
-                <div class="fire-main">
-                  <div class="main-fire"></div>
-                  <div class="particle-fire"></div>
-                </div>
-                <div class="fire-right">
-                  <div class="main-fire"></div>
-                  <div class="particle-fire"></div>
-                </div>
-                <div class="fire-bottom">
-                  <div class="main-fire"></div>
-                </div>
-              </div>
-            </div>
             <button class="burnButton" id="burnButton" color="primary" type="button" mat-raised-button
               (click)="burnTokens()">
               <angular-emojis [name]="'fire'" size="25"></angular-emojis>
@@ -530,8 +515,9 @@
             </button>
           </mat-card>
         </mat-tab>
-        <mat-tab label="Whitelist/Blacklist" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+        <mat-tab label="Whitelist/Blacklist">
           <mat-card>
+            <div style="height: 15px"></div>
             <h3>WHITELIST</h3>
             <form [formGroup]="whitelistInputFormGroup" class="form-container">
               <mat-form-field appearance="legacy">

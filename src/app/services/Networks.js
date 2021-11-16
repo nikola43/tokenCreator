@@ -47,6 +47,86 @@ export const DevNetworks = [
       blockExplorerUrls: ['https://explorer.matic.network/']
     }
   },
+  {
+    index: 3,
+    name: "Harmony Mainnet Shard 0",
+    image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3945.png',
+    params: {
+      chainId: '0x63564C40',
+      chainName: 'Harmony',
+      nativeCurrency: {
+        name: 'ONE',
+        symbol: 'ONE',
+        decimals: 18
+      },
+      rpcUrls: ['https://api.harmony.one'],
+      blockExplorerUrls: ['https://explorer.harmony.one']
+    }
+  },
+  {
+    index: 4,
+    name: "Fantom Opera",
+    image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3513.png',
+    params: {
+      chainId: '0xFA',
+      chainName: 'Fantom',
+      nativeCurrency: {
+        name: 'Fantom',
+        symbol: 'FTM',
+        decimals: 18
+      },
+      rpcUrls: ['https://rpc.ftm.tools'],
+      blockExplorerUrls: ['https://ftmscan.com']
+    }
+  },
+  {
+    index: 5,
+    name: "RSK Testnet",
+    image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3626.png',
+    params: {
+      chainId: '0x1F',
+      chainName: 'RSK',
+      nativeCurrency: {
+        name: "RSK Testnet Ether",
+        symbol: 'tRBTC',
+        decimals: 18
+      },
+      rpcUrls: ['https://public-node.testnet.rsk.co'],
+      blockExplorerUrls: ['https://ftmscan.com']
+    }
+  },
+  {
+    index: 5,
+    name: "OKExChain Testnet",
+    image: 'https://s2.coinmarketcap.com/static/img/exchanges/64x64/294.png',
+    params: {
+      chainId: '0x41',
+      chainName: 'OKT',
+      nativeCurrency: {
+        name: "OKExChain Global Utility Token in testnet",
+        symbol: 'tOKT',
+        decimals: 18
+      },
+      rpcUrls: ['https://exchaintestrpc.okex.org'],
+      blockExplorerUrls: ['https://www.oklink.com/okexchain-test']
+    }
+  },
+  {
+    index: 6,
+    name: "IoTeX Network Testnet",
+    image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/2777.png',
+    params: {
+      chainId: '0x1252',
+      chainName: 'iotex.io',
+      nativeCurrency: {
+        name: "IoTeX",
+        symbol: 'IOTX',
+        decimals: 18
+      },
+      rpcUrls: ['https://babel-api.testnet.iotex.io'],
+      blockExplorerUrls: ['https://testnet.iotexscan.io']
+    }
+  },
 ];
 
 export const ProdNetworks = [

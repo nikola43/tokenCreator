@@ -11,12 +11,14 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {TwoDigitDecimaNumberDirective} from './two-digit-decima-number.directive';
 import {AngularEmojisModule} from 'angular-emojis';
 import {TokenGeneratorComponent} from './components/token-generator/token-generator.component';
+import {BurnDialogComponent} from './components/burn-dialog/burn-dialog.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TwoDigitDecimaNumberDirective,
-    TokenGeneratorComponent
+    TokenGeneratorComponent,
+    BurnDialogComponent
   ],
   imports: [
     BrowserModule,

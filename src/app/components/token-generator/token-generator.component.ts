@@ -1,22 +1,24 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {HttpClient} from '@angular/common/http';
 import {
   faCheck,
   faExclamationTriangle,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
-import { MatSelect, MatSelectChange } from '@angular/material/select';
+import {MatSelect, MatSelectChange} from '@angular/material/select';
 import Web3 from 'web3';
-import { MatSliderChange } from '@angular/material/slider';
-import { Web3Service } from '../../services/web3.service';
-import { DevNetworks } from '../../services/Networks.js';
-import { BnbTokenAddress } from '../../services/BnbTokenAbi';
+import {MatSliderChange} from '@angular/material/slider';
+import {Web3Service} from '../../services/web3.service';
+import {DevNetworks} from '../../services/Networks.js';
+import {BnbTokenAddress} from '../../services/BnbTokenAbi';
 import Typewriter from 'typewriter-effect/dist/core';
 import {
   NotificationUtils,
   SnackBarColorEnum,
 } from '../../../utils/NotificationUtil';
+import {MatDialog} from '@angular/material/dialog';
+import {BurnDialogComponent} from '../burn-dialog/burn-dialog.component';
 
 @Component({
   selector: 'app-token-generator',
@@ -26,11 +28,13 @@ import {
 export class TokenGeneratorComponent implements OnInit {
   hasError = false;
   errorLabel = '';
+
   constructor(
     public web3Service: Web3Service,
     private formBuilder: FormBuilder,
     private http: HttpClient,
-    private notificationUtils: NotificationUtils
+    private notificationUtils: NotificationUtils,
+    public dialog: MatDialog
   ) {
     this.createForm();
     this.connectWeb3().then((r) => {
@@ -347,6 +351,7 @@ export class TokenGeneratorComponent implements OnInit {
       ],
     });
   }
+
   // tslint:disable-next-line:typedef
   public async connectWeb3() {
     this.web3Service.enableMetaMaskAccount().then(async (r) => {
@@ -449,7 +454,7 @@ export class TokenGeneratorComponent implements OnInit {
         }
       })
       .catch((e) => {
-        console.log({ e });
+        console.log({e});
 
         if (e.code === 4001) {
           this.notificationUtils.showSnackBar(
@@ -583,7 +588,7 @@ export class TokenGeneratorComponent implements OnInit {
       this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value;
     const bnbAmount = this.addLiquidityForm.bnbAmount.toString();
     const tokenAmount = this.addLiquidityForm.tokenAmount.toString();
-    console.log({ tokenAddress });
+    console.log({tokenAddress});
     await this.web3Service
       .approveToken(tokenAddress, tokenAmount)
       .then((r) => {
@@ -604,6 +609,20 @@ export class TokenGeneratorComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async burnTokens() {
+
+    const dialogRef = this.dialog.open(BurnDialogComponent, {
+      data: {
+        tokenAddress: this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
+        amount: this.burnTokenForm.amount
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      console.log(result)
+    });
+
+    /*
     console.log(
       this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
     );
@@ -618,6 +637,7 @@ export class TokenGeneratorComponent implements OnInit {
       .catch((err) => {
         console.log(err);
       });
+    */
   }
 
   // tslint:disable-next-line:typedef
@@ -742,7 +762,7 @@ export class TokenGeneratorComponent implements OnInit {
     try {
       await this.web3Service.web3.request({
         method: 'wallet_switchEthereumChain',
-        params: [{ chainId: this.networks[changeEvent.value].params.chainId }],
+        params: [{chainId: this.networks[changeEvent.value].params.chainId}],
       });
     } catch (switchError) {
       // This error code indicates that the chain has not been added to MetaMask.
