@@ -40,13 +40,7 @@ mat-error {
   font-size: 0.9rem;
 }
 
-.mat-hints {
-  color: #39c0ed;
-  font-size: 0.8rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center !important;
-}
+
 
 .mat-panel-title-span {
   margin: auto;
@@ -72,12 +66,7 @@ mat-error {
   font-size: 1.2rem !important;
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  width: 100%;
-}
+
 
 .configurator_container {
   margin: auto;
@@ -91,6 +80,9 @@ mat-error {
   flex-direction: row !important;
 }
 
+.liquidity-form-container {
+  background: #2b2b2b;
+}
 .lock-liquidity-form-container {
   display: flex;
   flex-direction: column;
@@ -105,13 +97,8 @@ mat-error {
   // border: 1px solid #BEAEE2;
 }
 
-.liquidity-form-container {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  width: 100%;
-  background: #212121;
-  border-radius: 16px !important;
+.lock-liquidity-form-container {
+  background: #2f2f2f;
 }
 
 .liquidity-form-buttons-container {
@@ -131,10 +118,7 @@ mat-error {
 }
 
 
-.create-token-container{
-  background: #212121;
-  border-radius: 16px !important;
-}
+
 
 button {
   color: white;

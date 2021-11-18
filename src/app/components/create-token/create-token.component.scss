@@ -1,0 +1,19 @@
+.create-token-container{
+  background: #2f2f2f;
+  border-radius: 16px !important;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 100%;
+}
+
+.mat-hints {
+  color: #39c0ed;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center !important;
+}

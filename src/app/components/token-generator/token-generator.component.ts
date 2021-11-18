@@ -7,7 +7,6 @@ import {
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import {MatSelect, MatSelectChange} from '@angular/material/select';
-import Web3 from 'web3';
 import {MatSliderChange} from '@angular/material/slider';
 import {Web3Service} from '../../services/web3.service';
 import {DevNetworks} from '../../services/Networks.js';
@@ -20,14 +19,20 @@ import {
 import {MatDialog} from '@angular/material/dialog';
 import {BurnDialogComponent} from '../burn-dialog/burn-dialog.component';
 
+declare let require: any;
+declare let window: any;
+const Web3 = require('web3');
+
 @Component({
   selector: 'app-token-generator',
   templateUrl: './token-generator.component.html',
   styleUrls: ['./token-generator.component.scss'],
 })
 export class TokenGeneratorComponent implements OnInit {
-  hasError = false;
+
   errorLabel = '';
+
+  myLocks = [];
 
   constructor(
     public web3Service: Web3Service,
@@ -49,16 +54,6 @@ export class TokenGeneratorComponent implements OnInit {
           await this.web3Service.getBalance(),
           'ether'
         );
-        this.formGroup.controls.tokenSupply.setValue('1000000000');
-        this.formGroup.controls.tokenDecimals.setValue('18');
-        this.formGroup.controls.TxFeePercentToHolders.setValue('0');
-        this.formGroup.controls.TxFeePercentToLP.setValue('0');
-        this.formGroup.controls.TxFeePercentToBurned.setValue('0');
-        this.formGroup.controls.TxFeePercentToWallet.setValue('0');
-        this.formGroup.controls.TxFeePercentToBuybackTokens.setValue('0');
-        this.formGroup.controls.MaxWalletPercent.setValue('100');
-        this.formGroup.controls.MaxTxPercent.setValue('100');
-        this.formGroup.controls.FeeReceiverWallet.setValue(this.account);
       });
     }
 
@@ -89,12 +84,9 @@ export class TokenGeneratorComponent implements OnInit {
 
   @ViewChild('slider') slider;
   @ViewChild('addLiquidityBnbSlider') addLiquidityBnbSlider;
-  createButtonLabel = 'Create Token';
-  addToMetamaskButtonLabel = 'Add token to metamask';
-  tokenAddedToMetamask = false;
 
-  lastCurrentNetwork = 0;
-  currentNetwork = 0;
+
+
   tokenBalance: any;
   lpTokenBalance: any;
   bnbBalance: any;
@@ -117,26 +109,23 @@ export class TokenGeneratorComponent implements OnInit {
   addTokenLiquidityQuantityPercent = 0;
   burnTokenPercent = 0;
   lockTokenLiquidityPercent = 0;
-
+  tokenAddressInputFormGroup: FormGroup;
   title = 'TokenGenerator';
   buttonLabel = 'Connect';
   account: any = undefined;
-  formGroup: FormGroup;
   isLoading = false;
-  createdTokenAddress = '';
-  tokenVerified = false;
-  panelOpenState = false;
-  tokenApproved = false;
-  isApproving = false;
+
+
   approveButtonLabel = 'Approve Token';
   approveButtonIcon: IconDefinition = faCheck;
-  tokenAddressInputFormGroup: FormGroup;
+  tokenApproved = false;
+  isApproving = false;
   lockLiquidityTokenAddressInputFormGroup: FormGroup;
   burnTokenAddressInputFormGroup: FormGroup;
   whitelistInputFormGroup: FormGroup;
   blacklistInputFormGroup: FormGroup;
 
-  networks: any = DevNetworks;
+
 
   whitelistContent: any = [
     '0xb6e76628BeB7872D2ade6AE9641bb390401c18ef',
@@ -150,8 +139,7 @@ export class TokenGeneratorComponent implements OnInit {
     '0x1010fb622aD9D19F3B62cC82fEfC5cb95a71aA34',
   ];
 
-  // tslint:disable-next-line:typedef
-  showAdvancedSettings = false;
+
 
   ngOnInit(): void {
     const t = new Typewriter('#typewriter', {
@@ -229,7 +217,7 @@ export class TokenGeneratorComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  onSlide(event: MatSliderChange) {
+  async onSlide(event: MatSliderChange) {
     this.addBnbLiquidityQuantityPercent = Number(event.value);
     this.addLiquidityForm.bnbAmount = this.mapValue(
       Number(event.value),
@@ -238,11 +226,38 @@ export class TokenGeneratorComponent implements OnInit {
       0,
       this.bnbBalance
     );
+
+    const estimate = await this.web3Service.getEstimatedTokensForBNB(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
+    const ratio = estimate['0'] / estimate['1'];
+    const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
+    console.log({estimate});
+    console.log({ratio});
+    console.log({addLiquidityTokenAmount});
+
+    if (!isNaN(Number(addLiquidityTokenAmount))) {
+      const value2 = this.mapValue(
+        Number(addLiquidityTokenAmount),
+        0,
+        this.tokenBalance,
+        0,
+        100
+      );
+      this.slider.value = value2;
+
+      this.addLiquidityForm.tokenAmount = addLiquidityTokenAmount;
+    }
   }
 
   // tslint:disable-next-line:typedef
-  async lockLiquidity(tokenAddress: string, time) {
-    const r = await this.web3Service.lockLiquidity(tokenAddress, time);
+  async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
+
+    console.log({
+      tokenAddress,
+      time,
+      tokenAmount
+    });
+
+    const r = await this.web3Service.lockLiquidity(tokenAddress, time, tokenAmount);
     console.log({
       r,
     });
@@ -252,77 +267,6 @@ export class TokenGeneratorComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   createForm() {
-    this.formGroup = this.formBuilder.group({
-      tokenName: [
-        null,
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(30),
-        ],
-      ],
-      tokenSymbol: [
-        null,
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(10),
-        ],
-      ],
-      tokenSupply: [
-        null,
-        [
-          Validators.required,
-          Validators.minLength(1),
-          Validators.maxLength(16),
-        ],
-      ],
-      tokenDecimals: [
-        null,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(2)],
-      ],
-      TxFeePercentToHolders: [
-        null,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(2)],
-      ],
-      TxFeePercentToLP: [
-        null,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(2)],
-      ],
-      TxFeePercentToBurned: [
-        null,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(2)],
-      ],
-      TxFeePercentToWallet: [
-        null,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(2)],
-      ],
-      TxFeePercentToBuybackTokens: [
-        null,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(2)],
-      ],
-      MaxWalletPercent: [
-        null,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(2)],
-      ],
-      MaxTxPercent: [
-        null,
-        [Validators.required, Validators.minLength(1), Validators.maxLength(3)],
-      ],
-      FeeReceiverWallet: [
-        null,
-        [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
-      ],
-      validate: '',
-    });
-
-    this.tokenAddressInputFormGroup = this.formBuilder.group({
-      liquidityTokenAddress: [
-        null,
-        [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
-      ],
-    });
-
     this.lockLiquidityTokenAddressInputFormGroup = this.formBuilder.group({
       lockLiquidityTokenAddress: [
         null,
@@ -350,6 +294,13 @@ export class TokenGeneratorComponent implements OnInit {
         [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
       ],
     });
+
+    this.tokenAddressInputFormGroup = this.formBuilder.group({
+      liquidityTokenAddress: [
+        null,
+        [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
+      ],
+    });
   }
 
   // tslint:disable-next-line:typedef
@@ -367,121 +318,21 @@ export class TokenGeneratorComponent implements OnInit {
           await this.web3Service.getBalance(),
           'ether'
         );
-
-        this.formGroup.controls.tokenSupply.setValue('1000000000');
-        this.formGroup.controls.tokenDecimals.setValue('18');
-        this.formGroup.controls.TxFeePercentToHolders.setValue('0');
-        this.formGroup.controls.TxFeePercentToLP.setValue('0');
-        this.formGroup.controls.TxFeePercentToBurned.setValue('0');
-        this.formGroup.controls.TxFeePercentToWallet.setValue('0');
-        this.formGroup.controls.TxFeePercentToBuybackTokens.setValue('0');
-        this.formGroup.controls.MaxWalletPercent.setValue('100');
-        this.formGroup.controls.MaxTxPercent.setValue('100');
-        this.formGroup.controls.FeeReceiverWallet.setValue(this.account);
       }
     });
   }
-
   // tslint:disable-next-line:typedef
-  onSubmit(value: any) {
-    this.isLoading = true;
-    this.createButtonLabel = 'Deploying token';
-    this.web3Service
-      .createToken(
-        this.formGroup.get('tokenName').value,
-        this.formGroup.get('tokenSymbol').value,
-        Number(this.formGroup.get('tokenSupply').value),
-        Number(this.formGroup.get('tokenDecimals').value),
-        Number(this.formGroup.get('TxFeePercentToHolders').value),
-        Number(this.formGroup.get('TxFeePercentToLP').value),
-        Number(this.formGroup.get('TxFeePercentToBurned').value),
-        Number(this.formGroup.get('TxFeePercentToWallet').value),
-        Number(this.formGroup.get('TxFeePercentToBuybackTokens').value),
-        Number(this.formGroup.get('MaxWalletPercent').value),
-        Number(this.formGroup.get('MaxTxPercent').value),
-        this.formGroup.get('FeeReceiverWallet').value
-      )
-      .then(async (r) => {
-        console.log(r);
-
-        this.createButtonLabel = 'Verifying Token';
-        await this.sleep(5000);
-
-        if (r.events['1'].address.length > 0) {
-          this.createdTokenAddress = r.events['1'].address;
-          const interval = setInterval(() => {
-            const formData: any = new FormData();
-
-            formData.append('guid', r.guid);
-            formData.append('module', 'contract');
-            formData.append('action', 'checkverifystatus');
-            formData.append('apikey', 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY');
-
-            this.http
-              .post('https://api-testnet.bscscan.com/api', formData)
-              .subscribe(
-                async (response: any) => {
-                  console.log('response');
-                  console.log(response);
-
-                  if (response.status === '1') {
-                    clearInterval(interval); // time is up;
-                    this.tokenVerified = true;
-                    this.createButtonLabel = 'Token Created';
-                    this.isLoading = false;
-                    this.tokenBalance = Number(
-                      Web3.utils.fromWei(
-                        await this.getTokenBalance(this.createdTokenAddress),
-                        'ether'
-                      )
-                    )
-                      .toFixed(18)
-                      .toString();
-                    this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.setValue(
-                      this.createdTokenAddress
-                    );
-                  }
-                },
-                (error) => {
-                  this.hasError = true;
-                  console.log('error');
-                  console.log(error);
-                }
-              );
-          }, 5000);
-        } else {
-          alert('error creando token');
-        }
-      })
-      .catch((e) => {
-        console.log({e});
-
-        if (e.code === 4001) {
-          this.notificationUtils.showSnackBar(
-            'Error: Transaction rejected by user',
-            SnackBarColorEnum.Red,
-            5000,
-            'top',
-            'center'
-          );
-        } else {
-          this.notificationUtils.showSnackBar(
-            e.message,
-            SnackBarColorEnum.Red,
-            5000,
-            'top',
-            'center'
-          );
-        }
-        this.createButtonLabel = 'Deploy Token';
-        this.hasError = true;
-        this.isLoading = false;
-      });
-  }
-
-  // tslint:disable-next-line:typedef
-  bnbInputKeyUp() {
+  async bnbInputKeyUp() {
     console.log(this.addLiquidityForm.bnbAmount);
+
+    const estimate = await this.web3Service.getEstimatedTokensForBNB(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
+    const ratio = estimate['0'] / estimate['1'];
+    const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
+    console.log({estimate});
+    console.log({ratio});
+    console.log({addLiquidityTokenAmount});
+
+
     const value = this.mapValue(
       Number(this.addLiquidityForm.bnbAmount),
       0,
@@ -490,6 +341,21 @@ export class TokenGeneratorComponent implements OnInit {
       100
     );
     this.addLiquidityBnbSlider.value = value;
+
+    if (!isNaN(Number(addLiquidityTokenAmount))) {
+      const value2 = this.mapValue(
+        Number(addLiquidityTokenAmount),
+        0,
+        this.tokenBalance,
+        0,
+        100
+      );
+      this.slider.value = value2;
+
+      this.addLiquidityForm.tokenAmount = addLiquidityTokenAmount;
+    }
+
+
   }
 
   // tslint:disable-next-line:typedef
@@ -539,15 +405,6 @@ export class TokenGeneratorComponent implements OnInit {
         .toString();
     } else {
       this.tokenBalance = 0;
-    }
-  }
-
-  // tslint:disable-next-line:typedef
-  async numberFieldKeyup(event, maxValue, controlName) {
-    console.log(this.formGroup.get(controlName).value);
-    console.log(maxValue);
-    if (this.formGroup.get(controlName).value > maxValue) {
-      this.formGroup.controls[controlName].setValue(maxValue);
     }
   }
 
@@ -610,6 +467,11 @@ export class TokenGeneratorComponent implements OnInit {
   // tslint:disable-next-line:typedef
   async burnTokens() {
 
+    console.log({
+      tokenAddress: this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
+      amount: this.burnTokenForm.amount
+    });
+
     const dialogRef = this.dialog.open(BurnDialogComponent, {
       data: {
         tokenAddress: this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
@@ -617,9 +479,20 @@ export class TokenGeneratorComponent implements OnInit {
       },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(async (result) => {
       console.log('The dialog was closed');
-      console.log(result)
+      console.log(result);
+
+      this.tokenBalance = Number(
+        Web3.utils.fromWei(
+          await this.getTokenBalance(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value),
+          'ether'
+        )
+      )
+        .toFixed(18)
+        .toString();
+
+      this.burnTokenForm.amount = 0;
     });
 
     /*
@@ -673,6 +546,7 @@ export class TokenGeneratorComponent implements OnInit {
     //   });
   }
 
+  // tslint:disable-next-line:typedef
   async deleteFromWhitelist(address) {
     const index = this.whitelistContent.indexOf(address);
     if (index > -1) {
@@ -680,6 +554,7 @@ export class TokenGeneratorComponent implements OnInit {
     }
   }
 
+  // tslint:disable-next-line:typedef
   async deleteFromBlacklist(address) {
     const index = this.blacklistContent.indexOf(address);
     if (index > -1) {
@@ -688,15 +563,15 @@ export class TokenGeneratorComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
+  async getTokenBalance(tokenAddress) {
+    return await this.web3Service.getTokensBalance(tokenAddress);
+  }
+  // tslint:disable-next-line:typedef
   async addLiquidity() {
     const bnbAmount = this.addLiquidityForm.bnbAmount;
     const tokenAmount = this.addLiquidityForm.tokenAmount;
-    const minTokenAmount = Number(
-      Number(tokenAmount) - Number(this.percentage(Number(tokenAmount), 1))
-    );
-    const minBnbTokenAmount = Number(
-      Number(bnbAmount) - Number(this.percentage(Number(bnbAmount), 1))
-    );
+    const minTokenAmount = Number(Number(tokenAmount) - Number(this.percentage(Number(tokenAmount), 1)));
+    const minBnbTokenAmount = Number(Number(bnbAmount) - Number(this.percentage(Number(bnbAmount), 1)));
 
     console.log({
       bnbAmount,
@@ -704,20 +579,20 @@ export class TokenGeneratorComponent implements OnInit {
       minTokenAmount,
       minBnbTokenAmount,
     });
-
+    const tokenAddress = this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value;
     this.web3Service
       .addLiquidity(
-        this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value,
+        tokenAddress,
         bnbAmount,
         tokenAmount,
         minBnbTokenAmount,
         minTokenAmount
       )
       .then(async (r2) => {
-        const pairAddress = await this.getPair(this.createdTokenAddress);
+
         this.tokenBalance = Number(
           Web3.utils.fromWei(
-            await this.getTokenBalance(this.createdTokenAddress),
+            await this.getTokenBalance(tokenAddress),
             'ether'
           )
         )
@@ -728,6 +603,8 @@ export class TokenGeneratorComponent implements OnInit {
         )
           .toFixed(18)
           .toString();
+
+        const pairAddress = await this.getPair(tokenAddress);
         this.lpTokenBalance = Number(
           Web3.utils.fromWei(await this.getLPTokenBalance(pairAddress), 'ether')
         );
@@ -735,6 +612,17 @@ export class TokenGeneratorComponent implements OnInit {
         this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.setValue(
           pairAddress
         );
+
+
+        const value2 = this.mapValue(
+          Number(0),
+          0,
+          this.tokenBalance,
+          0,
+          100
+        );
+        this.slider.value = value2;
+        this.addLiquidityForm.tokenAmount = 0;
       })
       .catch((err) => {
         console.log(err);
@@ -745,52 +633,10 @@ export class TokenGeneratorComponent implements OnInit {
   async getLPTokenBalance(tokenAddress) {
     return await this.web3Service.getLPTokensBalance(tokenAddress);
   }
-
-  // tslint:disable-next-line:typedef
-  async getTokenBalance(tokenAddress) {
-    return await this.web3Service.getTokensBalance(tokenAddress);
-  }
-
   // tslint:disable-next-line:typedef
   percentage(percent, total) {
     return (percent / 100) * total;
   }
-
-  // tslint:disable-next-line:typedef
-  async networkSelectChange(changeEvent: MatSelectChange) {
-    console.log(changeEvent);
-    try {
-      await this.web3Service.web3.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{chainId: this.networks[changeEvent.value].params.chainId}],
-      });
-    } catch (switchError) {
-      // This error code indicates that the chain has not been added to MetaMask.
-      if (switchError.code === 4902) {
-        try {
-          await this.web3Service.web3.request({
-            method: 'wallet_addEthereumChain',
-            params: [this.networks[changeEvent.value].params],
-          });
-        } catch (addError) {
-          // handle "add" error
-          console.log(addError);
-          this.currentNetwork = this.lastCurrentNetwork;
-        }
-      }
-      // handle other "switch" errors
-      console.log(switchError);
-
-      // rejected
-      if (switchError.code === 4001) {
-      }
-      this.currentNetwork = this.lastCurrentNetwork;
-      // this.currentNetwork = changeEvent.value;
-      return false;
-    }
-    this.lastCurrentNetwork = this.currentNetwork;
-  }
-
   // tslint:disable-next-line:typedef
   formatLabel(value: number) {
     if (value >= 1000) {
@@ -822,12 +668,6 @@ export class TokenGeneratorComponent implements OnInit {
   mapValue(x, inMin, inMax, outMin, outMax) {
     return ((x - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
   }
-
-  // tslint:disable-next-line:typedef
-  onSwitchChange(value) {
-    this.showAdvancedSettings = !this.showAdvancedSettings;
-  }
-
   // tslint:disable-next-line:typedef
   setTokenPercent(percent) {
     this.addLiquidityForm.tokenAmount = this.percentage(
@@ -845,7 +685,7 @@ export class TokenGeneratorComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  setBnbPercent(percent) {
+  async setBnbPercent(percent) {
     this.addLiquidityForm.bnbAmount = this.percentage(percent, this.bnbBalance);
     const value = this.mapValue(
       Number(this.addLiquidityForm.bnbAmount),
@@ -855,6 +695,26 @@ export class TokenGeneratorComponent implements OnInit {
       100
     );
     this.addLiquidityBnbSlider.value = value;
+
+    const estimate = await this.web3Service.getEstimatedTokensForBNB(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
+    const ratio = estimate['0'] / estimate['1'];
+    const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
+    console.log({estimate});
+    console.log({ratio});
+    console.log({addLiquidityTokenAmount});
+
+    if (!isNaN(Number(addLiquidityTokenAmount))) {
+      const value2 = this.mapValue(
+        Number(addLiquidityTokenAmount),
+        0,
+        this.tokenBalance,
+        0,
+        100
+      );
+      this.slider.value = value2;
+
+      this.addLiquidityForm.tokenAmount = addLiquidityTokenAmount;
+    }
   }
 
   // tslint:disable-next-line:typedef
@@ -875,6 +735,15 @@ export class TokenGeneratorComponent implements OnInit {
       )
         .toFixed(18)
         .toString();
+
+      /* Get my locks */
+      this.web3Service.getLocks().then((r) => {
+        console.log(r);
+        this.myLocks = r;
+      }).catch((err) => {
+        console.log(err);
+      });
+
     } else {
       this.lpTokenBalance = 0;
     }
@@ -897,32 +766,14 @@ export class TokenGeneratorComponent implements OnInit {
       )
         .toFixed(18)
         .toString();
+
+      const pairAddress = await this.getPair(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
+      this.lpTokenBalance = Number(
+        Web3.utils.fromWei(await this.getLPTokenBalance(pairAddress), 'ether')
+      );
+
     } else {
       this.tokenBalance = 0;
-    }
-  }
-
-  // tslint:disable-next-line:typedef
-  async addTokenToMetamask() {
-    try {
-      // wasAdded is a boolean. Like any RPC method, an error may be thrown.
-      const wasAdded = await this.web3Service.web3.request({
-        method: 'wallet_watchAsset',
-        params: {
-          type: 'ERC20', // Initially only supports ERC20, but eventually more!
-          options: {
-            address: this.createdTokenAddress, // The address that the token is at.
-            symbol: this.formGroup.get('tokenSymbol').value, // A ticker symbol or shorthand, up to 5 chars.
-            decimals: this.formGroup.get('tokenDecimals').value, // The number of decimals in the token
-          },
-        },
-      });
-
-      console.log('Thanks for your interest!');
-      this.addToMetamaskButtonLabel = 'Token added to metamask successfully';
-      this.tokenAddedToMetamask = true;
-    } catch (error) {
-      console.log(error);
     }
   }
 }
