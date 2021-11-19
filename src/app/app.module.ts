@@ -12,13 +12,15 @@ import {TwoDigitDecimaNumberDirective} from './two-digit-decima-number.directive
 import {AngularEmojisModule} from 'angular-emojis';
 import {TokenGeneratorComponent} from './components/token-generator/token-generator.component';
 import {BurnDialogComponent} from './components/burn-dialog/burn-dialog.component';
+import {CreateTokenComponent} from './components/create-token/create-token.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TwoDigitDecimaNumberDirective,
     TokenGeneratorComponent,
-    BurnDialogComponent
+    BurnDialogComponent,
+    CreateTokenComponent
   ],
   imports: [
     BrowserModule,

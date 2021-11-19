@@ -709,7 +709,10 @@ contract Token is Context, IERC20, Ownable {
   uint8 public minMxTxPercentage = 1;
   uint8 public minMxWalletPercentage = 1;
 
-  mapping (address => bool) private blacklist;
+
+  address[] private blacklist = new address[](0);
+  address[] private whitelist = new address[](0);
+
 
   mapping (address => uint256) private _rOwned;
   mapping (address => uint256) private _tOwned;
@@ -754,6 +757,7 @@ contract Token is Context, IERC20, Ownable {
 
   bool inSwapAndLiquify;
   bool public swapAndLiquifyEnabled = true;
+  bool public onlyWhiteListed = false;
 
   uint256 public _maxTxAmount;
   uint256 public _maxWalletAmount;
@@ -1085,6 +1089,12 @@ contract Token is Context, IERC20, Ownable {
     require(from != address(0), "ERC20: transfer from zero address");
     require(to != address(0), "ERC20: transfer to zero address");
     require(amount > 0, "Transfer amount must be greater than zero");
+
+    require(!findAddressOnArray(blacklist, from), "Blacklisted address.");
+
+    if(from != owner() && to != owner() && onlyWhiteListed)
+      require(findAddressOnArray(whitelist, from), "Whitelist mode is enabled, Only whitelisted addresses can do transfers.");
+
     if(from != owner() && to != owner())
       require(amount <= _maxTxAmount, "Transfer amount exceeds the maxTxAmount.");
 
@@ -1140,11 +1150,60 @@ contract Token is Context, IERC20, Ownable {
     _tokenTransfer(from,to,amount,takeFee);
   }
 
-
-  function updateBlacklist(address blackListedAddress, bool status) public onlyOwner {
-    blacklist[blackListedAddress] = status;
+  function addAddressBlacklist(address addr) public onlyOwner {
+    require(!findAddressOnArray(whitelist, addr), "the address has already been added to blacklist.");
+    blacklist.push(addr);
   }
 
+  function removeAddressBlacklist(address addr) public onlyOwner view returns (address[] memory) {
+    require(findAddressOnArray(blacklist, addr), "Not found address on blacklist.");
+
+    address[] memory newBlacklist = new address[](0);
+
+    for (uint i = 0; i < blacklist.length; i++) {
+      if (blacklist[i] != addr) {
+        newBlacklist[i] = blacklist[i];
+      }
+    }
+    return newBlacklist;
+  }
+
+  function addAddressWhitelist(address addr) public onlyOwner {
+    require(!findAddressOnArray(whitelist, addr), "the address has already been added to whitelist.");
+
+    whitelist.push(addr);
+  }
+
+  function removeAddressWhitelist(address addr) public onlyOwner view returns (address[] memory) {
+    require(findAddressOnArray(whitelist, addr), "Not found address on whitelist.");
+
+    address[] memory newWhitelist = new address[](0);
+
+    for (uint i = 0; i < whitelist.length; i++) {
+      if (blacklist[i] != addr) {
+        newWhitelist[i] = whitelist[i];
+      }
+    }
+    return newWhitelist;
+  }
+
+  function removeElementFromAddressArray(address[] memory list, address addr) public pure returns (bool) {
+    for (uint i = 0; i < list.length; i++) {
+      if (list[i] == addr) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function findAddressOnArray(address[] memory list, address addr) public pure returns (bool) {
+    for (uint i = 0; i < list.length; i++) {
+      if (list[i] == addr) {
+        return true;
+      }
+    }
+    return false;
+  }
 
   function burn(uint256 burnAmount) public {
     require(burnAmount >= 0, "Burn amount should be greater than zero");

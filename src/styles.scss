@@ -1,14 +1,19 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body {
-  height: 100%;
-}
-
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 
-  background: #171717;
+  background: linear-gradient(180deg, #14003d, #100138, #0d0233, #0b022d, #080227, #050221, #03021b, #000114);
+
+}
+
+.glassContainer{
+  backdrop-filter: blur(3px) saturate(150%);
+  -webkit-backdrop-filter: blur(3px) saturate(150%);
+  background-color: rgba(17, 25, 40, 0.11);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
 button:focus {
@@ -23,6 +28,10 @@ button:focus {
 mat-icon {
   size: 0.6rem !important;
   margin-right: 4px;
+}
+
+.mat-tab-label-container {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 
@@ -60,27 +69,53 @@ mat-icon {
 }
 
 .mat-slider-thumb-label {
-  background-color: #212121 !important;
+  background-color: #2f2f2f !important;
 }
 
 .mat-form-field-appearance-fill .mat-form-field-flex {
-  background: linear-gradient(-45deg, #ee7752, #ff79ab, #47cfff, #23d5ab) !important;
+  backdrop-filter: blur(3px) saturate(150%);
+  -webkit-backdrop-filter: blur(3px) saturate(150%);
+  background-color: rgba(17, 25, 40, 0.11);
   border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
 .mat-form-field-underline {
-  //display: none !important;
+  display: none !important;
+}
+
+.mat-selected {
+  background: rgba(0, 196, 255, 0.51) !important;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+.mat-option-text {
+  color: white;
 }
 
 .my-select-panel-class {
   margin-top: 2.5rem !important;
   background-color: #444444;
+
+  backdrop-filter: blur(8px) saturate(150%);
+  -webkit-backdrop-filter: blur(8px) saturate(150%);
+  background-color: rgba(17, 25, 40, 0.51);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+
+.mat-dialog-container {
+  padding: 0 !important;
+  margin: 0 !important;
   border-radius: 16px !important;
 }
 
-mat-expansion-panel-header {
-  color: #39C0ED;
+
+.centre {
+  text-align: center !important;
 }
+
 
 .multiple {
   background: linear-gradient(-45deg, #ee7752, #ff79ab, #47cfff, #23d5ab) !important;
@@ -94,7 +129,7 @@ mat-expansion-panel-header {
 }
 
 .mat-custom-nav {
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab) !important;
+  background: rgba(0, 0, 0, 0) !important;
   width: 98% !important;
   border-radius: 16px !important;
   margin: auto !important;

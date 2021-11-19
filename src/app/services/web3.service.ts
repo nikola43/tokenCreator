@@ -1,22 +1,21 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {TokenGeneratorAbi, TokenGeneratorAddress} from './TokenGeneratorAbi.js';
+import {TokenSourceCode} from './TokenSourceCode.js';
+import {TokenAbi} from './TokenAbi.js';
+import {PancakeRouterAbi, PancakeRouterAddress} from './PancakeRouterAbi.js';
+import {LockLiquidityContractAbi, LockLiquidityContractAddress} from './LockTokenAbi.js';
+import {PancakeFactoryAbi, PancakeFactoryAddress} from './PancakeFactoryAbi.js';
+import {BnbTokenAbi, BnbTokenAddress} from './BnbTokenAbi.js';
+import {LPTokenAbi} from './LPTokenAbi.js';
+import {Observable} from 'rxjs';
+
+declare let require: any;
+declare let window: any;
 
 const abi = require('ethereumjs-abi');
 
 const Web3 = require('web3');
-declare let require: any;
-declare let window: any;
-
-import {TokenGeneratorAddress, TokenGeneratorAbi} from './TokenGeneratorAbi.js';
-import {TokenSourceCode} from './TokenSourceCode.js';
-import {TokenAbi} from './TokenAbi.js';
-import {PancakeRouterAddress, PancakeRouterAbi} from './PancakeRouterAbi.js';
-import {PancakeFactoryAddress, PancakeFactoryAbi} from './PancakeFactoryAbi.js';
-import {PancakePairAddress, PancakePairAbi} from './PancakePairAbi.js';
-import {BnbTokenAddress, BnbTokenAbi} from './BnbTokenAbi.js';
-import {LPTokenAbi} from './LPTokenAbi.js';
-import {Observable} from 'rxjs';
-import {compareSegments} from '@angular/compiler-cli/ngcc/src/sourcemaps/segment_marker';
 
 
 @Injectable({
@@ -42,6 +41,20 @@ export class Web3Service {
       console.log(this.web3);
       this.enable = this.enableMetaMaskAccount();
     }
+  }
+
+  // tslint:disable-next-line:typedef
+  async getEstimatedTokensForBNB(tokenAddress) {
+
+    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+    const wethAddress = await pancakeRouter.methods.WETH().call();
+
+    console.log(wethAddress);
+
+    const pair = await this.getPair(wethAddress, tokenAddress);
+    const lpTokenContract = new window.web3.eth.Contract(LPTokenAbi, pair);
+
+    return await lpTokenContract.methods.getReserves().call();
   }
 
   public async getAccount(): Promise<any> {
@@ -187,6 +200,7 @@ export class Web3Service {
   validateAddress(address) {
     return Web3.utils.isAddress(address);
   }
+
   // tslint:disable-next-line:typedef
   getBalance() {
     return window.web3.eth.getBalance(this.account);
@@ -258,14 +272,19 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async burnTokens(tokenAddress: string, amount) {
     const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
-    token.burn(amount).send({from: this.account});
+    const burnResult = await token.methods.burn(Web3.utils.toWei(amount.toString(), 'ether')).send({from: this.account});
+
+    console.log(token);
+    console.log(burnResult);
+    return burnResult;
   }
 
   // tslint:disable-next-line:typedef
   async addLiquidity(tokenAddress: string, bnbAmount, tokenAmount, minBnbAmount, minTokenAmount: number) {
     const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+    const wethAddress = await pancakeRouter.methods.WETH().call();
 
-    const pair = await this.getPair('0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd', tokenAddress);
+    const pair = await this.getPair(wethAddress, tokenAddress);
 
     bnbAmount = Number(bnbAmount);
     tokenAmount = Number(tokenAmount);
@@ -273,7 +292,7 @@ export class Web3Service {
     minTokenAmount = Number(minTokenAmount);
 
 
-    const tokenA = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd';
+    const tokenA = wethAddress;
     const tokenB = tokenAddress;
     const amountADesired = bnbAmount;
     const amountAMin = minBnbAmount;
@@ -281,7 +300,6 @@ export class Web3Service {
     const amountBMin = minTokenAmount;
     const to = this.account;
     const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
-
 
     console.log({
       tokenA,
@@ -313,14 +331,30 @@ export class Web3Service {
   }
 
   // tslint:disable-next-line:typedef
-  async lockLiquidity(tokenAddress: string, time) {
-    const token = await new window.web3.eth.Contract(TokenAbi, tokenAddress);
-    console.log(token);
-
-    const a = await token.methods.lock(time).send({from: this.account});
+  async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
+    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
+    const a = await lockLiquidityContract.methods.lockTokens(tokenAddress, this.account, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).send({from: this.account});
     console.log(a);
+    return a;
+  }
 
+  // tslint:disable-next-line:typedef
+  async withdrawLockedTokens(lockId) {
+    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
+    return await lockLiquidityContract.methods.withdrawTokens(lockId).send({from: this.account});
+  }
 
+  // tslint:disable-next-line:typedef
+  async getLocks() {
+    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
+    const locksList = await lockLiquidityContract.methods.getDepositsByWithdrawalAddress(this.account).call();
+    const locksDetails = [];
+
+    for (let i = 0; i < locksList.length; i++) {
+      const lockDetails = await lockLiquidityContract.methods.getDepositDetails(locksList[i]).call();
+      locksDetails.push(lockDetails);
+    }
+    return locksDetails;
   }
 
   // tslint:disable-next-line:typedef

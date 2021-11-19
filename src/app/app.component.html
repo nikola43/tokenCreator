@@ -1,10 +1,18 @@
 <div style="height: 25px"></div>
 <mat-toolbar class="mat-custom-nav">
   <mat-toolbar-row>
-    <span>Second Line</span>
+    <span><img src="assets/ORIGINAL.png"/> Midas Generator</span>
     <span class="example-spacer"></span>
-    <button class="connect-button" color="primary" type="button" mat-raised-button (click)="connectWeb3()">{{buttonLabel}}</button>
+    <button class="connect-button" color="primary" type="button" mat-raised-button
+            (click)="connectWeb3()">{{buttonLabel}}</button>
   </mat-toolbar-row>
 </mat-toolbar>
 
+<!-- -->
+
 <router-outlet></router-outlet>
+
+<br>
+<div style="background:  #03021b; width: 100%; height: 5rem; display: flex; flex-direction: row; align-content: center; justify-content: center; justify-items: center">
+  <h3 style="color: white">Midas Token Generator. © All right reserved 2021.</h3>
+</div>
