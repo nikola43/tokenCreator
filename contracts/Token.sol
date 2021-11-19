@@ -710,8 +710,8 @@ contract Token is Context, IERC20, Ownable {
   uint8 public minMxWalletPercentage = 1;
 
 
-  address[] private blacklist = new address[](0);
-  address[] private whitelist = new address[](0);
+  address[] public blacklist = new address[](0);
+  address[] public whitelist = new address[](0);
 
 
   mapping (address => uint256) private _rOwned;
@@ -1151,7 +1151,7 @@ contract Token is Context, IERC20, Ownable {
   }
 
   function addAddressBlacklist(address addr) public onlyOwner {
-    require(!findAddressOnArray(whitelist, addr), "the address has already been added to blacklist.");
+    require(findAddressOnArray(whitelist, addr) == false, "the address has already been added to blacklist.");
     blacklist.push(addr);
   }
 
