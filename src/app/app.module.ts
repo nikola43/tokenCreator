@@ -15,6 +15,7 @@ import {BurnDialogComponent} from './components/burn-dialog/burn-dialog.componen
 import {CreateTokenComponent} from './components/create-token/create-token.component';
 import {AddLiquidityComponent} from './components/add-liquidity/add-liquidity.component';
 import {LockLiquidityComponent} from './components/lock-liquidity/lock-liquidity.component';
+import {WhitelistBlacklistComponent} from './components/whitelist-blacklist/whitelist-blacklist.component';
 import {BurnTokensComponent} from './components/burn-tokens/burn-tokens.component';
 
 @NgModule({
@@ -26,6 +27,7 @@ import {BurnTokensComponent} from './components/burn-tokens/burn-tokens.componen
     CreateTokenComponent,
     AddLiquidityComponent,
     LockLiquidityComponent,
+    WhitelistBlacklistComponent,
     BurnTokensComponent
   ],
   imports: [

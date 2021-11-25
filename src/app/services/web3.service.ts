@@ -370,6 +370,24 @@ export class Web3Service {
   }
 
   // tslint:disable-next-line:typedef
+  async getTokensName(tokenAddress: string) {
+    const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
+    return await token.methods.name().call();
+  }
+
+  // tslint:disable-next-line:typedef
+  async getTokenWhitelist(tokenAddress: string) {
+    const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
+    return await token.methods.whitelist().call();
+  }
+  
+  // tslint:disable-next-line:typedef
+  async addAddressWhitelist(tokenAddress: string) {
+    const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
+    return await token.methods.addAddressWhitelist(tokenAddress).call();
+  }
+
+  // tslint:disable-next-line:typedef
   async approveBnbToken(amount: string) {
     const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3';
     const token = new window.web3.eth.Contract(BnbTokenAbi, BnbTokenAddress);

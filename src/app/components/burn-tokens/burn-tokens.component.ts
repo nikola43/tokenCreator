@@ -4,6 +4,7 @@ import {Web3Service} from '../../services/web3.service';
 import {BurnDialogComponent} from '../burn-dialog/burn-dialog.component';
 import {MatSliderChange} from '@angular/material/slider';
 import {MatDialog} from '@angular/material/dialog';
+import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil';
 declare let require: any;
 declare let window: any;
 const Web3 = require('web3');
@@ -18,10 +19,11 @@ export class BurnTokensComponent implements OnInit {
   tokenBalance: any;
   burnTokenPercent = 0;
   burnTokenForm = {
+    tokenName: '',
     amount: 0,
   };
 
-  constructor(public web3Service: Web3Service, private formBuilder: FormBuilder, public dialog: MatDialog) {
+  constructor(public web3Service: Web3Service, private formBuilder: FormBuilder, public dialog: MatDialog, private notificationUtils: NotificationUtils) {
     this.createForm();
   }
 
@@ -71,6 +73,7 @@ export class BurnTokensComponent implements OnInit {
     )
       .toFixed(18)
       .toString();
+    this.getTokenName(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value).then((r) => this.burnTokenForm.tokenName = r);
 
     console.log({
       tokenBalance: this.tokenBalance,
@@ -88,22 +91,26 @@ export class BurnTokensComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async burnTokens() {
-
     console.log({
       tokenAddress: this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
       amount: this.burnTokenForm.amount
     });
-
     const dialogRef = this.dialog.open(BurnDialogComponent, {
       data: {
         tokenAddress: this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
-        amount: this.burnTokenForm.amount
+        amount: this.burnTokenForm.amount,
+        tokenName: this.burnTokenForm.tokenName
       },
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
       console.log('The dialog was closed');
-      console.log(result);
+      if (result) {
+        this.notificationUtils.showSnackBar(
+          `The token ${this.burnTokenForm.tokenName} was burned successfully`,
+          SnackBarColorEnum.Green,
+        );
+      } 
 
       this.tokenBalance = Number(
         Web3.utils.fromWei(
@@ -138,6 +145,10 @@ export class BurnTokensComponent implements OnInit {
   // tslint:disable-next-line:typedef
   async getTokenBalance(tokenAddress) {
     return await this.web3Service.getTokensBalance(tokenAddress);
+  }
+
+  async getTokenName(tokenAddress) {
+    return await this.web3Service.getTokensName(tokenAddress);
   }
 
   // tslint:disable-next-line:typedef

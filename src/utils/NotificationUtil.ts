@@ -20,7 +20,7 @@ export class NotificationUtils {
                color = SnackBarColorEnum.Default,
                duration = 5000,
                verticalPosition: MatSnackBarVerticalPosition = 'top',
-               horizontalPosition: MatSnackBarHorizontalPosition = 'start') {
+               horizontalPosition: MatSnackBarHorizontalPosition = 'center') {
     const config = new MatSnackBarConfig();
     config.panelClass = color !== SnackBarColorEnum.Default ? color : [];
     config.duration = duration;

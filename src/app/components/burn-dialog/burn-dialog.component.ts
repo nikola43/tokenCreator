@@ -11,6 +11,7 @@ export class BurnDialogComponent implements OnInit {
   isLoading = false;
   tokenAddress: string;
   amount: number;
+  name: string;
 
   constructor(
     public web3Service: Web3Service,
@@ -21,12 +22,12 @@ export class BurnDialogComponent implements OnInit {
 
     this.tokenAddress = data.tokenAddress;
     this.amount = data.amount;
+    this.name = data.tokenName;
   }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
-
 
   ngOnInit(): void {
   }
