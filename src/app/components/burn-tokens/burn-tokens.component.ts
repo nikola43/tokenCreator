@@ -29,6 +29,15 @@ export class BurnTokensComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
+  formatLabel(value: number) {
+    if (value >= 1000) {
+      return Math.round(value / 1000) + 'k';
+    }
+
+    return value + '%';
+  }
+
+  // tslint:disable-next-line:typedef
   onSlideBurn(event: MatSliderChange) {
     this.burnTokenPercent = Number(event.value);
     this.burnTokenForm.amount = this.mapValue(
