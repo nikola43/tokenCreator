@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Web3Service} from '../../services/web3.service';
 import {BurnDialogComponent} from '../burn-dialog/burn-dialog.component';
@@ -14,6 +14,7 @@ const Web3 = require('web3');
   styleUrls: ['./burn-tokens.component.scss']
 })
 export class BurnTokensComponent implements OnInit {
+  @ViewChild('burnTokenAddress') tokenAddressInput: ElementRef;
   burnTokenAddressInputFormGroup: FormGroup;
   lpTokenBalance: any;
   tokenBalance: any;
@@ -95,6 +96,7 @@ export class BurnTokensComponent implements OnInit {
       tokenAddress: this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
       amount: this.burnTokenForm.amount
     });
+    this.onClickEvent(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value);
     const dialogRef = this.dialog.open(BurnDialogComponent, {
       data: {
         tokenAddress: this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
@@ -151,8 +153,31 @@ export class BurnTokensComponent implements OnInit {
     return await this.web3Service.getTokensName(tokenAddress);
   }
 
+  onClickEvent(e) {
+    this.tokenAddressInput.nativeElement.focus();
+    return this.checkValue(e, 'Please enter a valid token.');
+  }
+
   // tslint:disable-next-line:typedef
   mapValue(x, inMin, inMax, outMin, outMax) {
     return ((x - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
+  }
+
+  checkValue(address:string,msg:string = 'The address is invalid.') {
+    try {
+      const isValid = /^0x[a-fA-F0-9]{40}$/.test(
+        address
+      );
+      if (!isValid) {   
+        throw new Error(msg);
+        
+      };
+    }
+    catch(e) {
+      this.notificationUtils.showSnackBar(
+        msg,
+        SnackBarColorEnum.Red,
+      );
+    }
   }
 }

@@ -2,7 +2,7 @@
   <form [formGroup]="tokenAddressInputFormGroup" class="form-container">
     <mat-form-field appearance="outline" style="width: 100% !important;">
       <mat-label>Token address</mat-label>
-      <input (keyup)="onLiquidityTokenAddressKeyup()" matInput maxlength="42"
+      <input #liquidityTokenAddress (keyup)="onLiquidityTokenAddressKeyup()" matInput maxlength="42"
              placeholder="e.g. 0xB06a4327FF7dB3D82b51bbD692063E9a180b79D9"
              formControlName="liquidityTokenAddress">
       <mat-error
@@ -97,7 +97,7 @@
       </button>
     </div>
     <br>
-    <mat-slider min="0" step="1" thumbLabel #slider (input)="onSlideToken($event)" [displayWith]="formatLabel"
+    <mat-slider min="0" step="1" [disabled]="!tokenAddressInputFormGroup.controls['liquidityTokenAddress'].valid" thumbLabel #slider (click)="onClickEvent(tokenAddressInputFormGroup.controls.liquidityTokenAddress.value)" (input)="onSlideToken($event)" [displayWith]="formatLabel"
                 max="100"></mat-slider>
   </mat-card>
   <br>

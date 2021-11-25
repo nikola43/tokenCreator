@@ -2,7 +2,7 @@
   <form [formGroup]="lockLiquidityTokenAddressInputFormGroup" class="form-container">
     <mat-form-field appearance="outline" style="width: 100% !important;">
       <mat-label>Token address</mat-label>
-      <input (keyup)="onLockLiquidityTokenAddressKeyup()" matInput maxlength="42"
+      <input #lockLiquidityTokenAddress (keyup)="onLockLiquidityTokenAddressKeyup()" matInput maxlength="42"
              placeholder="e.g. 0xB06a4327FF7dB3D82b51bbD692063E9a180b79D9"
              formControlName="lockLiquidityTokenAddress">
       <mat-error
@@ -43,7 +43,7 @@
       </button>
     </div>
     <br>
-    <mat-slider min="0" step="1" thumbLabel (input)="onSlideLockLP($event)" [displayWith]="formatLabel"
+    <mat-slider min="0" step="1" [disabled]="!lockLiquidityTokenAddressInputFormGroup.controls['lockLiquidityTokenAddress'].valid" (click)="onClickEvent(lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value)" thumbLabel (input)="onSlideLockLP($event)" [displayWith]="formatLabel"
                 max="100">
     </mat-slider>
   </mat-card>
@@ -56,7 +56,7 @@
     </div>
 
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Input & change events"
+      <input [disabled]="!lockLiquidityTokenAddressInputFormGroup.controls['lockLiquidityTokenAddress'].valid" matInput [matDatepicker]="picker" placeholder="Input & change events"
              (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)">
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>

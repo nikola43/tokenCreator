@@ -1,9 +1,10 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Web3Service} from '../../services/web3.service';
 import {BnbTokenAddress} from '../../services/BnbTokenAbi';
 import {MatSliderChange} from '@angular/material/slider';
 import {faCheck, faExclamationTriangle, IconDefinition} from '@fortawesome/free-solid-svg-icons';
+import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil';
 
 declare let require: any;
 declare let window: any;
@@ -29,6 +30,7 @@ export class AddLiquidityComponent implements OnInit {
   addTokenLiquidityQuantityPercent = 0;
   @ViewChild('slider') slider;
   @ViewChild('addLiquidityBnbSlider') addLiquidityBnbSlider;
+  @ViewChild('liquidityTokenAddress') tokenAddressInput: ElementRef;
   buttonLabel = 'Connect';
   account: any = undefined;
   addLiquidityForm = {
@@ -36,7 +38,8 @@ export class AddLiquidityComponent implements OnInit {
     tokenAmount: 0,
   };
   constructor(public web3Service: Web3Service,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder, 
+              private notificationUtils: NotificationUtils) {
     this.createForm();
 
     this.connectWeb3().then((r) => {
@@ -395,5 +398,28 @@ export class AddLiquidityComponent implements OnInit {
   // tslint:disable-next-line:typedef
   async getLPTokenBalance(tokenAddress) {
     return await this.web3Service.getLPTokensBalance(tokenAddress);
+  }
+
+  onClickEvent(e) {
+    this.tokenAddressInput.nativeElement.focus();
+    return this.checkValue(e, 'Please enter a valid token.');
+  }
+
+  checkValue(address:string,msg:string = 'The address is invalid.') {
+    try {
+      const isValid = /^0x[a-fA-F0-9]{40}$/.test(
+        address
+      );
+      if (!isValid) {   
+        throw new Error(msg);
+        
+      };
+    }
+    catch(e) {
+      this.notificationUtils.showSnackBar(
+        msg,
+        SnackBarColorEnum.Red,
+      );
+    }
   }
 }

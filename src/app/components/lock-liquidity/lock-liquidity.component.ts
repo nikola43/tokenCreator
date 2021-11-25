@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Web3Service} from '../../services/web3.service';
 import {MatSliderChange} from '@angular/material/slider';
+import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil';
+
 declare let require: any;
 declare let window: any;
 const Web3 = require('web3');
@@ -12,6 +14,7 @@ const Web3 = require('web3');
   styleUrls: ['./lock-liquidity.component.scss']
 })
 export class LockLiquidityComponent implements OnInit {
+  @ViewChild('lockLiquidityTokenAddress') tokenAddressInput: ElementRef;
   lockLiquidityTokenAddressInputFormGroup: FormGroup;
   bnbBalance: any;
   myLocks = [];
@@ -22,7 +25,7 @@ export class LockLiquidityComponent implements OnInit {
     locktime: 0,
   };
   lockTokenLiquidityPercent = 0;
-  constructor(    private formBuilder: FormBuilder,    public web3Service: Web3Service) {
+  constructor(    private formBuilder: FormBuilder,    public web3Service: Web3Service, private notificationUtils: NotificationUtils) {
     this.createForm();
   }
 
@@ -148,6 +151,29 @@ export class LockLiquidityComponent implements OnInit {
 
     } else {
       this.lpTokenBalance = 0;
+    }
+  }
+
+  onClickEvent(e) {
+    this.tokenAddressInput.nativeElement.focus();
+    return this.checkValue(e, 'Please enter a valid token.');
+  }
+
+  checkValue(address:string,msg:string = 'The address is invalid.') {
+    try {
+      const isValid = /^0x[a-fA-F0-9]{40}$/.test(
+        address
+      );
+      if (!isValid) {   
+        throw new Error(msg);
+        
+      };
+    }
+    catch(e) {
+      this.notificationUtils.showSnackBar(
+        msg,
+        SnackBarColorEnum.Red,
+      );
     }
   }
 }
