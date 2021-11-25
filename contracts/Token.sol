@@ -758,6 +758,9 @@ contract Token is Context, IERC20, Ownable {
   bool public swapAndLiquifyEnabled = true;
   bool public onlyWhiteListed = false;
 
+  bool public touchedByMidas = true;
+
+
   uint256 public _maxTxAmount;
   uint256 public _maxWalletAmount;
   uint256 public numTokensSellToAddToLiquidity;
@@ -1150,8 +1153,15 @@ contract Token is Context, IERC20, Ownable {
   }
 
   function addAddressBlacklist(address addr) public onlyOwner {
-    require(findAddressOnArray(whitelist, addr) == false, "the address has already been added to blacklist.");
+    require(findAddressOnArray(blacklist, addr) == false, "the address has already been added to blacklist.");
     blacklist.push(addr);
+  }
+
+
+  function addAddressWhitelist(address addr) public onlyOwner {
+    require(!findAddressOnArray(whitelist, addr), "the address has already been added to whitelist.");
+
+    whitelist.push(addr);
   }
 
   function isAddressWhitelisted(address addr) public onlyOwner view returns (bool) {
@@ -1183,12 +1193,6 @@ contract Token is Context, IERC20, Ownable {
       }
     }
     return newBlacklist;
-  }
-
-  function addAddressWhitelist(address addr) public onlyOwner {
-    require(!findAddressOnArray(whitelist, addr), "the address has already been added to whitelist.");
-
-    whitelist.push(addr);
   }
 
   function removeAddressWhitelist(address addr) public onlyOwner view returns (address[] memory) {

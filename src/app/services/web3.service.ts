@@ -378,11 +378,23 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async getTokenWhitelist(tokenAddress: string) {
     const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
-    return await token.methods.whitelist().call();
+    return await token.methods.getWhitelist().call();
+  }
+
+  // tslint:disable-next-line:typedef
+  async getTokenBlacklist(tokenAddress: string) {
+    const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
+    return await token.methods.getBlacklist().call();
   }
   
   // tslint:disable-next-line:typedef
   async addAddressWhitelist(tokenAddress: string) {
+    const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
+    return await token.methods.addAddressWhitelist(tokenAddress).call();
+  }
+
+  // tslint:disable-next-line:typedef
+  async addAddressBlacklist(tokenAddress: string) {
     const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
     return await token.methods.addAddressWhitelist(tokenAddress).call();
   }

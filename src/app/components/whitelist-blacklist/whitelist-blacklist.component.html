@@ -2,13 +2,13 @@
   <div style="height: 15px"></div>
   <mat-card class="lock-liquidity-form-container">
     <h3>WHITELIST</h3>
-    <form [formGroup]="whitelistInputFormGroup" class="form-container">
+    <form [formGroup]="listingTokenAddressInputFormGroup" class="form-container">
       <mat-form-field appearance="outline" style="width: 100% !important;">
         <mat-label>Token address</mat-label>
-        <input matInput maxlength="42"
+        <input (keyup)="onWhitelistTokenAddressKeyup()" matInput maxlength="42"
                placeholder="e.g. 0xB06a4327FF7dB3D82b51bbD692063E9a180b79D9"
-               formControlName="whitelistAddress">
-        <mat-hint align="end">{{whitelistInputFormGroup.controls['whitelistAddress'].value?.length || 0}}
+               formControlName="tokenAddress">
+        <mat-hint align="end">{{listingTokenAddressInputFormGroup.controls['tokenAddress'].value?.length || 0}}
           /42
         </mat-hint>
         <mat-error
