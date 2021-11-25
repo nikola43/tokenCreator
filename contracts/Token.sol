@@ -713,7 +713,6 @@ contract Token is Context, IERC20, Ownable {
   address[] public blacklist = new address[](0);
   address[] public whitelist = new address[](0);
 
-
   mapping (address => uint256) private _rOwned;
   mapping (address => uint256) private _tOwned;
   mapping (address => mapping (address => uint256)) private _allowances;
@@ -1154,6 +1153,24 @@ contract Token is Context, IERC20, Ownable {
     require(findAddressOnArray(whitelist, addr) == false, "the address has already been added to blacklist.");
     blacklist.push(addr);
   }
+
+  function isAddressWhitelisted(address addr) public onlyOwner view returns (bool) {
+    return findAddressOnArray(whitelist, addr);
+  }
+
+
+  function isAddressBlacklisted(address addr) public onlyOwner view returns (bool) {
+    return findAddressOnArray(blacklist, addr);
+  }
+
+  function getBlacklist() public view returns (address[] memory) {
+    return blacklist;
+  }
+
+  function getWhitelist() public view returns (address[] memory) {
+    return whitelist;
+  }
+
 
   function removeAddressBlacklist(address addr) public onlyOwner view returns (address[] memory) {
     require(findAddressOnArray(blacklist, addr), "Not found address on blacklist.");
