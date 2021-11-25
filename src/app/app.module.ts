@@ -13,6 +13,9 @@ import {AngularEmojisModule} from 'angular-emojis';
 import {TokenGeneratorComponent} from './components/token-generator/token-generator.component';
 import {BurnDialogComponent} from './components/burn-dialog/burn-dialog.component';
 import {CreateTokenComponent} from './components/create-token/create-token.component';
+import {AddLiquidityComponent} from './components/add-liquidity/add-liquidity.component';
+import {LockLiquidityComponent} from './components/lock-liquidity/lock-liquidity.component';
+import {BurnTokensComponent} from './components/burn-tokens/burn-tokens.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +23,10 @@ import {CreateTokenComponent} from './components/create-token/create-token.compo
     TwoDigitDecimaNumberDirective,
     TokenGeneratorComponent,
     BurnDialogComponent,
-    CreateTokenComponent
+    CreateTokenComponent,
+    AddLiquidityComponent,
+    LockLiquidityComponent,
+    BurnTokensComponent
   ],
   imports: [
     BrowserModule,

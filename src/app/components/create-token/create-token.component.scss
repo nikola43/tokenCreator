@@ -55,35 +55,10 @@
   border: 1px solid rgba(255, 255, 255, 0.125);
 }
 
-.form-container {
-  display: flex;
-  flex-direction: column;
-  margin: auto;
-  width: 100%;
-
-
-}
-
 .create-tokenButton {
   width: 100%;
   border-radius: 16px;
   font-size: 1.5rem;
   padding: 0.8rem;
   background: linear-gradient(-45deg, #ee7752, #ff79ab, #47cfff, #23d5ab) !important;
-}
-
-.mat-hints {
-  color: #39c0ed;
-  font-size: 0.8rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center !important;
-}
-
-mat-label {
-  color: white;
-}
-
-input {
-  color: #cecece;
 }

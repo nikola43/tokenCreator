@@ -8,6 +8,93 @@ body {
 
 }
 
+
+.mat-hints {
+  color: #39c0ed;
+  font-size: 0.8rem;
+  display: flex;
+  flex-direction: row;
+  align-items: center !important;
+}
+
+mat-label {
+  color: white;
+}
+
+input {
+  color: #cecece;
+}
+
+
+.liquidity-form-container {
+  backdrop-filter: blur(3px) saturate(150%);
+  -webkit-backdrop-filter: blur(3px) saturate(150%);
+  background-color: rgba(17, 25, 40, 0.51);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 100%;
+}
+
+.liquidity-form-container {
+  backdrop-filter: blur(3px) saturate(150%);
+  -webkit-backdrop-filter: blur(3px) saturate(150%);
+  background-color: rgba(17, 25, 40, 0.51);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+}
+
+.input-label {
+  display: flex !important;
+  justify-content: space-between !important;
+  flex-direction: row !important;
+}
+
+.liquidity-form-buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: auto;
+  width: 100%;
+}
+
+.percentButton {
+  font-weight: bold;
+}
+
+.percent-buttons-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin: auto;
+  width: 100%;
+}
+
+
+.lock-liquidity-form-container {
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+  width: 100%;
+  height: 10%;
+
+  backdrop-filter: blur(3px) saturate(150%);
+  -webkit-backdrop-filter: blur(3px) saturate(150%);
+  background-color: rgba(17, 25, 40, 0.11);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.125);
+
+  padding: 16px;
+  -moz-border-radius: 16px 16px 16px 16px;
+  -webkit-border-radius: 16px 16px 16px 16px;
+  // border: 1px solid #BEAEE2;
+}
+
 .glassContainer{
   backdrop-filter: blur(3px) saturate(150%);
   -webkit-backdrop-filter: blur(3px) saturate(150%);

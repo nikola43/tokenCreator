@@ -31,15 +31,16 @@ const Web3 = require('web3');
 export class TokenGeneratorComponent implements OnInit {
 
   errorLabel = '';
-
+  bnbBalance: any;
   myLocks = [];
-
+  lpTokenBalance: any;
+  tokenBalance: any;
   constructor(
     public web3Service: Web3Service,
     private formBuilder: FormBuilder,
     private http: HttpClient,
     private notificationUtils: NotificationUtils,
-    public dialog: MatDialog
+
   ) {
     this.createForm();
     this.connectWeb3().then((r) => {
@@ -84,44 +85,17 @@ export class TokenGeneratorComponent implements OnInit {
 
   @ViewChild('slider') slider;
   @ViewChild('addLiquidityBnbSlider') addLiquidityBnbSlider;
-
-
-
-  tokenBalance: any;
-  lpTokenBalance: any;
-  bnbBalance: any;
-  addLiquidityForm = {
-    bnbAmount: 0,
-    tokenAmount: 0,
-  };
-
-  lockLiquidityForm = {
-    lpAmount: 0,
-    locktime: 0,
-  };
-
-  burnTokenForm = {
-    amount: 0,
-  };
-
   @ViewChild('matRef') matRef: MatSelect;
-  addBnbLiquidityQuantityPercent = 0;
-  addTokenLiquidityQuantityPercent = 0;
-  burnTokenPercent = 0;
-  lockTokenLiquidityPercent = 0;
-  tokenAddressInputFormGroup: FormGroup;
+
+
+
+
   title = 'TokenGenerator';
   buttonLabel = 'Connect';
   account: any = undefined;
   isLoading = false;
 
 
-  approveButtonLabel = 'Approve Token';
-  approveButtonIcon: IconDefinition = faCheck;
-  tokenApproved = false;
-  isApproving = false;
-  lockLiquidityTokenAddressInputFormGroup: FormGroup;
-  burnTokenAddressInputFormGroup: FormGroup;
   whitelistInputFormGroup: FormGroup;
   blacklistInputFormGroup: FormGroup;
 
@@ -180,107 +154,18 @@ export class TokenGeneratorComponent implements OnInit {
       .start();
   }
 
-  // tslint:disable-next-line:typedef
-  onSlideBurn(event: MatSliderChange) {
-    this.burnTokenPercent = Number(event.value);
-    this.burnTokenForm.amount = this.mapValue(
-      Number(event.value),
-      0,
-      100,
-      0,
-      this.tokenBalance
-    );
-  }
 
-  // tslint:disable-next-line:typedef
-  onSlideLockLP(event: MatSliderChange) {
-    this.lockTokenLiquidityPercent = Number(event.value);
-    this.lockLiquidityForm.lpAmount = this.mapValue(
-      Number(event.value),
-      0,
-      100,
-      0,
-      this.lpTokenBalance
-    );
-  }
 
-  // tslint:disable-next-line:typedef
-  onSlideToken(event: MatSliderChange) {
-    this.addTokenLiquidityQuantityPercent = Number(event.value);
-    this.addLiquidityForm.tokenAmount = this.mapValue(
-      Number(event.value),
-      0,
-      100,
-      0,
-      this.tokenBalance
-    );
-  }
 
-  // tslint:disable-next-line:typedef
-  async onSlide(event: MatSliderChange) {
-    this.addBnbLiquidityQuantityPercent = Number(event.value);
-    this.addLiquidityForm.bnbAmount = this.mapValue(
-      Number(event.value),
-      0,
-      100,
-      0,
-      this.bnbBalance
-    );
 
-    const estimate = await this.web3Service.getEstimatedTokensForBNB(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
-    const ratio = estimate['0'] / estimate['1'];
-    const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
-    console.log({estimate});
-    console.log({ratio});
-    console.log({addLiquidityTokenAmount});
 
-    if (!isNaN(Number(addLiquidityTokenAmount))) {
-      const value2 = this.mapValue(
-        Number(addLiquidityTokenAmount),
-        0,
-        this.tokenBalance,
-        0,
-        100
-      );
-      this.slider.value = value2;
 
-      this.addLiquidityForm.tokenAmount = addLiquidityTokenAmount;
-    }
-  }
 
-  // tslint:disable-next-line:typedef
-  async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
-
-    console.log({
-      tokenAddress,
-      time,
-      tokenAmount
-    });
-
-    const r = await this.web3Service.lockLiquidity(tokenAddress, time, tokenAmount);
-    console.log({
-      r,
-    });
-  }
 
   sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
   // tslint:disable-next-line:typedef
   createForm() {
-    this.lockLiquidityTokenAddressInputFormGroup = this.formBuilder.group({
-      lockLiquidityTokenAddress: [
-        null,
-        [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
-      ],
-    });
-
-    this.burnTokenAddressInputFormGroup = this.formBuilder.group({
-      burnTokenAddress: [
-        null,
-        [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
-      ],
-    });
-
     this.whitelistInputFormGroup = this.formBuilder.group({
       whitelistAddress: [
         null,
@@ -290,13 +175,6 @@ export class TokenGeneratorComponent implements OnInit {
 
     this.blacklistInputFormGroup = this.formBuilder.group({
       blacklistAddress: [
-        null,
-        [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
-      ],
-    });
-
-    this.tokenAddressInputFormGroup = this.formBuilder.group({
-      liquidityTokenAddress: [
         null,
         [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
       ],
@@ -321,93 +199,6 @@ export class TokenGeneratorComponent implements OnInit {
       }
     });
   }
-  // tslint:disable-next-line:typedef
-  async bnbInputKeyUp() {
-    console.log(this.addLiquidityForm.bnbAmount);
-
-    const estimate = await this.web3Service.getEstimatedTokensForBNB(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
-    const ratio = estimate['0'] / estimate['1'];
-    const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
-    console.log({estimate});
-    console.log({ratio});
-    console.log({addLiquidityTokenAmount});
-
-
-    const value = this.mapValue(
-      Number(this.addLiquidityForm.bnbAmount),
-      0,
-      this.bnbBalance,
-      0,
-      100
-    );
-    this.addLiquidityBnbSlider.value = value;
-
-    if (!isNaN(Number(addLiquidityTokenAmount))) {
-      const value2 = this.mapValue(
-        Number(addLiquidityTokenAmount),
-        0,
-        this.tokenBalance,
-        0,
-        100
-      );
-      this.slider.value = value2;
-
-      this.addLiquidityForm.tokenAmount = addLiquidityTokenAmount;
-    }
-
-
-  }
-
-  // tslint:disable-next-line:typedef
-  async burnTokenInputKeyUp() {
-    this.tokenBalance = Number(
-      Web3.utils.fromWei(
-        await this.getTokenBalance(
-          this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
-        ),
-        'ether'
-      )
-    )
-      .toFixed(18)
-      .toString();
-
-    console.log({
-      tokenBalance: this.tokenBalance,
-    });
-    const value = this.mapValue(
-      Number(this.burnTokenForm.amount),
-      0,
-      this.tokenBalance,
-      0,
-      100
-    );
-
-    // this.slider.value = value;
-  }
-
-  // tslint:disable-next-line:typedef
-  async tokenInputKeyUp() {
-    console.log(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress);
-
-    const isValid = /^0x[a-fA-F0-9]{40}$/.test(
-      this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
-    );
-    if (isValid) {
-      this.tokenBalance = Number(
-        Web3.utils.fromWei(
-          await this.getTokenBalance(
-            this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
-          ),
-          'ether'
-        )
-      )
-        .toFixed(18)
-        .toString();
-    } else {
-      this.tokenBalance = 0;
-    }
-  }
-
   // tslint:disable-next-line:typedef
   async numberFieldKeydown(event, maxValue, controlName) {
     if (event.code !== 'Backspace') {
@@ -435,82 +226,6 @@ export class TokenGeneratorComponent implements OnInit {
       }
       */
     }
-  }
-
-  // tslint:disable-next-line:typedef
-  async approveToken() {
-    this.isApproving = true;
-    this.approveButtonLabel = 'Approving';
-    const tokenAddress =
-      this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value;
-    const bnbAmount = this.addLiquidityForm.bnbAmount.toString();
-    const tokenAmount = this.addLiquidityForm.tokenAmount.toString();
-    console.log({tokenAddress});
-    await this.web3Service
-      .approveToken(tokenAddress, tokenAmount)
-      .then((r) => {
-        if (r) {
-          this.tokenApproved = true;
-          this.isApproving = false;
-          this.approveButtonLabel = 'Approved';
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        this.tokenApproved = false;
-        this.isApproving = false;
-        this.approveButtonLabel = 'Not Approved';
-        this.approveButtonIcon = faExclamationTriangle;
-      });
-  }
-
-  // tslint:disable-next-line:typedef
-  async burnTokens() {
-
-    console.log({
-      tokenAddress: this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
-      amount: this.burnTokenForm.amount
-    });
-
-    const dialogRef = this.dialog.open(BurnDialogComponent, {
-      data: {
-        tokenAddress: this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
-        amount: this.burnTokenForm.amount
-      },
-    });
-
-    dialogRef.afterClosed().subscribe(async (result) => {
-      console.log('The dialog was closed');
-      console.log(result);
-
-      this.tokenBalance = Number(
-        Web3.utils.fromWei(
-          await this.getTokenBalance(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value),
-          'ether'
-        )
-      )
-        .toFixed(18)
-        .toString();
-
-      this.burnTokenForm.amount = 0;
-    });
-
-    /*
-    console.log(
-      this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
-    );
-    this.web3Service
-      .burnTokens(
-        this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
-        this.burnTokenForm.amount
-      )
-      .then((r2) => {
-        console.log(r2);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    */
   }
 
   // tslint:disable-next-line:typedef
@@ -566,68 +281,7 @@ export class TokenGeneratorComponent implements OnInit {
   async getTokenBalance(tokenAddress) {
     return await this.web3Service.getTokensBalance(tokenAddress);
   }
-  // tslint:disable-next-line:typedef
-  async addLiquidity() {
-    const bnbAmount = this.addLiquidityForm.bnbAmount;
-    const tokenAmount = this.addLiquidityForm.tokenAmount;
-    const minTokenAmount = Number(Number(tokenAmount) - Number(this.percentage(Number(tokenAmount), 1)));
-    const minBnbTokenAmount = Number(Number(bnbAmount) - Number(this.percentage(Number(bnbAmount), 1)));
 
-    console.log({
-      bnbAmount,
-      tokenAmount,
-      minTokenAmount,
-      minBnbTokenAmount,
-    });
-    const tokenAddress = this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value;
-    this.web3Service
-      .addLiquidity(
-        tokenAddress,
-        bnbAmount,
-        tokenAmount,
-        minBnbTokenAmount,
-        minTokenAmount
-      )
-      .then(async (r2) => {
-
-        this.tokenBalance = Number(
-          Web3.utils.fromWei(
-            await this.getTokenBalance(tokenAddress),
-            'ether'
-          )
-        )
-          .toFixed(18)
-          .toString();
-        this.bnbBalance = Number(
-          Web3.utils.fromWei(await this.web3Service.getBalance(), 'ether')
-        )
-          .toFixed(18)
-          .toString();
-
-        const pairAddress = await this.getPair(tokenAddress);
-        this.lpTokenBalance = Number(
-          Web3.utils.fromWei(await this.getLPTokenBalance(pairAddress), 'ether')
-        );
-
-        this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.setValue(
-          pairAddress
-        );
-
-
-        const value2 = this.mapValue(
-          Number(0),
-          0,
-          this.tokenBalance,
-          0,
-          100
-        );
-        this.slider.value = value2;
-        this.addLiquidityForm.tokenAmount = 0;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 
   // tslint:disable-next-line:typedef
   async getLPTokenBalance(tokenAddress) {
@@ -645,135 +299,8 @@ export class TokenGeneratorComponent implements OnInit {
 
     return value + '%';
   }
-
-  // tslint:disable-next-line:typedef
-  addEvent(type, event) {
-    console.log({
-      type,
-      event,
-    });
-
-    this.lockLiquidityForm.locktime = event.value.getTime();
-    console.log(this.lockLiquidityForm.locktime);
-
-    // const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
-  }
-
   // tslint:disable-next-line:typedef
   async getPair(address) {
     return await this.web3Service.getPair(BnbTokenAddress, address);
-  }
-
-  // tslint:disable-next-line:typedef
-  mapValue(x, inMin, inMax, outMin, outMax) {
-    return ((x - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
-  }
-  // tslint:disable-next-line:typedef
-  setTokenPercent(percent) {
-    this.addLiquidityForm.tokenAmount = this.percentage(
-      percent,
-      this.tokenBalance
-    );
-    const value = this.mapValue(
-      Number(this.addLiquidityForm.tokenAmount),
-      0,
-      this.tokenBalance,
-      0,
-      100
-    );
-    this.slider.value = value;
-  }
-
-  // tslint:disable-next-line:typedef
-  async setBnbPercent(percent) {
-    this.addLiquidityForm.bnbAmount = this.percentage(percent, this.bnbBalance);
-    const value = this.mapValue(
-      Number(this.addLiquidityForm.bnbAmount),
-      0,
-      this.bnbBalance,
-      0,
-      100
-    );
-    this.addLiquidityBnbSlider.value = value;
-
-    const estimate = await this.web3Service.getEstimatedTokensForBNB(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
-    const ratio = estimate['0'] / estimate['1'];
-    const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
-    console.log({estimate});
-    console.log({ratio});
-    console.log({addLiquidityTokenAmount});
-
-    if (!isNaN(Number(addLiquidityTokenAmount))) {
-      const value2 = this.mapValue(
-        Number(addLiquidityTokenAmount),
-        0,
-        this.tokenBalance,
-        0,
-        100
-      );
-      this.slider.value = value2;
-
-      this.addLiquidityForm.tokenAmount = addLiquidityTokenAmount;
-    }
-  }
-
-  // tslint:disable-next-line:typedef
-  async onLockLiquidityTokenAddressKeyup() {
-    const isValid = /^0x[a-fA-F0-9]{40}$/.test(
-      this.lockLiquidityTokenAddressInputFormGroup.controls
-        .lockLiquidityTokenAddress.value
-    );
-    if (isValid) {
-      this.lpTokenBalance = Number(
-        Web3.utils.fromWei(
-          await this.getLPTokenBalance(
-            this.lockLiquidityTokenAddressInputFormGroup.controls
-              .lockLiquidityTokenAddress.value
-          ),
-          'ether'
-        )
-      )
-        .toFixed(18)
-        .toString();
-
-      /* Get my locks */
-      this.web3Service.getLocks().then((r) => {
-        console.log(r);
-        this.myLocks = r;
-      }).catch((err) => {
-        console.log(err);
-      });
-
-    } else {
-      this.lpTokenBalance = 0;
-    }
-  }
-
-  // tslint:disable-next-line:typedef
-  async onLiquidityTokenAddressKeyup() {
-    const isValid = /^0x[a-fA-F0-9]{40}$/.test(
-      this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value
-    );
-
-    if (isValid) {
-      this.tokenBalance = Number(
-        Web3.utils.fromWei(
-          await this.getTokenBalance(
-            this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value
-          ),
-          'ether'
-        )
-      )
-        .toFixed(18)
-        .toString();
-
-      const pairAddress = await this.getPair(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
-      this.lpTokenBalance = Number(
-        Web3.utils.fromWei(await this.getLPTokenBalance(pairAddress), 'ether')
-      );
-
-    } else {
-      this.tokenBalance = 0;
-    }
   }
 }

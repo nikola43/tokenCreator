@@ -1,0 +1,73 @@
+<mat-card class="liquidity-form-container">
+  <form [formGroup]="lockLiquidityTokenAddressInputFormGroup" class="form-container">
+    <mat-form-field appearance="outline" style="width: 100% !important;">
+      <mat-label>Token address</mat-label>
+      <input (keyup)="onLockLiquidityTokenAddressKeyup()" matInput maxlength="42"
+             placeholder="e.g. 0xB06a4327FF7dB3D82b51bbD692063E9a180b79D9"
+             formControlName="lockLiquidityTokenAddress">
+      <mat-error
+        *ngIf="!lockLiquidityTokenAddressInputFormGroup.controls['lockLiquidityTokenAddress'].valid && lockLiquidityTokenAddressInputFormGroup.controls['lockLiquidityTokenAddress'].touched">
+        This field required
+      </mat-error>
+    </mat-form-field>
+  </form>
+  <mat-card *ngIf="myLocks.length > 0">
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <h4>My locks</h4>
+        </div>
+      </div>
+      <div style="width: 15px"></div>
+      <mat-card class="row" *ngFor="let lock of myLocks" style="margin-bottom: 15px">
+        <div class="col-sm">
+          <h5>Lock {{lock[2]}} - {{lock[3]}}</h5>
+        </div>
+        <div class="col-sm">
+          <button>Remove</button>
+        </div>
+      </mat-card>
+    </div>
+  </mat-card>
+  <mat-card class="lock-liquidity-form-container">
+    <div class="input-label">
+      <span style="font-weight: bold">LP TOKEN</span>
+      <span style="font-weight: bold">{{lpTokenBalance}}</span>
+    </div>
+
+    <div class="input-label">
+      <input [(ngModel)]="lockLiquidityForm.lpAmount" appTwoDigitDecimaNumber matInput maxlength="18"
+             placeholder="e.g. 1000" (keyup)="tokenInputKeyUp()">
+      <button color="primary" type="button" mat-raised-button>
+        Max
+      </button>
+    </div>
+    <br>
+    <mat-slider min="0" step="1" thumbLabel (input)="onSlideLockLP($event)" [displayWith]="formatLabel"
+                max="100">
+    </mat-slider>
+  </mat-card>
+  <br>
+  <mat-card class="lock-liquidity-form-container">
+    <div class="input-label">
+                <span style="font-weight: bold">
+                  <angular-emojis [name]="'clock1'" size="25"></angular-emojis> Timelock
+                </span>
+    </div>
+
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Input & change events"
+             (dateInput)="addEvent('input', $event)" (dateChange)="addEvent('change', $event)">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+  </mat-card>
+  <br>
+  <button color="primary" type="button" mat-raised-button
+          (click)="lockLiquidity(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value,
+               this.lockLiquidityForm.locktime, lockLiquidityForm.lpAmount)">
+    <angular-emojis [name]="'lock'" size="25"></angular-emojis>
+    Lock Liquidity
+  </button>
+</mat-card>
