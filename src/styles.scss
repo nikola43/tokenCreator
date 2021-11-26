@@ -5,7 +5,6 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 
   background: linear-gradient(180deg, #14003d, #100138, #0d0233, #0b022d, #080227, #050221, #03021b, #000114);
-
 }
 
 
@@ -244,4 +243,11 @@ mat-icon {
 
 .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
   background-color: #39C0ED;
+}
+@media screen and (max-width: 512px) {}
+@media screen and (max-width: 768px) {}
+@media screen and (min-width: 769px) {
+  body {
+    height: 100vh;
+  }
 }

@@ -21,7 +21,7 @@ mat-label {
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   font-weight: bold;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 /* active tab */
@@ -30,7 +30,7 @@ mat-label {
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   font-weight: bold;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 /* Styles for the ink bar */
@@ -53,3 +53,14 @@ mat-label {
 :host ::ng-deep .mat-slider-track-background {
   background-color: rgba(255,255,255,.6);
 }
+footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0px;
+  div {
+    padding: 2vh;
+  }
+}
+@media screen and (max-width: 512px) {}
+@media screen and (max-width: 768px) {}
+@media screen and (min-width: 769px) {}

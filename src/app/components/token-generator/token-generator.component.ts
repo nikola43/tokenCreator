@@ -128,7 +128,7 @@ export class TokenGeneratorComponent implements OnInit {
       .pauseFor(2000)
       .deleteAll()
       .typeString(
-        '<strong>Last</strong> Solidity Version <strong>(v0.8.9+commit.e5eed63a)</strong>.'
+        '<strong>Last</strong> Solidity Version <strong>(v0.8.10+commit.e5eed63a)</strong>.'
       )
       .pauseFor(2000)
       .deleteAll()
