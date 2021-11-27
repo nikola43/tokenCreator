@@ -1,3 +1,6 @@
+:host ::ng-deep input::placeholder {
+  color: white !important;
+}
 .example-spacer {
   flex: 1 1 auto;
 }
@@ -46,9 +49,7 @@ mat-label {
   color: white;
 }
 
-:host ::ng-deep .mat-slider-horizontal {
-  width: 80%;
-}
+
 
 :host ::ng-deep .mat-slider-track-background {
   background-color: rgba(255,255,255,.6);
@@ -56,11 +57,47 @@ mat-label {
 footer {
   position: absolute;
   width: 100%;
-  bottom: 0px;
   div {
     padding: 2vh;
   }
 }
-@media screen and (max-width: 512px) {}
+@media screen and (max-width: 512px) {
+  :host ::ng-deep {
+    .mat-tab-label {
+      font-size: .9rem;
+    }
+    .mat-tab-header-pagination {
+      background: rgb(255 255 255 / 41%);
+      box-shadow: 0 8px 32px 0 rgb(31 38 135 / 37%);
+      backdrop-filter: blur(20px);
+    }
+    .mat-toolbar-row .mat-focus-indicator {
+      padding: 0 8px;
+      font-size: 12px;
+    }
+    .lock-liquidity-form-container {
+      min-height: 250px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .percentButton {
+      width: 20%;
+    }
+  }
+  h3 {
+    font-size: 1.2rem;
+  }
+  .mobile-hidden {
+    display: none;
+  }
+
+}
 @media screen and (max-width: 768px) {}
-@media screen and (min-width: 769px) {}
+@media screen and (min-width: 769px) {
+  footer {
+    bottom: 0px;
+  }
+  :host ::ng-deep .mat-slider-horizontal {
+    width: 80%;
+  }
+}

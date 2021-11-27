@@ -141,3 +141,8 @@ mat-card {
   background: rgba(0, 0, 0, 0);
   border-radius: 16px;
 }
+@media screen and (max-width: 512px) {
+  .typewriter {
+    min-height: 250px;
+  }
+}
