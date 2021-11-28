@@ -91,7 +91,7 @@ export class BurnTokensComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  async burnTokens() {
+  async openBurnTokensDialog() {
     console.log({
       tokenAddress: this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
       amount: this.burnTokenForm.amount

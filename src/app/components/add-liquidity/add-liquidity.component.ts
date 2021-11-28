@@ -5,6 +5,8 @@ import {BnbTokenAddress} from '../../services/BnbTokenAbi';
 import {MatSliderChange} from '@angular/material/slider';
 import {faCheck, faExclamationTriangle, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil';
+import { MatDialog } from '@angular/material/dialog';
+import {RemoveLiquidityDialogComponent} from '../remove-liquidity-dialog/remove-liquidity-dialog.component';
 
 declare let require: any;
 declare let window: any;
@@ -39,7 +41,8 @@ export class AddLiquidityComponent implements OnInit {
   };
   constructor(public web3Service: Web3Service,
               private formBuilder: FormBuilder, 
-              private notificationUtils: NotificationUtils) {
+              private notificationUtils: NotificationUtils,
+              public dialog: MatDialog) {
     this.createForm();
 
     this.connectWeb3().then((r) => {
@@ -372,6 +375,34 @@ export class AddLiquidityComponent implements OnInit {
     } else {
       this.tokenBalance = 0;
     }
+  }
+  
+  async openRemoveLiquidityDialog() {
+    const dialogRef = this.dialog.open(RemoveLiquidityDialogComponent, {
+      data: {
+        lpTokenBalance: this.lpTokenBalance,
+        address: this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(async (result) => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.notificationUtils.showSnackBar(
+          `The LP token was swapped successfully`,
+          SnackBarColorEnum.Green,
+        );
+      } 
+
+      this.tokenBalance = Number(
+        Web3.utils.fromWei(
+          await this.getTokenBalance(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value),
+          'ether'
+        )
+      )
+        .toFixed(18)
+        .toString();
+    });
   }
 
   // tslint:disable-next-line:typedef

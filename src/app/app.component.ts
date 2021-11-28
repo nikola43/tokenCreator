@@ -1,4 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
+import { MediaMatcher } from '@angular/cdk/layout';
+import {ChangeDetectorRef, Component, OnDestroy, ViewChild} from '@angular/core';
 import {Web3Service} from './services/web3.service';
 
 @Component({
@@ -6,11 +7,17 @@ import {Web3Service} from './services/web3.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
   buttonLabel = 'Connect';
   account: any = undefined;
+  mobileQuery: MediaQueryList;
+  private _mobileQueryListener: () => void;
 
-  constructor(public web3Service: Web3Service) {
+  constructor(public web3Service: Web3Service,changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+    
     this.connectWeb3().then((r) => {
       console.log(r);
     });
@@ -54,6 +61,10 @@ export class AppComponent {
           accounts[0].charAt(accounts[0].length - 1);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
   // tslint:disable-next-line:typedef

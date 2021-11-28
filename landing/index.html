@@ -13,43 +13,89 @@
 </head>
 
 <body>
-  <div style="height: 25px"></div>
   <header>
-    <nav class="navbar navbar-expand-lg">
+    <nav id="navbar" class="navbar navbar-expand-lg fixed-top">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
           <img src="./assets/img/ORIGINAL.png" alt="logo">
-          <span class="mobile-hidden">Midas Generator</span>
+          <span class="mobile-hidden">  MIDAS Token Generator</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <button class="d-flex launch-app-btn">Launch App</button>
+          <ul class="navbar-nav">
+          <li class="nav-item">
+            <a href="#" target="_blank" class="nav-link">HOME</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" target="_blank" class="nav-link">ABOUT</a>
+          </li>
+          <li class="nav-item">
+            <a href="#" target="_blank" class="nav-link launch-app-btn">Launch App</a>
+          </li>
+        </ul>
         </div>
       </div>
     </nav>
   </header>
   <main>
-    <section>
-      <div class="container">
+    <section id="home">
+      <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-12">
-            <p>Texto hablando que somos la polla. 
-              Imágenes de las redes donde se pueden crear tokens.
+          <div class="col-lg-6 home-text">
+            <h1>MIDAS</h1>
+            <h2>Landing Page</h2>
+            <hr class="separator" size="130px" />
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </p>
+            <button class="btn">View Demo</button>
+          </div>
+          <div class="col-lg-6">
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="about">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6">
+          </div>
+          <div class="col-lg-6 home-text">
+            <h2>MIDAS</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque erat in imperdiet tempor. Aliquam vel posuere enim. Donec malesuada in urna eu vulputate. Donec metus nulla, rutrum quis vestibulum eu, luctus volutpat sapien.
+            </p>
+            <p>
+              Morbi non scelerisque ante. Donec et fringilla eros. Aliquam et lorem id erat pulvinar tristique. Cras at erat at velit sodales gravida. Nulla at mi arcu. Fusce porttitor turpis risus, sit amet accumsan lectus dictum vitae. Donec iaculis et arcu et facilisis. Nullam consectetur enim nec leo rhoncus, non finibus tellus tincidunt.
             </p>
           </div>
         </div>
       </div>
     </section>
-    <section>
-      <div class="container">
+    <section id="chains">
+      <div class="container-fluid">
         <div class="row">
-          <div class="col-lg-12">
-            <p>
-              Efectos y animaciones potentes.
-            </p>
+          <div class="col-lg-6 home-text">
+            <h2>Supported networks</h2>
+            <div class="chains">
+              <img src="./assets/img/chains-removebg-preview.png" loading="lazy" alt="chains used">
+            </div>
+          </div>
+          <div class="col-lg-6">
+          </div>
+          
+        </div>
+      </div>
+    </section>
+    <section id="contact">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6 home-text">
+          </div>
+          <div class="col-lg-6">
           </div>
         </div>
       </div>
@@ -57,13 +103,14 @@
   </main>
   <footer>
     <div
-      style="background:  #13003c; width: 100%; height: 5rem; display: flex; flex-direction: row; align-content: center; justify-content: center; justify-items: center">
-      <h3 style="color: white">Midas Token Generator. © All right reserved 2021.</h3>
+      style="width: 100%; height: 6rem; display: flex; flex-direction: row; align-content: center; justify-content: center; justify-items: center">
+      <h4 style="color: white">Midas Token Generator. © All right reserved 2021.</h4>
     </div>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
     crossorigin="anonymous"></script>
+  <script src="./assets/js/main.js" ></script>
 </body>
 
 </html>

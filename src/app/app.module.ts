@@ -17,6 +17,7 @@ import {AddLiquidityComponent} from './components/add-liquidity/add-liquidity.co
 import {LockLiquidityComponent} from './components/lock-liquidity/lock-liquidity.component';
 import {WhitelistBlacklistComponent} from './components/whitelist-blacklist/whitelist-blacklist.component';
 import {BurnTokensComponent} from './components/burn-tokens/burn-tokens.component';
+import { RemoveLiquidityDialogComponent } from './components/remove-liquidity-dialog/remove-liquidity-dialog.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {BurnTokensComponent} from './components/burn-tokens/burn-tokens.componen
     TwoDigitDecimaNumberDirective,
     TokenGeneratorComponent,
     BurnDialogComponent,
+    RemoveLiquidityDialogComponent,
     CreateTokenComponent,
     AddLiquidityComponent,
     LockLiquidityComponent,

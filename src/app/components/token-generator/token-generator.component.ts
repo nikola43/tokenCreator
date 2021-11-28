@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {
@@ -12,12 +12,6 @@ import {Web3Service} from '../../services/web3.service';
 import {DevNetworks} from '../../services/Networks.js';
 import {BnbTokenAddress} from '../../services/BnbTokenAbi';
 import Typewriter from 'typewriter-effect/dist/core';
-import {
-  NotificationUtils,
-  SnackBarColorEnum,
-} from '../../../utils/NotificationUtil';
-import {MatDialog} from '@angular/material/dialog';
-import {BurnDialogComponent} from '../burn-dialog/burn-dialog.component';
 
 declare let require: any;
 declare let window: any;
@@ -29,19 +23,18 @@ const Web3 = require('web3');
   styleUrls: ['./token-generator.component.scss'],
 })
 export class TokenGeneratorComponent implements OnInit {
-
   errorLabel = '';
   bnbBalance: any;
   myLocks = [];
   lpTokenBalance: any;
   tokenBalance: any;
+
   constructor(
     public web3Service: Web3Service,
     private formBuilder: FormBuilder,
-    private http: HttpClient,
-    private notificationUtils: NotificationUtils,
-
+    private http: HttpClient
   ) {
+
     this.createForm();
     this.connectWeb3().then((r) => {
       console.log(r);
@@ -87,15 +80,10 @@ export class TokenGeneratorComponent implements OnInit {
   @ViewChild('addLiquidityBnbSlider') addLiquidityBnbSlider;
   @ViewChild('matRef') matRef: MatSelect;
 
-
-
-
   title = 'TokenGenerator';
   buttonLabel = 'Connect';
   account: any = undefined;
   isLoading = false;
-
-
 
   ngOnInit(): void {
     const t = new Typewriter('#typewriter', {
