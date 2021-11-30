@@ -281,47 +281,47 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async removeLPTokens(tokenAddress: string, amount) {
-    const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
-    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
-    console.log(pancakeRouter.methods);
-    bnbAmount = Number(bnbAmount);
-    tokenAmount = Number(tokenAmount);
-    minBnbAmount = Number(minBnbAmount);
-    minTokenAmount = Number(minTokenAmount);
+    // const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
+    // const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+    // console.log(pancakeRouter.methods);
+    // bnbAmount = Number(bnbAmount);
+    // tokenAmount = Number(tokenAmount);
+    // minBnbAmount = Number(minBnbAmount);
+    // minTokenAmount = Number(minTokenAmount);
 
 
-    const tokenA = wethAddress;
-    const tokenB = tokenAddress;
-    const amountADesired = bnbAmount;
-    const amountAMin = minBnbAmount;
-    const amountBDesired = tokenAmount;
-    const amountBMin = minTokenAmount;
-    const to = this.account;
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
+    // const tokenA = wethAddress;
+    // const tokenB = tokenAddress;
+    // const amountADesired = bnbAmount;
+    // const amountAMin = minBnbAmount;
+    // const amountBDesired = tokenAmount;
+    // const amountBMin = minTokenAmount;
+    // const to = this.account;
+    // const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
 
-    console.log({
-      tokenA,
-      tokenB,
-      amountADesired,
-      amountBDesired,
-      amountAMin,
-      amountBMin,
-      to,
-      deadline,
-      amountBDesiredWei: Web3.utils.toWei(amountBDesired.toString(), 'ether'),
-      amountBMinWei: Web3.utils.toWei(amountBMin.toString(), 'ether'),
-      amountAMinWei: Web3.utils.toWei(amountAMin.toString(), 'ether'),
-    });
+    // console.log({
+    //   tokenA,
+    //   tokenB,
+    //   amountADesired,
+    //   amountBDesired,
+    //   amountAMin,
+    //   amountBMin,
+    //   to,
+    //   deadline,
+    //   amountBDesiredWei: Web3.utils.toWei(amountBDesired.toString(), 'ether'),
+    //   amountBMinWei: Web3.utils.toWei(amountBMin.toString(), 'ether'),
+    //   amountAMinWei: Web3.utils.toWei(amountAMin.toString(), 'ether'),
+    // });
 
-    const addLiquidityResult = await pancakeRouter.methods.addLiquidityETH(
-      tokenB,
-      Web3.utils.toWei(amountBDesired.toString(), 'ether'),      // desiredB
-      Web3.utils.toWei(amountBMin.toString(), 'ether'),     // minA
-      Web3.utils.toWei(amountAMin.toString(), 'ether'),     // minA
-      to,
-      deadline
-    ).send({from: this.account, value: Web3.utils.toWei(bnbAmount.toString(), 'ether')});
-    return amount;
+    // const addLiquidityResult = await pancakeRouter.methods.addLiquidityETH(
+    //   tokenB,
+    //   Web3.utils.toWei(amountBDesired.toString(), 'ether'),      // desiredB
+    //   Web3.utils.toWei(amountBMin.toString(), 'ether'),     // minA
+    //   Web3.utils.toWei(amountAMin.toString(), 'ether'),     // minA
+    //   to,
+    //   deadline
+    // ).send({from: this.account, value: Web3.utils.toWei(bnbAmount.toString(), 'ether')});
+    // return amount;
   }
 
   // tslint:disable-next-line:typedef

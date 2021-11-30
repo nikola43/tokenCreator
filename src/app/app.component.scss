@@ -6,19 +6,33 @@
 }
 
 .connect-button {
-  background: rgba( 255, 255, 255, 0.2 );
-  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
-  backdrop-filter: blur( 20px );
-  -webkit-backdrop-filter: blur( 20px );
-  border-radius: 10px;
-  border: 1px solid rgba( 255, 255, 255, 0.18 );
-  color: #ffffff;
+  background: linear-gradient(
+    0deg, rgba(178,62,206,1) 0%, rgba(255,21,229,1) 100%);
+  border-radius: 15px;
+  margin: 0;
+  width: 150px;
+  line-height: 36px;
+  overflow: visible;
+  transform: translate3d(0, 0, 0);
+  transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1),box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  padding: 0.5rem 1rem;
+  color: white;
+}
+:host ::ng-deep .mat-toolbar {
+  height: 10vh;
+  color: white;
+}
+:host ::ng-deep .mat-toolbar-row {
+  height: 100%;
 }
 
 mat-label {
 
 }
-
+fa-icon{
+  margin-right: 2vh;
+}
 ::ng-deep .mat-tab-label {
   background: #ffffff !important;
   -webkit-background-clip: text !important;
@@ -49,10 +63,40 @@ mat-label {
   color: white;
 }
 
-
-
+.mat-sidenav-container{
+  background-color: rgba(255,255,255,0);
+  height: 90vh;
+}
+mat-sidenav {
+  background-color: rgba(17, 25, 40, 0.51);
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  border-right: 1px solid rgba(255, 255, 255, 0.125);
+  width: 14vw;
+}
+:host ::ng-deep .mat-nav-list {
+  min-height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+:host ::ng-deep .mat-list-item.active .mat-list-item-content {
+  color: #FF29FF;
+  border-bottom: 1px solid white;
+}
+:host ::ng-deep .mat-list-item-content {
+  color: white;
+  font-size: 1.2rem;
+}
+:host ::ng-deep .mat-list-item-content:hover {
+  color: #FF29FF;
+  background-color: #282727;
+}
 :host ::ng-deep .mat-slider-track-background {
-  background-color: rgba(255,255,255,.6);
+  background-color: #ffffff66;
+}
+:host ::ng-deep .mat-form-field-outline {
+  border:1px solid white;
+  border-radius: 5px;
 }
 footer {
   position: absolute;
@@ -90,7 +134,9 @@ footer {
   .mobile-hidden {
     display: none;
   }
-
+  .typewriter {
+    min-height: 250px;
+  }
 }
 @media screen and (max-width: 768px) {}
 @media screen and (min-width: 769px) {
