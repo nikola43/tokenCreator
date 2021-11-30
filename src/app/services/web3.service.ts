@@ -304,7 +304,7 @@ export class Web3Service {
     console.log({minA, minB});
 
     const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
-    const trans = await pancakeRouter.methods.removeLiquidityETH(tokenAddress, amount, minA,minB,this.account,deadline).send({from: this.account, value: "0"});
+    const trans = await pancakeRouter.methods.removeLiquidityETH(tokenAddress, amount, minA,minB,this.account,deadline).call();
     console.log(trans);
     return trans;
     //const lpTokenPrice = tokenReserve.times()
