@@ -280,19 +280,33 @@ export class Web3Service {
     return burnResult;
   }
 
+  percentage(percent, total) {
+    return (percent / 100) * total;
+  }
+
   // tslint:disable-next-line:typedef
   async removeLPTokens(tokenAddress: string, pairAddress: string, amount) {
-    // const LpTokenContract = new window.web3.eth.Contract(LPTokenAbi, pairAddress)
-    // const totalSupply = await LpTokenContract.methods.totalSupply().call();
-    // const totalReserves = await LpTokenContract.methods.getReserves().call();
+    const LpTokenContract = new window.web3.eth.Contract(LPTokenAbi, pairAddress)
+    const totalSupply = await LpTokenContract.methods.totalSupply().call();
+    const totalReserves = await LpTokenContract.methods.getReserves().call();
     // const tokenReserve = new BigNumber(totalReserves[0]).times(totalReserves[1]).sqrt();
     // const ethAmount =  await this.getEstimatedTokensForETH(tokenAddress,1000000000000000000);
     // const ethAmountC = new BigNumber(1 * ethAmount).sqrt();
 
-    const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
-    //const trans = token.methods.removeLiquidityETHWithPermit(tokenAddress, amount, 0,0,address,deadline)
 
+    const Aout = (totalReserves[0] * amount) / totalSupply;
+    const Bout = (totalReserves[1] * amount) / totalSupply;
 
+    const minA = Aout - this.percentage(0.5,Aout);
+    const minB = Bout - this.percentage(0.5,Bout);
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
+
+    console.log({minA, minB});
+
+    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+    const trans = await pancakeRouter.methods.removeLiquidityETH(tokenAddress, amount, minA,minB,this.account,deadline).send({from: this.account, value: "0"});
+    console.log(trans);
+    return trans;
     //const lpTokenPrice = tokenReserve.times()
     //const lpTokenPrice = tokenReserve.times(ethAmountC).times(2).div(totalSupply);
     //console.log('token address',tokenAddress);
@@ -422,14 +436,14 @@ export class Web3Service {
     async getEstimatedTokensForETH(tokenAddress: string, tokenAmount: number) {
       const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
       const path = await this.getPathForTokenETH(tokenAddress);
-      const estimatedTokens = await pancakeRouter.methods.getAmountsIn(tokenAmount.toString(), path).call()
+      const estimatedTokens = await pancakeRouter.methods.getAmountsOut(tokenAmount.toString(), path).call()
       return estimatedTokens[0];
     }
     // tslint:disable-next-line:typedef
     async getEstimatedETHForTokens(tokenAddress: string, tokenAmount: number) {
       const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
       const path = await this.getPathETHForToken(tokenAddress);
-      const estimatedTokens = await pancakeRouter.methods.getAmountsIn(tokenAmount.toString(), path).call()
+      const estimatedTokens = await pancakeRouter.methods.getAmountsOut(tokenAmount.toString(), path).call()
       return estimatedTokens[0];
     }
     // tslint:disable-next-line:typedef
