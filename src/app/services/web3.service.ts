@@ -9,6 +9,7 @@ import {PancakeFactoryAbi, PancakeFactoryAddress} from './PancakeFactoryAbi.js';
 import {BnbTokenAbi, BnbTokenAddress} from './BnbTokenAbi.js';
 import {LPTokenAbi} from './LPTokenAbi.js';
 import {Observable} from 'rxjs';
+import BigNumber from 'bignumber.js';
 
 declare let require: any;
 declare let window: any;
@@ -280,7 +281,14 @@ export class Web3Service {
   }
 
   // tslint:disable-next-line:typedef
-  async removeLPTokens(tokenAddress: string, amount) {
+  async removeLPTokens(tokenAddress: string, pairAddress: string, amount) {
+    const LpTokenContract = new window.web3.eth.Contract(LPTokenAbi, pairAddress)
+    const totalSupply = await LpTokenContract.methods.totalSupply().call();
+    const totalReserves = await LpTokenContract.methods.getReserves().call();
+    const tokenReserve = new BigNumber(totalReserves[0]).times(totalReserves[1]).sqrt()
+    console.log('token address',tokenAddress);
+    console.log("token amount",this.getEstimatedTokensForETH(tokenAddress, Web3.utils.toWei("1", 'ether')));
+    return totalReserves;
     // const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
     // const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
     // console.log(pancakeRouter.methods);
@@ -401,6 +409,28 @@ export class Web3Service {
     }
     return locksDetails;
   }
+    // tslint:disable-next-line:typedef
+    async getEstimatedTokensForETH(tokenAddress: string, ethAmount: number) {
+      const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+      console.log(this.getPathForTokenETH(tokenAddress));
+      return await pancakeRouter.methods.getAmountsIn(ethAmount, this.getPathForTokenETH(tokenAddress)).call();
+    }
+    // tslint:disable-next-line:typedef
+    async getEstimatedETHForTokens(tokenAddress: string, tokenAmount: number) {
+      const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+      return await pancakeRouter.methods.getAmountsIn(tokenAmount, this.getPathETHForToken(tokenAddress)).call();
+    }
+    // tslint:disable-next-line:typedef
+    async getPathForTokenETH(tokenAddress: string) {
+      const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+      return [tokenAddress, await pancakeRouter.methods.WETH().call()];
+    }
+
+        // tslint:disable-next-line:typedef
+        async getPathETHForToken(tokenAddress: string) {
+          const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+          return [await pancakeRouter.methods.WETH().call(), tokenAddress];
+        }
 
   // tslint:disable-next-line:typedef
   async getLPTokensBalance(tokenAddress: string) {

@@ -94,10 +94,10 @@ mat-sidenav {
 :host ::ng-deep .mat-slider-track-background {
   background-color: #ffffff66;
 }
-:host ::ng-deep .mat-form-field-outline {
-  border:1px solid white;
-  border-radius: 5px;
-}
+// :host ::ng-deep .mat-form-field-outline {
+//   border:1px solid white;
+//   border-radius: 5px;
+// }
 footer {
   position: absolute;
   width: 100%;
@@ -145,5 +145,6 @@ footer {
   }
   :host ::ng-deep .mat-slider-horizontal {
     width: 80%;
+    margin-left: 10%;
   }
 }

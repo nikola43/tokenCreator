@@ -328,6 +328,7 @@ export class AddLiquidityComponent implements OnInit {
     const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
     console.log({estimate});
     console.log({ratio});
+    console.log(this.addLiquidityForm.bnbAmount);
     console.log({addLiquidityTokenAmount});
 
     if (!isNaN(Number(addLiquidityTokenAmount))) {
@@ -378,10 +379,12 @@ export class AddLiquidityComponent implements OnInit {
   }
   
   async openRemoveLiquidityDialog() {
+    const pairAddress = await this.getPair(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
     const dialogRef = this.dialog.open(RemoveLiquidityDialogComponent, {
       data: {
         lpTokenBalance: this.lpTokenBalance,
-        address: this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value
+        address: this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value,
+        pairAddress: pairAddress
       },
     });
 

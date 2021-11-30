@@ -11,6 +11,7 @@ import { Web3Service } from '../../services/web3.service';
 export class RemoveLiquidityDialogComponent implements OnInit {
   isLoading = false;
   tokenAddress: string;
+  pairAddress: string;
   lpTokenBalance: number;
   @ViewChild('removeLPTokenSlider') slider;
   removeLPTokensForm = {
@@ -24,7 +25,8 @@ export class RemoveLiquidityDialogComponent implements OnInit {
   ) {
     console.log(data);
 
-    this.tokenAddress = data.tokenAddress;
+    this.tokenAddress = data.address;
+    this.pairAddress = data.pairAddress;
     this.lpTokenBalance = data.lpTokenBalance;
   }
 
@@ -75,25 +77,30 @@ export class RemoveLiquidityDialogComponent implements OnInit {
     );
     this.slider.value = value;
   }
-  onSlide(event: MatSliderChange) {
+  async onSlide(event: MatSliderChange) {
     this.removeLPTokensForm.amount = this.percentage(
       Number(event.value),
       this.lpTokenBalance
     );
+
+    // const estimate = await this.web3Service.getEstimatedTokensForBNB(this.tokenAddress);
+    // const ratio = estimate['0'] / estimate['1'];
+
+    //const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
   }
 
   remove(): void {
     this.isLoading = true;
     this.web3Service
-      .removeLPTokens(this.tokenAddress, this.removeLPTokensForm.amount)
+      .removeLPTokens(this.tokenAddress, this.pairAddress, this.removeLPTokensForm.amount)
       .then((r) => {
         console.log(r);
-        this.isLoading = false;
-        this.dialogRef.close(true);
+        //this.isLoading = false;
+        //this.dialogRef.close(true);
       })
       .catch((err) => {
-        console.log(err);
-        this.isLoading = false;
+        //console.log(err);
+        //this.isLoading = false;
       });
   }
 }
