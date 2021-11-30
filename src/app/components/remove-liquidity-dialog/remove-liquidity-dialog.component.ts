@@ -89,9 +89,9 @@ export class RemoveLiquidityDialogComponent implements OnInit {
     //const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
   }
 
-  remove(): void {
+  async remove() {
     this.isLoading = true;
-    this.web3Service
+    await this.web3Service
       .removeLPTokens(this.tokenAddress, this.pairAddress, this.removeLPTokensForm.amount)
       .then((r) => {
         console.log(r);
@@ -99,8 +99,10 @@ export class RemoveLiquidityDialogComponent implements OnInit {
         //this.dialogRef.close(true);
       })
       .catch((err) => {
-        //console.log(err);
+        console.log(err);
         //this.isLoading = false;
       });
+    return true;
   }
+
 }
