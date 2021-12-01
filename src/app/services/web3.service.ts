@@ -19,6 +19,9 @@ const abi = require('ethereumjs-abi');
 const Web3 = require('web3');
 
 
+import * as sigUtil from 'eth-sig-util';
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -280,85 +283,188 @@ export class Web3Service {
     return burnResult;
   }
 
+  // tslint:disable-next-line:typedef
   percentage(percent, total) {
     return (percent / 100) * total;
   }
 
   // tslint:disable-next-line:typedef
   async removeLPTokens(tokenAddress: string, pairAddress: string, amount) {
-    const LpTokenContract = new window.web3.eth.Contract(LPTokenAbi, pairAddress);
-    const totalSupply = await LpTokenContract.methods.totalSupply().call();
-    const totalReserves = await LpTokenContract.methods.getReserves().call();
-    // const tokenReserve = new BigNumber(totalReserves[0]).times(totalReserves[1]).sqrt();
-    // const ethAmount =  await this.getEstimatedTokensForETH(tokenAddress,1000000000000000000);
-    // const ethAmountC = new BigNumber(1 * ethAmount).sqrt();
 
+    const domainType = [
+      { name: 'name', type: 'string' },
+      { name: 'version', type: 'string' },
+      { name: 'chainId', type: 'uint256' },
+      { name: 'verifyingContract', type: 'address' }
+    ];
+    const metaTransactionType = [
+      { name: 'owner', type: 'address' },
+      { name: 'spender', type: 'address' },
+      { name: 'value', type: 'uint256' },
+      { name: 'nonce', type: 'uint256' },
+      { name: 'deadline', type: 'uint256' }
+    ];
+    const domainData = {
+      name: 'Quote',
+      version: '1',
+      chainId : '97',
+      verifyingContract: PancakeRouterAddress
+    };
 
-    const Aout = (totalReserves[0] * amount) / totalSupply;
-    const Bout = (totalReserves[1] * amount) / totalSupply;
-
-    const minA = Aout - this.percentage(0.5, Aout);
-    const minB = Bout - this.percentage(0.5, Bout);
     const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
 
-    console.log({minA, minB});
+    const message = {
+      owner: this.account,
+      spender: PancakeRouterAddress,
+      value: Web3.utils.toWei(amount.toString(), 'ether'),
+      nonce: '0x00',
+      deadline,
+    };
+    // tslint:disable-next-line:radix
+    const dataToSign = JSON.stringify({
+      types: {
+        EIP712Domain: domainType,
+        MetaTransaction: metaTransactionType
+      },
+      domain: domainData,
+      primaryType: 'MetaTransaction',
+      message
+    });
 
-    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
-    console.log(pancakeRouter);
+    let r =  '';
+    let s =  '';
+    let v =  0;
 
-    console.log({
-      amount
-    })
+    await window.web3.currentProvider.sendAsync(
+      {
+        jsonrpc: '2.0',
+        method: 'eth_signTypedData_v4',
+        id: 999999999999,
+        params: [this.account, dataToSign],
+        from: this.account,
+      },
+      async (err, result) => {
+        if (err) {
+          console.error({err});
+          return console.error(err);
+        }
+        const signature = result.result.substring(2);
+        r = '0x' + signature.substring(0, 64);
+        s = '0x' + signature.substring(64, 128);
+        v = parseInt(signature.substring(128, 130), 16);
+        console.log({
+          signature,
+          r,
+          s,
+          v,
+        });
 
-    const trans = await pancakeRouter.methods.removeLiquidityETH(tokenAddress, Web3.utils.toWei(amount.toString(), 'ether'), Web3.utils.toWei(minA.toString(), 'ether'), Web3.utils.toWei(minB.toString(), 'ether'), this.account, deadline).send({from: this.account, value: '0'});
-    console.log(trans);
-    return trans;
-    // const lpTokenPrice = tokenReserve.times()
-    // const lpTokenPrice = tokenReserve.times(ethAmountC).times(2).div(totalSupply);
-    // console.log('token address',tokenAddress);
-    // console.log("token amount", lpTokenPrice.toNumber());
-    // return totalReserves;
-    // const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
-    // const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
-    // console.log(pancakeRouter.methods);
-    // bnbAmount = Number(bnbAmount);
-    // tokenAmount = Number(tokenAmount);
-    // minBnbAmount = Number(minBnbAmount);
-    // minTokenAmount = Number(minTokenAmount);
+        //const recovered = sigUtil.recoverTypedSignature(dataToSign);
+
+        //console.log(recovered);
+
+        /*
+        const recovered = sigUtil.recoverTypedSignature_v4({
+          data: JSON.parse(dataToSign),
+          sig: result.result,
+        });
+
+        if (
+          sigUtil.toChecksumAddress(recovered) === sigUtil.toChecksumAddress(this.account)
+        ) {
+          alert('Successfully recovered signer as ' + this.account);
+        } else {
+          alert(
+            'Failed to verify signer when comparing ' + result + ' to ' + this.account
+          );
+        }
+        */
 
 
-    // const tokenA = wethAddress;
-    // const tokenB = tokenAddress;
-    // const amountADesired = bnbAmount;
-    // const amountAMin = minBnbAmount;
-    // const amountBDesired = tokenAmount;
-    // const amountBMin = minTokenAmount;
-    // const to = this.account;
-    // const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
+        /*-------------------------------------------------------------------*/
 
-    // console.log({
-    //   tokenA,
-    //   tokenB,
-    //   amountADesired,
-    //   amountBDesired,
-    //   amountAMin,
-    //   amountBMin,
-    //   to,
-    //   deadline,
-    //   amountBDesiredWei: Web3.utils.toWei(amountBDesired.toString(), 'ether'),
-    //   amountBMinWei: Web3.utils.toWei(amountBMin.toString(), 'ether'),
-    //   amountAMinWei: Web3.utils.toWei(amountAMin.toString(), 'ether'),
-    // });
+        const LpTokenContract = new window.web3.eth.Contract(LPTokenAbi, pairAddress);
+        const totalSupply = await LpTokenContract.methods.totalSupply().call();
+        const totalReserves = await LpTokenContract.methods.getReserves().call();
+        // const tokenReserve = new BigNumber(totalReserves[0]).times(totalReserves[1]).sqrt();
+        // const ethAmount =  await this.getEstimatedTokensForETH(tokenAddress,1000000000000000000);
+        // const ethAmountC = new BigNumber(1 * ethAmount).sqrt();
 
-    // const addLiquidityResult = await pancakeRouter.methods.addLiquidityETH(
-    //   tokenB,
-    //   Web3.utils.toWei(amountBDesired.toString(), 'ether'),      // desiredB
-    //   Web3.utils.toWei(amountBMin.toString(), 'ether'),     // minA
-    //   Web3.utils.toWei(amountAMin.toString(), 'ether'),     // minA
-    //   to,
-    //   deadline
-    // ).send({from: this.account, value: Web3.utils.toWei(bnbAmount.toString(), 'ether')});
-    // return amount;
+
+        const Aout = (totalReserves[0] * amount) / totalSupply;
+        const Bout = (totalReserves[1] * amount) / totalSupply;
+
+        const minA = Aout - this.percentage(1, Aout);
+        const minB = Bout - this.percentage(1, Bout);
+
+
+        console.log({minA, minB});
+
+        const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+        console.log(pancakeRouter);
+
+        console.log({
+          amount
+        });
+
+        /*
+    Function: removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(address token, uint256 liquidity, uint256 amountTokenMin, uint256 amountETHMin, address to, uint256 deadline, bool approveMax, uint8 v, bytes32 r, bytes32 s)
+        * */
+
+        const trans = await pancakeRouter.methods.removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(tokenAddress, Web3.utils.toWei(amount.toString(), 'ether'), Web3.utils.toWei(minB.toString(), 'ether'), Web3.utils.toWei(minA.toString(), 'ether'),  this.account, deadline, false, v, r, s).send({from: this.account, value: '0'});
+        //const trans = await pancakeRouter.methods.removeLiquidityETH(tokenAddress, Web3.utils.toWei(amount.toString(), 'ether'), Web3.utils.toWei(minB.toString(), 'ether'), Web3.utils.toWei(minA.toString(), 'ether'),  this.account, deadline).send({from: this.account, value: '0'});
+        console.log(trans);
+        return trans;
+        // const lpTokenPrice = tokenReserve.times()
+        // const lpTokenPrice = tokenReserve.times(ethAmountC).times(2).div(totalSupply);
+        // console.log('token address',tokenAddress);
+        // console.log("token amount", lpTokenPrice.toNumber());
+        // return totalReserves;
+        // const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
+        // const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+        // console.log(pancakeRouter.methods);
+        // bnbAmount = Number(bnbAmount);
+        // tokenAmount = Number(tokenAmount);
+        // minBnbAmount = Number(minBnbAmount);
+        // minTokenAmount = Number(minTokenAmount);
+
+
+        // const tokenA = wethAddress;
+        // const tokenB = tokenAddress;
+        // const amountADesired = bnbAmount;
+        // const amountAMin = minBnbAmount;
+        // const amountBDesired = tokenAmount;
+        // const amountBMin = minTokenAmount;
+        // const to = this.account;
+        // const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
+
+        // console.log({
+        //   tokenA,
+        //   tokenB,
+        //   amountADesired,
+        //   amountBDesired,
+        //   amountAMin,
+        //   amountBMin,
+        //   to,
+        //   deadline,
+        //   amountBDesiredWei: Web3.utils.toWei(amountBDesired.toString(), 'ether'),
+        //   amountBMinWei: Web3.utils.toWei(amountBMin.toString(), 'ether'),
+        //   amountAMinWei: Web3.utils.toWei(amountAMin.toString(), 'ether'),
+        // });
+
+        // const addLiquidityResult = await pancakeRouter.methods.addLiquidityETH(
+        //   tokenB,
+        //   Web3.utils.toWei(amountBDesired.toString(), 'ether'),      // desiredB
+        //   Web3.utils.toWei(amountBMin.toString(), 'ether'),     // minA
+        //   Web3.utils.toWei(amountAMin.toString(), 'ether'),     // minA
+        //   to,
+        //   deadline
+        // ).send({from: this.account, value: Web3.utils.toWei(bnbAmount.toString(), 'ether')});
+        // return amount;
+
+      }
+    );
+
   }
 
   // tslint:disable-next-line:typedef

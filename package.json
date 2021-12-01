@@ -25,6 +25,8 @@
     "@fortawesome/angular-fontawesome": "^0.9.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
+    "@metamask/eth-sig-util": "^4.0.0",
+    "@types/eth-sig-util": "^2.1.1",
     "@walletconnect/web3-provider": "^1.4.1",
     "angular-emojis": "^1.0.0",
     "ethereumjs-abi": "^0.6.8",
