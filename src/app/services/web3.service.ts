@@ -291,44 +291,48 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async removeLPTokens(tokenAddress: string, pairAddress: string, amount) {
 
-    const domainType = [
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
+
+    const LpTokenContract = new window.web3.eth.Contract(LPTokenAbi, pairAddress);
+
+    // try to gather a signature for permission
+    const nonce = await LpTokenContract.methods.nonces(this.account).call();
+    console.log({nonce});
+
+    const EIP712Domain = [
       { name: 'name', type: 'string' },
       { name: 'version', type: 'string' },
       { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' }
+      { name: 'verifyingContract', type: 'address' },
     ];
-    const metaTransactionType = [
+    const domain = {
+      name: 'Pancake LPs',
+      version: '1',
+      chainId: '0x61',
+      verifyingContract: pairAddress,
+    };
+    const Permit = [
       { name: 'owner', type: 'address' },
       { name: 'spender', type: 'address' },
       { name: 'value', type: 'uint256' },
       { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' }
+      { name: 'deadline', type: 'uint256' },
     ];
-    const domainData = {
-      name: 'Quote',
-      version: '1',
-      chainId : '97',
-      verifyingContract: PancakeRouterAddress
-    };
-
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
-
     const message = {
       owner: this.account,
       spender: PancakeRouterAddress,
       value: Web3.utils.toWei(amount.toString(), 'ether'),
-      nonce: '0x00',
-      deadline,
+      nonce: nonce.toString(16),
+      deadline: deadline.toString(),
     };
-    // tslint:disable-next-line:radix
     const dataToSign = JSON.stringify({
       types: {
-        EIP712Domain: domainType,
-        MetaTransaction: metaTransactionType
+        EIP712Domain,
+        Permit,
       },
-      domain: domainData,
-      primaryType: 'MetaTransaction',
-      message
+      domain,
+      primaryType: 'Permit',
+      message,
     });
 
     let r =  '';
@@ -383,7 +387,6 @@ export class Web3Service {
 
         /*-------------------------------------------------------------------*/
 
-        const LpTokenContract = new window.web3.eth.Contract(LPTokenAbi, pairAddress);
         const totalSupply = await LpTokenContract.methods.totalSupply().call();
         const totalReserves = await LpTokenContract.methods.getReserves().call();
         // const tokenReserve = new BigNumber(totalReserves[0]).times(totalReserves[1]).sqrt();

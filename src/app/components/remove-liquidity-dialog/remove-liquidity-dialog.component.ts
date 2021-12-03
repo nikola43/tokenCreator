@@ -89,6 +89,7 @@ export class RemoveLiquidityDialogComponent implements OnInit {
     //const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
   }
 
+  // tslint:disable-next-line:typedef
   async remove() {
     this.isLoading = true;
     await this.web3Service
