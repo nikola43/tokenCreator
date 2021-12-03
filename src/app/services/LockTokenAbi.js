@@ -1,341 +1,48 @@
-export const LockLiquidityContractAddress = "0xfd0986e6AD1388A8BeF27c10668144753Da7aBFE"
+export const LockLiquidityContractAddress = "0x9e0F236b63Af4eB83bEB40800B4D681b924138dD"
 
 export const LockLiquidityContractAbi = [
   {
-    "constant": false,
+    "anonymous": false,
     "inputs": [
       {
-        "name": "_tokenAddress",
+        "indexed": false,
+        "internalType": "address",
+        "name": "SentToAddress",
         "type": "address"
       },
       {
-        "name": "_withdrawalAddress",
-        "type": "address"
-      },
-      {
-        "name": "_amounts",
-        "type": "uint256[]"
-      },
-      {
-        "name": "_unlockTimes",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "createMultipleLocks",
-    "outputs": [
-      {
-        "name": "_id",
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "AmountTransferred",
         "type": "uint256"
       }
     ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
+    "name": "LogWithdrawal",
+    "type": "event"
   },
   {
-    "constant": true,
+    "anonymous": false,
     "inputs": [
       {
-        "name": "_withdrawalAddress",
+        "indexed": true,
+        "internalType": "address",
+        "name": "previousOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
         "type": "address"
       }
     ],
-    "name": "getDepositsByWithdrawalAddress",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
+    "name": "OwnershipTransferred",
+    "type": "event"
   },
   {
-    "constant": false,
     "inputs": [
       {
-        "name": "_id",
-        "type": "uint256"
-      }
-    ],
-    "name": "withdrawTokens",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_tokenAddress",
-        "type": "address"
-      },
-      {
-        "name": "_walletAddress",
-        "type": "address"
-      }
-    ],
-    "name": "getTokenBalanceByAddress",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_id",
-        "type": "uint256"
-      },
-      {
-        "name": "_receiverAddress",
-        "type": "address"
-      }
-    ],
-    "name": "transferLocks",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "",
-        "type": "address"
-      },
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "depositsByWithdrawalAddress",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getAllDepositIds",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256[]"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_id",
-        "type": "uint256"
-      },
-      {
-        "name": "_unlockTime",
-        "type": "uint256"
-      }
-    ],
-    "name": "extendLockDuration",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_tokenAddress",
-        "type": "address"
-      },
-      {
-        "name": "_withdrawalAddress",
-        "type": "address"
-      },
-      {
-        "name": "_amount",
-        "type": "uint256"
-      },
-      {
-        "name": "_unlockTime",
-        "type": "uint256"
-      }
-    ],
-    "name": "lockTokens",
-    "outputs": [
-      {
-        "name": "_id",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_id",
-        "type": "uint256"
-      }
-    ],
-    "name": "getDepositDetails",
-    "outputs": [
-      {
-        "name": "_tokenAddress",
-        "type": "address"
-      },
-      {
-        "name": "_withdrawalAddress",
-        "type": "address"
-      },
-      {
-        "name": "_tokenAmount",
-        "type": "uint256"
-      },
-      {
-        "name": "_unlockTime",
-        "type": "uint256"
-      },
-      {
-        "name": "_withdrawn",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "owner",
-    "outputs": [
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "depositId",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "_tokenAddress",
-        "type": "address"
-      }
-    ],
-    "name": "getTotalTokenBalance",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "",
-        "type": "address"
-      },
-      {
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "name": "walletTokenBalance",
-    "outputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "name": "lockedToken",
-    "outputs": [
-      {
-        "name": "tokenAddress",
-        "type": "address"
-      },
-      {
-        "name": "withdrawalAddress",
-        "type": "address"
-      },
-      {
-        "name": "tokenAmount",
-        "type": "uint256"
-      },
-      {
-        "name": "unlockTime",
-        "type": "uint256"
-      },
-      {
-        "name": "withdrawn",
-        "type": "bool"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [
-      {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
@@ -343,43 +50,368 @@ export const LockLiquidityContractAbi = [
     "name": "allDepositIds",
     "outputs": [
       {
+        "internalType": "uint256",
         "name": "",
         "type": "uint256"
       }
     ],
-    "payable": false,
     "stateMutability": "view",
     "type": "function"
   },
   {
-    "constant": false,
+    "inputs": [],
+    "name": "depositId",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "depositsByWithdrawalAddress",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_unlockTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "extendLockDuration",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllDepositIds",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      }
+    ],
+    "name": "getDepositDetails",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_withdrawalAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_unlockTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "_withdrawn",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_withdrawalAddress",
+        "type": "address"
+      }
+    ],
+    "name": "getDepositsByWithdrawalAddress",
+    "outputs": [
+      {
+        "internalType": "uint256[]",
+        "name": "",
+        "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_walletAddress",
+        "type": "address"
+      }
+    ],
+    "name": "getTokenBalanceByAddress",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      }
+    ],
+    "name": "getTotalTokenBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lockServicePrice",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_withdrawalAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_amount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_unlockTime",
+        "type": "uint256"
+      }
+    ],
+    "name": "lockTokens",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "lockedToken",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "withdrawalAddress",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "unlockTime",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "withdrawn",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "renounceOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      },
+      {
+        "internalType": "address",
+        "name": "_receiverAddress",
+        "type": "address"
+      }
+    ],
+    "name": "transferLocks",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "newOwner",
         "type": "address"
       }
     ],
     "name": "transferOwnership",
     "outputs": [],
-    "payable": false,
     "stateMutability": "nonpayable",
     "type": "function"
   },
   {
-    "anonymous": false,
     "inputs": [
       {
-        "indexed": false,
-        "name": "SentToAddress",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "AmountTransferred",
+        "internalType": "uint256",
+        "name": "amount",
         "type": "uint256"
       }
     ],
-    "name": "LogWithdrawal",
-    "type": "event"
+    "name": "updateLockServicePrice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "walletTokenBalance",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_id",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdrawTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   }
 ];
