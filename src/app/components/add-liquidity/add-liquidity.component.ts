@@ -389,22 +389,30 @@ export class AddLiquidityComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
-      console.log('The dialog was closed');
       if (result) {
         this.notificationUtils.showSnackBar(
-          `The LP token was swapped successfully`,
+          `The LP token was removed successfully`,
           SnackBarColorEnum.Green,
+        );
+
+        this.tokenBalance = Number(
+          Web3.utils.fromWei(
+            await this.getTokenBalance(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value),
+            'ether'
+          )
+        )
+          .toFixed(18)
+          .toString();
+        this.lpTokenBalance = Number(
+          Web3.utils.fromWei(await this.getLPTokenBalance(pairAddress), 'ether')
+        );
+        this.bnbBalance = Web3.utils.fromWei(
+          await this.web3Service.getBalance(),
+          'ether'
         );
       } 
 
-      this.tokenBalance = Number(
-        Web3.utils.fromWei(
-          await this.getTokenBalance(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value),
-          'ether'
-        )
-      )
-        .toFixed(18)
-        .toString();
+
     });
   }
 

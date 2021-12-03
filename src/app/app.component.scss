@@ -13,14 +13,18 @@ mat-sidenav {
 
 .connect-button {
   background: linear-gradient(
-    0deg, rgba(178,62,206,1) 0%, rgba(255,21,229,1) 100%);
+    0deg,
+    rgba(178, 62, 206, 1) 0%,
+    rgba(255, 21, 229, 1) 100%
+  );
   border-radius: 15px;
   margin: 0;
   width: 150px;
   line-height: 36px;
   overflow: visible;
   transform: translate3d(0, 0, 0);
-  transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1),box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 400ms cubic-bezier(0.25, 0.8, 0.25, 1),
+    box-shadow 280ms cubic-bezier(0.4, 0, 0.2, 1);
   text-align: center;
   padding: 0.5rem 1rem;
   color: white;
@@ -34,9 +38,8 @@ mat-sidenav {
 }
 
 mat-label {
-
 }
-fa-icon{
+fa-icon {
   margin-right: 2vh;
 }
 ::ng-deep .mat-tab-label {
@@ -49,7 +52,13 @@ fa-icon{
 
 /* active tab */
 ::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
-  background: linear-gradient(-45deg, #ee7752, #ff79ab, #47cfff, #23d5ab) !important;
+  background: linear-gradient(
+    -45deg,
+    #ee7752,
+    #ff79ab,
+    #47cfff,
+    #23d5ab
+  ) !important;
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   font-weight: bold;
@@ -58,7 +67,13 @@ fa-icon{
 
 /* Styles for the ink bar */
 :host ::ng-deep .mat-ink-bar {
-  background: linear-gradient(-45deg, #ee7752, #ff79ab, #47cfff, #23d5ab) !important;
+  background: linear-gradient(
+    -45deg,
+    #ee7752,
+    #ff79ab,
+    #47cfff,
+    #23d5ab
+  ) !important;
 }
 
 ::ng-deep .mat-tab-labels {
@@ -69,13 +84,14 @@ fa-icon{
   color: white;
 }
 
-.mat-sidenav-container{
-  background-color: rgba(255,255,255,0);
+.mat-sidenav-container {
+  background-color: rgba(255, 255, 255, 0);
   height: 90vh;
 }
 mat-sidenav {
   background-color: rgba(17, 25, 40, 0.51);
-  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%), 0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
+    0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
   border-right: 1px solid rgba(255, 255, 255, 0.125);
   width: 14vw;
 }
@@ -86,7 +102,7 @@ mat-sidenav {
   justify-content: space-around;
 }
 :host ::ng-deep .mat-list-item.active .mat-list-item-content {
-  color: #FF29FF;
+  color: #ff29ff;
   border-bottom: 1px solid white;
 }
 :host ::ng-deep .mat-list-item-content {
@@ -94,11 +110,18 @@ mat-sidenav {
   font-size: 1.2rem;
 }
 :host ::ng-deep .mat-list-item-content:hover {
-  color: #FF29FF;
+  color: #ff29ff;
   background-color: #282727;
 }
 :host ::ng-deep .mat-slider-track-background {
   background-color: #ffffff66;
+}
+::ng-deep .mat-form-field-label {
+  /*change color of label*/
+  color: white !important;
+}
+::ng-deep .mat-button-wrapper {
+  color: white !important;
 }
 // :host ::ng-deep .mat-form-field-outline {
 //   border:1px solid white;
@@ -114,7 +137,7 @@ footer {
 @media screen and (max-width: 512px) {
   :host ::ng-deep {
     .mat-tab-label {
-      font-size: .9rem;
+      font-size: 0.9rem;
     }
     .mat-tab-header-pagination {
       background: rgb(255 255 255 / 41%);
@@ -144,7 +167,8 @@ footer {
     min-height: 250px;
   }
 }
-@media screen and (max-width: 768px) {}
+@media screen and (max-width: 768px) {
+}
 @media screen and (min-width: 769px) {
   footer {
     bottom: 0px;

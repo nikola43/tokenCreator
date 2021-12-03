@@ -64,30 +64,47 @@ export class BurnTokensComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async burnTokenInputKeyUp() {
-    this.tokenBalance = Number(
-      Web3.utils.fromWei(
-        await this.getTokenBalance(
-          this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
-        ),
-        'ether'
-      )
-    )
-      .toFixed(18)
-      .toString();
-    this.getTokenName(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value).then((r) => this.burnTokenForm.tokenName = r);
+    // this.tokenBalance = Number(
+    //   Web3.utils.fromWei(
+    //     await this.getTokenBalance(
+    //       this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
+    //     ),
+    //     'ether'
+    //   )
+    // )
+    //   .toFixed(18)
+    //   .toString();
+    // this.getTokenName(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value).then((r) => this.burnTokenForm.tokenName = r);
 
-    console.log({
-      tokenBalance: this.tokenBalance,
-    });
-    const value = this.mapValue(
-      Number(this.burnTokenForm.amount),
-      0,
-      this.tokenBalance,
-      0,
-      100
+    // console.log({
+    //   tokenBalance: this.tokenBalance,
+    // });
+    // const value = this.mapValue(
+    //   Number(this.burnTokenForm.amount),
+    //   0,
+    //   this.tokenBalance,
+    //   0,
+    //   100
+    // );
+
+    // // this.slider.value = value;
+    const isValid = /^0x[a-fA-F0-9]{40}$/.test(
+      this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
     );
 
-    // this.slider.value = value;
+    if (isValid) {
+      this.tokenBalance = Number(
+        Web3.utils.fromWei(
+          await this.getTokenBalance(
+            this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
+          ),
+          'ether'
+        )
+      ).toFixed(18).toString();
+
+    } else {
+      this.tokenBalance = 0;
+    }
   }
 
   // tslint:disable-next-line:typedef
@@ -106,7 +123,6 @@ export class BurnTokensComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(async (result) => {
-      console.log('The dialog was closed');
       if (result) {
         this.notificationUtils.showSnackBar(
           `The token ${this.burnTokenForm.tokenName} was burned successfully`,
@@ -119,29 +135,10 @@ export class BurnTokensComponent implements OnInit {
           await this.getTokenBalance(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value),
           'ether'
         )
-      )
-        .toFixed(18)
-        .toString();
+      ).toFixed(18).toString();
 
       this.burnTokenForm.amount = 0;
     });
-
-    /*
-    console.log(
-      this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
-    );
-    this.web3Service
-      .burnTokens(
-        this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value,
-        this.burnTokenForm.amount
-      )
-      .then((r2) => {
-        console.log(r2);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    */
   }
 
   // tslint:disable-next-line:typedef
@@ -170,7 +167,6 @@ export class BurnTokensComponent implements OnInit {
       );
       if (!isValid) {   
         throw new Error(msg);
-        
       };
     }
     catch(e) {

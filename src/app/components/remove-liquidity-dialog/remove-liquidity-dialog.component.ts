@@ -96,12 +96,12 @@ export class RemoveLiquidityDialogComponent implements OnInit {
       .removeLPTokens(this.tokenAddress, this.pairAddress, this.removeLPTokensForm.amount)
       .then((r) => {
         console.log(r);
-        //this.isLoading = false;
-        //this.dialogRef.close(true);
+        this.isLoading = false;
+        this.dialogRef.close(true);
       })
       .catch((err) => {
         console.log(err);
-        //this.isLoading = false;
+        this.isLoading = false;
       });
     return true;
   }

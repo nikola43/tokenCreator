@@ -152,6 +152,19 @@ footer div {
 footer h3 {
   margin: 1rem 0;
 }
+.rounded-circle {
+  background:linear-gradient(0deg, rgba(178,62,206,1) 0%, rgba(255,21,229,1) 100%);
+}
+.stepper .line {
+  width: 2px;
+  background-color: lightgrey !important;
+}
+.stepper .lead {
+  font-size: 1.1rem;
+}
+.pl-3 {
+  padding-left: 1rem;
+}
 @media screen and (max-width: 512px) {
   .mobile-hidden {
     display: none;

@@ -30,12 +30,12 @@
 
 // mat-input carent color
 ::ng-deep .mat-input-element {
-  caret-color: #39c0ed !important;
+  caret-color: white !important;
 }
 
 // mat-input error carent color
 ::ng-deep .mat-form-field-invalid .mat-input-element, .mat-warn .mat-input-element {
-  caret-color: #39c0ed !important;
+  caret-color: white !important;
 }
 
 // mat-label normal state style
@@ -56,7 +56,7 @@
 
 
 input {
-  color: rgba(0, 0, 0, 0.87);
+  color: white;
 }
 
 span.mat-slide-toggle-content {
@@ -64,7 +64,7 @@ span.mat-slide-toggle-content {
 }
 
 ::placeholder {
-  color: rgba(0, 0, 0, 0.87);
+  color: white;
   font-weight: normal;
 }
 
