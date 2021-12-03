@@ -5,7 +5,6 @@ import {MatSliderChange} from '@angular/material/slider';
 import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil';
 
 declare let require: any;
-declare let window: any;
 const Web3 = require('web3');
 
 @Component({
@@ -25,7 +24,7 @@ export class LockLiquidityComponent implements OnInit {
     locktime: 0,
   };
   lockTokenLiquidityPercent = 0;
-  constructor(    private formBuilder: FormBuilder,    public web3Service: Web3Service, private notificationUtils: NotificationUtils) {
+  constructor(private formBuilder: FormBuilder,public web3Service: Web3Service, private notificationUtils: NotificationUtils) {
     this.createForm();
   }
 
@@ -48,9 +47,8 @@ export class LockLiquidityComponent implements OnInit {
           ),
           'ether'
         )
-      )
-        .toFixed(18)
-        .toString();
+      ).toFixed(18).toString();
+      console.log(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value);
     } else {
       this.tokenBalance = 0;
     }

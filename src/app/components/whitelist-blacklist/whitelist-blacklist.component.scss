@@ -22,7 +22,7 @@
  
  // mat-input carent color
  ::ng-deep .mat-input-element {
-   caret-color: #39c0ed !important;
+   caret-color: white !important;
  }
  
  // mat-input error carent color
@@ -62,4 +62,9 @@
    padding: 0.8rem;
    background: linear-gradient(-45deg, #ee7752, #ff79ab, #47cfff, #23d5ab) !important;
  }
- 
+ .coming-soon {
+  min-height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ }
