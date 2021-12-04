@@ -151,7 +151,7 @@ export class Web3Service {
 
     const ownerAddress = await createdToken.methods.owner().call();
     console.log({ownerAddress});
-    const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : createPrice;
+    const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : (paymentToken != this.wethAddress ? 0 : createPrice);
     console.log({sendedValue});
 
     const fees = [
