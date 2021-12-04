@@ -13,11 +13,17 @@ export class ServiceTokenPaymentSelectorComponent implements OnInit {
   currentToken = 0;
 
   @Input() networkId = 0;
+  
   @Output() selectedTokenAddres = new EventEmitter();
   acceptedPaymentTokens = this.networks[this.networkId].acceptedPaymentTokens;
   constructor(public web3Service: Web3Service) {
+    const res = this.networks.find(x => x.params.chainId == "0x"+("0"+(Number(this.networkId).toString(16))).slice(-2).toUpperCase());
+    if (res) this.networkId = res.index;
+    
     this.acceptedPaymentTokens = this.networks[this.networkId].acceptedPaymentTokens;
-    console.log({a: this.acceptedPaymentTokens});
+
+    // this.acceptedPaymentTokens = this.networks[this.networkId].acceptedPaymentTokens;
+    // console.log({a: this.networkId});
   }
 
   ngOnInit(): void {
@@ -25,8 +31,11 @@ export class ServiceTokenPaymentSelectorComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async OnPaymentTokenSelectChange(changeEvent: MatSelectChange) {
-    this.selectedTokenAddres.emit({...this.networks[this.networkId].acceptedPaymentTokens[changeEvent.value], id:changeEvent.value});
-    console.log();
-    this.currentToken = changeEvent.value;
+    const res = this.networks.find(x => x.params.chainId == "0x"+("0"+(Number(this.networkId).toString(16))).slice(-2).toUpperCase());
+    if (res) this.networkId = res.index;
+    
+    console.log({i:this.networkId});
+    // this.selectedTokenAddres.emit({...this.networks[this.networkId].acceptedPaymentTokens[changeEvent.value], id:changeEvent.value});
+    // this.currentToken = changeEvent.value;
   }
 }

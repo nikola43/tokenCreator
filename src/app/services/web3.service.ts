@@ -41,15 +41,11 @@ export class Web3Service {
       } else {
         this.web3 = new Web3.providers.HttpProvider('http://127.0.0.1:7545');
       }
-      console.log('transfer.service :: constructor :: window.ethereum');
       window.web3 = new Web3(window.ethereum);
-      console.log('transfer.service :: constructor :: this.web3');
-      console.log(this.web3);
       this.enable = this.enableMetaMaskAccount();
       this.pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
       //this.pancakeRouter.methods.WETH().call().then((x) => this.wethAddress = x);
       this.wethAddress = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd';
-      console.log(this.wethAddress);
     }
   }
 
@@ -74,15 +70,9 @@ export class Web3Service {
   }
 
   public async getAccount(): Promise<any> {
-    console.log('transfer.service :: getAccount :: start');
     return await new Promise((resolve, reject) => {
-      console.log('transfer.service :: getAccount :: eth');
-      console.log(window.web3.eth);
       window.web3.eth.getAccounts((err, retAccount) => {
-        console.log('transfer.service :: getAccount: retAccount');
-        console.log(retAccount);
         if (retAccount.length > 0) {
-          console.log(retAccount);
           this.currentAccountSubject = new BehaviorSubject<string>(retAccount[0]);
           this.currentAccount = this.currentAccountSubject.asObservable();
           resolve(retAccount[0]);

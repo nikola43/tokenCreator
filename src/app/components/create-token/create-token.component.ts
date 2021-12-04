@@ -20,7 +20,7 @@ const Web3 = require('web3');
 export class CreateTokenComponent implements OnInit {
   networks: any = DevNetworks;
   createdTokenAddress = '';
-
+  networkId: number = 0;
   formGroup: FormGroup;
   tokenAddressInputFormGroup: FormGroup;
   createButtonLabel = 'Create Token';
@@ -56,6 +56,7 @@ export class CreateTokenComponent implements OnInit {
     if (this.web3Service.enable) {
       this.web3Service.getAccount().then(async (r) => {
         this.account = r;
+        console.log(this.account);
         // this.buttonLabel = r;
         this.bnbBalance = Web3.utils.fromWei(
           await this.web3Service.getBalance(),
@@ -73,7 +74,6 @@ export class CreateTokenComponent implements OnInit {
         this.formGroup.controls.FeeReceiverWallet.setValue(this.account);
         this.routerAddress = this.web3Service.getRouterAddress();
         this.selectedPayToken = {address: this.web3Service.getWethAddress(), id: 0};
-        console.log({b:this.selectedPayToken});
       });
     }
 
@@ -88,7 +88,9 @@ export class CreateTokenComponent implements OnInit {
       }
     });
 
-    this.web3Service.web3.on('networkChanged', (networkId) => {
+    this.web3Service.web3.on('networkChanged', (networkId) => {      
+      this.networkId = networkId.toString(16);
+      console.log({networkId});
       /*
       console.log(accounts);
       if (accounts.length === 0) {

@@ -20,7 +20,6 @@ export class NetworkSelectorComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async networkSelectChange(changeEvent: MatSelectChange) {
-    console.log(changeEvent);
     try {
       const changeNetworkResult = await this.web3Service.web3.request({
         method: 'wallet_switchEthereumChain',
@@ -54,6 +53,7 @@ export class NetworkSelectorComponent implements OnInit {
       return false;
     }
     this.lastCurrentNetwork = this.currentNetwork;
+    console.log(this.currentNetwork);
     this.selectedNetwork.emit(this.currentNetwork);
   }
 }
