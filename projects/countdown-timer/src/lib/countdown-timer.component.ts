@@ -47,7 +47,7 @@ export class CountdownTimerComponent implements OnInit {
     this.finishDate = new Date(this.finishDateString);
 
     let counterTimer$ = this.start().subscribe((_) => {
-      if (this.time.days <= 0) {
+      if (this.time.minutes <= 0 && this.time.seconds <= 0) {
         this.time = {
           hours: 0,
           minutes: 0,

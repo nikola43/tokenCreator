@@ -7,7 +7,7 @@ import {
   SnackBarColorEnum,
 } from 'src/utils/NotificationUtil';
 import { CountdownModule } from 'ngx-countdown';
-import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faLockOpen,faCheck, faExclamationTriangle, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 
 declare let require: any;
 const Web3 = require('web3');
@@ -29,7 +29,15 @@ export class LockLiquidityComponent implements OnInit {
     locktime: 0,
   };
   falock = faLock;
+  falockopen = faLockOpen;
   lockTokenLiquidityPercent = 0;
+  now = Date.now();
+  approveButtonLabel = 'Approve Token';
+  approveButtonIcon: IconDefinition = faCheck;
+  tokenApproved = false;
+  isApproving = false;
+  isLoading = false;
+  isAllowed = false;
   constructor(
     private formBuilder: FormBuilder,
     public web3Service: Web3Service,
@@ -82,6 +90,33 @@ export class LockLiquidityComponent implements OnInit {
 
     return value + '%';
   }
+
+  // tslint:disable-next-line:typedef
+  async approveToken() {
+    this.isApproving = true;
+    this.approveButtonLabel = 'Approving';
+    const tokenAddress =
+      this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value;
+    const tokenAmount = this.lockLiquidityForm.lpAmount.toString();
+    const routerAddress = this.web3Service.getRouterAddress();
+    await this.web3Service
+      .approveToken(tokenAddress,routerAddress, tokenAmount)
+      .then((r) => {
+        if (r) {
+          this.isAllowed = true;
+          this.isApproving = false;
+          this.approveButtonLabel = 'Approved';
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        this.isAllowed = false;
+        this.isApproving = false;
+        this.approveButtonLabel = 'Not Approved';
+        this.approveButtonIcon = faExclamationTriangle;
+      });
+  }
+
   // tslint:disable-next-line:typedef
   addEvent(type, event) {
     console.log({
@@ -96,20 +131,8 @@ export class LockLiquidityComponent implements OnInit {
   }
   // tslint:disable-next-line:typedef
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
-    console.log({
-      tokenAddress,
-      time,
-      tokenAmount,
-    });
     try {
-      const r = await this.web3Service.lockLiquidity(
-        tokenAddress,
-        time,
-        tokenAmount
-      );
-      console.log({
-        r,
-      });
+      const r = await this.web3Service.lockLiquidity(tokenAddress,time,tokenAmount);
       this.notificationUtils.showSnackBar(
         'Liquidity locked Successfully.',
         SnackBarColorEnum.Green
@@ -170,7 +193,7 @@ export class LockLiquidityComponent implements OnInit {
       )
         .toFixed(18)
         .toString();
-
+        this.isAllowed = await this.web3Service.isAllowed(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value, this.web3Service.getRouterAddress()); 
       /* Get my locks */
       this.web3Service
         .getLocks()

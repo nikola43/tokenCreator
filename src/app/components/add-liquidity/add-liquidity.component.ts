@@ -329,10 +329,6 @@ export class AddLiquidityComponent implements OnInit {
     const estimate = await this.web3Service.getEstimatedTokensForBNB(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
     const ratio = estimate['0'] / estimate['1'];
     const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
-    console.log({estimate});
-    console.log({ratio});
-    console.log(this.addLiquidityForm.bnbAmount);
-    console.log({addLiquidityTokenAmount});
 
     if (!isNaN(Number(addLiquidityTokenAmount))) {
       const value2 = this.mapValue(
@@ -370,13 +366,10 @@ export class AddLiquidityComponent implements OnInit {
       )
         .toFixed(8)
         .toString();
-
       this.lpTokenBalance = Number(
         Web3.utils.fromWei(await this.getLPTokenBalance(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value), 'ether')
       );
       this.isAllowed = await this.web3Service.isAllowed(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value, this.web3Service.getRouterAddress()); 
-        console.log({a: this.isAllowed});
-        console.log({b: this.tokenBalance === undefined  || this.tokenBalance === 0 || !this.isAllowed});
     } else {
       this.tokenBalance = 0;
     }

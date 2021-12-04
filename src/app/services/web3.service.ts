@@ -376,8 +376,6 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async addLiquidity(tokenAddress: string, bnbAmount, tokenAmount, minBnbAmount, minTokenAmount: number) {
 
-    const pair = await this.getPair(this.wethAddress, tokenAddress);
-
     bnbAmount = Number(bnbAmount);
     tokenAmount = Number(tokenAmount);
     minBnbAmount = Number(minBnbAmount);
@@ -478,6 +476,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async getLPTokensBalance(tokenAddress: string) {
+    console.log({tokenAddress});
     const pairAddress = await this.getPair(this.wethAddress, tokenAddress);
     const token = new window.web3.eth.Contract(LPTokenAbi, pairAddress);
     return await token.methods.balanceOf(this.currentAccountSubject.value).call();
@@ -522,7 +521,7 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async isAllowed(address, spender) {
     const pairAddress = await this.getPair(this.wethAddress, address);
-    const LPTokenBalance = await this.getLPTokensBalance(pairAddress);
+    const LPTokenBalance = await this.getLPTokensBalance(address);
     const isAddresAllowed = window.web3.utils.toWei(await this.getAddressAllowance(address,spender), 'ether') < window.web3.utils.toWei(LPTokenBalance, 'ether');
     return isAddresAllowed;
   }
