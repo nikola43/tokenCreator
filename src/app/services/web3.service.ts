@@ -187,7 +187,8 @@ export class Web3Service {
       tokenSupply,
       MaxTxPercent,
       MaxWalletPercent,
-      FeeReceiverWallet
+      FeeReceiverWallet,
+      routerAddress: PancakeRouterAddress
     }, contractAddress).subscribe((r) => {
       console.log(r);
 
@@ -225,6 +226,7 @@ export class Web3Service {
       MaxTxPercent: constructorArguments.MaxTxPercent,
       MaxWalletPercent: constructorArguments.MaxWalletPercent,
       feeWallet: constructorArguments.FeeReceiverWallet,
+      routerAddress: constructorArguments.routerAddress,
     });
 
 
