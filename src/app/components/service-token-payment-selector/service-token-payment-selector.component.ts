@@ -25,9 +25,8 @@ export class ServiceTokenPaymentSelectorComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async OnPaymentTokenSelectChange(changeEvent: MatSelectChange) {
-    console.log(changeEvent.value);
-    this.selectedTokenAddres.emit(changeEvent.value);
+    this.selectedTokenAddres.emit({...this.networks[this.networkId].acceptedPaymentTokens[changeEvent.value], id:changeEvent.value});
+    console.log();
     this.currentToken = changeEvent.value;
-    console.log({n: this.acceptedPaymentTokens[changeEvent.value]});
   }
 }

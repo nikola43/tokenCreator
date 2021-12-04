@@ -32,6 +32,11 @@ export class CreateTokenComponent implements OnInit {
   account: any = undefined;
   showAdvancedSettings = false;
   bnbBalance: any;
+  selectedPayToken: {
+    id: 0,
+    address: ''
+  };
+  routerAddress: string;
 
   isApproving = false;
   tokenVerified = false;
@@ -66,6 +71,9 @@ export class CreateTokenComponent implements OnInit {
         this.formGroup.controls.MaxWalletPercent.setValue('100');
         this.formGroup.controls.MaxTxPercent.setValue('100');
         this.formGroup.controls.FeeReceiverWallet.setValue(this.account);
+        this.routerAddress = this.web3Service.getRouterAddress();
+        this.selectedPayToken = {address: this.web3Service.getWethAddress(), id: 0};
+        console.log({b:this.selectedPayToken});
       });
     }
 
@@ -199,8 +207,24 @@ export class CreateTokenComponent implements OnInit {
         [Validators.required, Validators.pattern('^0x[a-fA-F0-9]{40}$')],
       ],
     });
+  }
 
-
+  // tslint:disable-next-line:typedef
+  async approveToken() {
+    const tokenAddress = this.selectedPayToken.address;
+    const tokenAmount = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
+    console.log({tokenAddress});
+   
+    await this.web3Service
+      .approveToken(tokenAddress, this.web3Service.getTokenCreatorAddress(), tokenAmount)
+      .then((r) => {
+        if (r) {
+          return true;
+        }
+      })
+      .catch((err) => {
+        return false;
+      });
   }
 
   // tslint:disable-next-line:typedef
@@ -214,7 +238,7 @@ export class CreateTokenComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async onChangePaymentToken($event) {
-    console.log({$event});
+    this.selectedPayToken = $event;
   }
 
   // tslint:disable-next-line:typedef
@@ -249,11 +273,17 @@ export class CreateTokenComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  onSubmit(value: any) {
+  async onSubmit(value: any) {
     this.isLoading = true;
     this.createButtonLabel = 'Deploying token';
+    if(this.selectedPayToken?.id !== 0) {
+      await this.approveToken();
+      console.log('d');
+    }
+
     this.web3Service
       .createToken(
+        this.selectedPayToken?.address,
         this.formGroup.get('tokenName').value,
         this.formGroup.get('tokenSymbol').value,
         Number(this.formGroup.get('tokenSupply').value),

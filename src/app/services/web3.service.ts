@@ -53,8 +53,16 @@ export class Web3Service {
     }
   }
 
+  getWethAddress() {
+    return this.wethAddress;
+  }
+
   getRouterAddress() {
     return PancakeRouterAddress;
+  }
+
+  getTokenCreatorAddress() {
+    return TokenGeneratorAddress;
   }
 
   // tslint:disable-next-line:typedef
@@ -101,6 +109,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async createToken(
+    paymentToken,
     tokenName,
     tokenSymbol,
     tokenSupply,
@@ -112,10 +121,11 @@ export class Web3Service {
     TxFeePercentToBuybackTokens,
     MaxWalletPercent,
     MaxTxPercent,
-    FeeReceiverWallet,
+    FeeReceiverWallet
   ) {
 
     console.log({
+      paymentToken,
       tokenName,
       tokenSymbol,
       tokenDecimals,
@@ -127,7 +137,7 @@ export class Web3Service {
       TxFeePercentToBuybackTokens,
       MaxWalletPercent,
       MaxTxPercent,
-      FeeReceiverWallet,
+      FeeReceiverWallet
     });
 
     const createdToken = new window.web3.eth.Contract(TokenGeneratorAbi, TokenGeneratorAddress);
@@ -155,6 +165,7 @@ export class Web3Service {
 
     const create = await createdToken
       .methods.createNewToken(
+        paymentToken,
         this.currentAccountSubject.value,
         FeeReceiverWallet,
         tokenName,
@@ -162,7 +173,7 @@ export class Web3Service {
         tokenSupply,
         tokenDecimals,
         fees,
-        PancakeRouterAddress
+        PancakeRouterAddress,
       ).send({from: this.currentAccountSubject.value, value: sendedValue.toString()});
 
     console.log(create);
@@ -187,7 +198,8 @@ export class Web3Service {
       tokenSupply,
       MaxTxPercent,
       MaxWalletPercent,
-      FeeReceiverWallet
+      FeeReceiverWallet,
+      routerAddress: PancakeRouterAddress
     }, contractAddress).subscribe((r) => {
       console.log(r);
 
@@ -225,6 +237,7 @@ export class Web3Service {
       MaxTxPercent: constructorArguments.MaxTxPercent,
       MaxWalletPercent: constructorArguments.MaxWalletPercent,
       feeWallet: constructorArguments.FeeReceiverWallet,
+      routerAddress: constructorArguments.routerAddress,
     });
 
 

@@ -54,10 +54,10 @@
       <fa-icon *ngIf="isAllowed" [icon]="approveButtonIcon"></fa-icon>
       {{approveButtonLabel}}
     </button>
-    <button [disabled]="!isAllowed" color="primary" type="button" mat-raised-button (click)="lockLiquidity(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value,
+    <button [disabled]="!isAllowed || isLocking" color="primary" type="button" mat-raised-button (click)="lockLiquidity(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value,
                this.lockLiquidityForm.locktime, lockLiquidityForm.lpAmount)">
-      <angular-emojis [name]="'lock'" size="25"></angular-emojis>
-      <fa-icon *ngIf="isAllowed" [icon]="approveButtonIcon"></fa-icon>
+      <angular-emojis  *ngIf="!isLocking" [name]="'lock'" size="25"></angular-emojis>
+      <span *ngIf="isLocking" class="spinner-border spinner-border-sm mr-1" style="color: white"></span>
       Lock Liquidity
     </button>
   </div>

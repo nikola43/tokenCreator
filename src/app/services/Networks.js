@@ -79,6 +79,11 @@ export const DevNetworks = [
     },
     acceptedPaymentTokens: [
       {
+        symbol: "ETHER",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
+        address: "0xdsfsd"
+      },
+      {
         symbol: "BNB",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
         address: "0xB8c77482e45F1F44dE1745F52C74426C631bDD52"
@@ -104,11 +109,6 @@ export const DevNetworks = [
         address: "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"
       },
       {
-        symbol: "ETHER",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
-        address: "0xdsfsd"
-      },
-      {
         symbol: "HARMONY",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3945.png',
         address: "0x799a4202c12ca952cb311598a024c80ed371a41e"
@@ -132,6 +132,11 @@ export const DevNetworks = [
     },
     acceptedPaymentTokens: [
       {
+        symbol: "MATIC",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
+        address: "0x0000000000000000000000000000000000001010"
+      },
+      {
         symbol: "BNB",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
         address: "0x3BA4c387f786bFEE076A58914F5Bd38d668B42c3"
@@ -150,11 +155,6 @@ export const DevNetworks = [
         symbol: "USDT",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png',
         address: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
-      },
-      {
-        symbol: "MATIC",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
-        address: "0x0000000000000000000000000000000000001010"
       },
       {
         symbol: "ETHER",
