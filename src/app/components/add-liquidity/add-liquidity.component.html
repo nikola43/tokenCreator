@@ -34,7 +34,7 @@
     <br>
     <div class="input-label">
       <input style="color: white" [(ngModel)]="addLiquidityForm.bnbAmount" appTwoDigitDecimaNumber matInput
-             maxlength="16"
+             maxlength="8"
              placeholder="e.g. 1000" (keyup)="bnbInputKeyUp()">
       <button class="percentButton" (click)="setBnbPercent(25)" color="primary" type="button"
               mat-raised-button>
@@ -71,7 +71,7 @@
     </div>
     <br>
     <div class="input-label">
-      <input [(ngModel)]="addLiquidityForm.tokenAmount" appTwoDigitDecimaNumber matInput maxlength="16"
+      <input [(ngModel)]="addLiquidityForm.tokenAmount" appTwoDigitDecimaNumber matInput maxlength="8"
              placeholder="e.g. 1000" (keyup)="tokenInputKeyUp()" style="color: white">
       <button [disabled]="tokenBalance === undefined || tokenBalance === 0" (click)="setTokenPercent(25)"
               color="primary" type="button" mat-raised-button>
@@ -103,13 +103,13 @@
   <br>
 
   <div class="liquidity-form-buttons-container">
-    <button [disabled]="tokenBalance === undefined  || tokenBalance === 0 || isApproving" color="primary"
+    <button  *ngIf="!isAllowed" color="primary"
             type="button" mat-raised-button (click)="approveToken()">
       <span *ngIf="isApproving" class="spinner-border spinner-border-sm mr-1" style="color: white"></span>
-      <fa-icon *ngIf="tokenApproved" [icon]="approveButtonIcon"></fa-icon>
+      <fa-icon *ngIf="isAllowed" [icon]="approveButtonIcon"></fa-icon>
       {{approveButtonLabel}}
     </button>
-    <button [disabled]="!tokenApproved" color="primary" type="button" mat-raised-button
+    <button [disabled]="!isAllowed" color="primary" type="button" mat-raised-button
             (click)="addLiquidity()">
       <span *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1" style="color: white"></span>
       Add Liquidity

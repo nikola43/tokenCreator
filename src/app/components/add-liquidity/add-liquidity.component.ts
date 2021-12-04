@@ -28,6 +28,7 @@ export class AddLiquidityComponent implements OnInit {
   tokenApproved = false;
   isApproving = false;
   isLoading = false;
+  isAllowed = false;
   addBnbLiquidityQuantityPercent = 0;
   addTokenLiquidityQuantityPercent = 0;
   @ViewChild('slider') slider;
@@ -40,7 +41,7 @@ export class AddLiquidityComponent implements OnInit {
     tokenAmount: 0,
   };
   constructor(public web3Service: Web3Service,
-              private formBuilder: FormBuilder,
+              private formBuilder: FormBuilder, 
               private notificationUtils: NotificationUtils,
               public dialog: MatDialog) {
     this.createForm();
@@ -113,17 +114,16 @@ export class AddLiquidityComponent implements OnInit {
             'ether'
           )
         )
-          .toFixed(18)
+          .toFixed(8)
           .toString();
         this.bnbBalance = Number(
           Web3.utils.fromWei(await this.web3Service.getBalance(), 'ether')
         )
-          .toFixed(18)
+          .toFixed(8)
           .toString();
 
-        const pairAddress = await this.getPair(tokenAddress);
         this.lpTokenBalance = Number(
-          Web3.utils.fromWei(await this.getLPTokenBalance(pairAddress), 'ether')
+          Web3.utils.fromWei(await this.getLPTokenBalance(tokenAddress), 'ether')
         );
 
         /*
@@ -177,8 +177,10 @@ export class AddLiquidityComponent implements OnInit {
           'ether'
         )
       )
-        .toFixed(18)
+        .toFixed(8)
         .toString();
+      
+      console.log(this.isAllowed);
     } else {
       this.tokenBalance = 0;
     }
@@ -193,18 +195,19 @@ export class AddLiquidityComponent implements OnInit {
     const bnbAmount = this.addLiquidityForm.bnbAmount.toString();
     const tokenAmount = this.addLiquidityForm.tokenAmount.toString();
     console.log({tokenAddress});
+    const routerAddress = this.web3Service.getRouterAddress();
     await this.web3Service
-      .approveToken(tokenAddress, tokenAmount)
+      .approveToken(tokenAddress,routerAddress, tokenAmount)
       .then((r) => {
         if (r) {
-          this.tokenApproved = true;
+          this.isAllowed = true;
           this.isApproving = false;
           this.approveButtonLabel = 'Approved';
         }
       })
       .catch((err) => {
         console.log(err);
-        this.tokenApproved = false;
+        this.isAllowed = false;
         this.isApproving = false;
         this.approveButtonLabel = 'Not Approved';
         this.approveButtonIcon = faExclamationTriangle;
@@ -365,19 +368,20 @@ export class AddLiquidityComponent implements OnInit {
           'ether'
         )
       )
-        .toFixed(18)
+        .toFixed(8)
         .toString();
 
-      const pairAddress = await this.getPair(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
       this.lpTokenBalance = Number(
-        Web3.utils.fromWei(await this.getLPTokenBalance(pairAddress), 'ether')
+        Web3.utils.fromWei(await this.getLPTokenBalance(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value), 'ether')
       );
-
+      this.isAllowed = await this.web3Service.isAllowed(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value, this.web3Service.getRouterAddress()); 
+        console.log({a: this.isAllowed});
+        console.log({b: this.tokenBalance === undefined  || this.tokenBalance === 0 || !this.isAllowed});
     } else {
       this.tokenBalance = 0;
     }
   }
-
+  
   async openRemoveLiquidityDialog() {
     const pairAddress = await this.getPair(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
     const dialogRef = this.dialog.open(RemoveLiquidityDialogComponent, {
@@ -401,7 +405,7 @@ export class AddLiquidityComponent implements OnInit {
             'ether'
           )
         )
-          .toFixed(18)
+          .toFixed(8)
           .toString();
         this.lpTokenBalance = Number(
           Web3.utils.fromWei(await this.getLPTokenBalance(pairAddress), 'ether')
@@ -410,7 +414,7 @@ export class AddLiquidityComponent implements OnInit {
           await this.web3Service.getBalance(),
           'ether'
         );
-      }
+      } 
 
 
     });
@@ -452,9 +456,9 @@ export class AddLiquidityComponent implements OnInit {
       const isValid = /^0x[a-fA-F0-9]{40}$/.test(
         address
       );
-      if (!isValid) {
+      if (!isValid) {   
         throw new Error(msg);
-
+        
       };
     }
     catch(e) {

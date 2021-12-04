@@ -1352,6 +1352,17 @@
     merge-source-map "^1.1.0"
     schema-utils "^2.6.4"
 
+"@metamask/eth-sig-util@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@metamask/eth-sig-util/-/eth-sig-util-4.0.0.tgz#11553ba06de0d1352332c1bde28c8edd00e0dcf6"
+  integrity sha512-LczOjjxY4A7XYloxzyxJIHONELmUxVZncpOLoClpEcTiebiVdM46KRPYXGuULro9oNNR2xdVx3yoKiQjdfWmoA==
+  dependencies:
+    ethereumjs-abi "^0.6.8"
+    ethereumjs-util "^6.2.1"
+    ethjs-util "^0.1.6"
+    tweetnacl "^1.0.3"
+    tweetnacl-util "^0.15.1"
+
 "@metamask/safe-event-emitter@^2.0.0":
   version "2.0.0"
   resolved "https://registry.npmjs.org/@metamask/safe-event-emitter/-/safe-event-emitter-2.0.0.tgz"
@@ -1450,6 +1461,13 @@
   version "5.1.0"
   resolved "https://registry.npmjs.org/@types/bn.js/-/bn.js-5.1.0.tgz"
   integrity sha512-QSSVYj7pYFN49kW77o2s9xTCwZ8F2xLbjLLSEVh8D2F4JUhZtPAGOFLTD+ffqksBx/u4cE/KImFjyhqCjn/LIA==
+  dependencies:
+    "@types/node" "*"
+
+"@types/eth-sig-util@^2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@types/eth-sig-util/-/eth-sig-util-2.1.1.tgz#839f784da04c8d2e12add9b37692c3f05a80603a"
+  integrity sha512-vYP1UD19i0532+eQY7vXHfAKCzAQiI6aoLvomqu+ZewzUX/jvDSr41JGl8zQ9dMbfiHPDhMFY26bScCyZ7vzlg==
   dependencies:
     "@types/node" "*"
 
@@ -4575,7 +4593,7 @@ ethereumjs-util@^5.0.0, ethereumjs-util@^5.1.1, ethereumjs-util@^5.1.2, ethereum
     rlp "^2.0.0"
     safe-buffer "^5.1.1"
 
-ethereumjs-util@^6.0.0:
+ethereumjs-util@^6.0.0, ethereumjs-util@^6.2.1:
   version "6.2.1"
   resolved "https://registry.npmjs.org/ethereumjs-util/-/ethereumjs-util-6.2.1.tgz"
   integrity sha512-W2Ktez4L01Vexijrm5EB6w7dg4n/TgpoYU4avuT5T3Vmnw/eCRtiBrJfQYS/DCSvDIOLn2k57GcHdeBcgVxAqw==
@@ -4624,7 +4642,7 @@ ethjs-unit@0.1.6:
     bn.js "4.11.6"
     number-to-bn "1.7.0"
 
-ethjs-util@0.1.6, ethjs-util@^0.1.3:
+ethjs-util@0.1.6, ethjs-util@^0.1.3, ethjs-util@^0.1.6:
   version "0.1.6"
   resolved "https://registry.npmjs.org/ethjs-util/-/ethjs-util-0.1.6.tgz"
   integrity sha512-CUnVOQq7gSpDHZVVrQW8ExxUETWrnrvXYvYz55wOU8Uj4VCgw56XC2B/fVqQN+f7gmrnRHSLVnFAwsCuNwji8w==
@@ -7297,6 +7315,13 @@ next-tick@~1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/next-tick/-/next-tick-1.0.0.tgz"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
+
+ngx-countdown@^12.0.1:
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/ngx-countdown/-/ngx-countdown-12.0.1.tgz#0bd6aef4ca83bafcbc3dd9366c84494d2b93ce27"
+  integrity sha512-JAHLTzDUTKAoGvcXwDA23bUmH8g2qGRsuEt7jQ81smXutyEtHdOvZcbMpok4gSoA5TAv9FkrXLH58loUgWJ5VA==
+  dependencies:
+    tslib "^2.1.0"
 
 nice-try@^1.0.4:
   version "1.0.5"
@@ -10334,10 +10359,20 @@ tunnel-agent@^0.6.0:
   dependencies:
     safe-buffer "^5.0.1"
 
+tweetnacl-util@^0.15.1:
+  version "0.15.1"
+  resolved "https://registry.yarnpkg.com/tweetnacl-util/-/tweetnacl-util-0.15.1.tgz#b80fcdb5c97bcc508be18c44a4be50f022eea00b"
+  integrity sha512-RKJBIj8lySrShN4w6i/BonWp2Z/uxwC3h4y7xsRrpP59ZboCd0GpEVsOnMDYLMmKBpYhb5TgHzZXy7wTfYFBRw==
+
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"
   resolved "https://registry.npmjs.org/tweetnacl/-/tweetnacl-0.14.5.tgz"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
+
+tweetnacl@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-1.0.3.tgz#ac0af71680458d8a6378d0d0d050ab1407d35596"
+  integrity sha512-6rt+RN7aOi1nGMyC4Xa5DdYiukl2UWCbcJft7YhxReBGQD7OAM8Pbxw6YMo4r2diNEA8FEmu32YOn9rhaiE5yw==
 
 type-fest@^0.21.3:
   version "0.21.3"

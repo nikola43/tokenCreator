@@ -62,6 +62,8 @@ export class BurnTokensComponent implements OnInit {
     });
   }
 
+
+
   // tslint:disable-next-line:typedef
   async burnTokenInputKeyUp() {
     // this.tokenBalance = Number(
@@ -144,10 +146,6 @@ export class BurnTokensComponent implements OnInit {
   // tslint:disable-next-line:typedef
   async getTokenBalance(tokenAddress) {
     return await this.web3Service.getTokensBalance(tokenAddress);
-  }
-
-  async getTokenName(tokenAddress) {
-    return await this.web3Service.getTokensName(tokenAddress);
   }
 
   onClickEvent(e) {
