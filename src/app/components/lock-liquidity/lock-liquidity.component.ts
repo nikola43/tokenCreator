@@ -37,6 +37,7 @@ export class LockLiquidityComponent implements OnInit {
   tokenApproved = false;
   isApproving = false;
   isLoading = false;
+  isLocking = false;
   isAllowed = false;
   constructor(
     private formBuilder: FormBuilder,
@@ -131,17 +132,20 @@ export class LockLiquidityComponent implements OnInit {
   }
   // tslint:disable-next-line:typedef
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
+    this.isLocking = true;
     try {
       const r = await this.web3Service.lockLiquidity(tokenAddress,time,tokenAmount);
       this.notificationUtils.showSnackBar(
         'Liquidity locked Successfully.',
         SnackBarColorEnum.Green
       );
+      this.isLocking = false;
     } catch (e) {
       this.notificationUtils.showSnackBar(
         'Fail to lock liqquidity. Try again please',
         SnackBarColorEnum.Red
       );
+      this.isLocking = false;
     }
   }
   // tslint:disable-next-line:typedef

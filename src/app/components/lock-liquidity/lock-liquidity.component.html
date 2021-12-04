@@ -57,6 +57,7 @@
     <button [disabled]="!isAllowed" color="primary" type="button" mat-raised-button (click)="lockLiquidity(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value,
                this.lockLiquidityForm.locktime, lockLiquidityForm.lpAmount)">
       <angular-emojis [name]="'lock'" size="25"></angular-emojis>
+      <fa-icon *ngIf="isAllowed" [icon]="approveButtonIcon"></fa-icon>
       Lock Liquidity
     </button>
   </div>
