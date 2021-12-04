@@ -3,7 +3,7 @@
 
 const HDWalletProvider = require("@truffle/hdwallet-provider");
 
-const seed = "crumble major road warm great image soldier vague avocado custom join teach";
+const seed = "pigeon biology matrix monitor plunge coffee hand timber more educate jelly season";
 
 module.exports = {
     compilers: {
@@ -73,13 +73,13 @@ module.exports = {
             provider: () => new HDWalletProvider(seed, "https://ropsten.infura.io/v3/2560f14076a04dafb37b9ac8c49e73d6", 0),
             network_id: 3,
             gas: 7992000,
-            gasPrice: 20000000000, // 12 Gwei
+            gasPrice: 20000000000, // 20 Gwei
         },
         bsctestnet: {
-            provider: () => new HDWalletProvider(seed, `https://data-seed-prebsc-1-s1.binance.org:8545`),
+            provider: () => new HDWalletProvider(seed, `https://apis-sj.ankr.com/d39155d1e5344cbca9262b1de2010e49/8e1a6b2b88490d4e20818137e607c759/binance/full/test`),
             network_id: 97,
             gas: 28765632,
-            gasPrice: 10000000, // 10 Gwei
+            gasPrice: 20000000000, // 20 Gwei
             //confirmations: 2,
             //from: "0xB06a4327FF7dB3D82b51bbD692063E9a180b79D9",
             //gas: 29990542,   // <--- Twice as much

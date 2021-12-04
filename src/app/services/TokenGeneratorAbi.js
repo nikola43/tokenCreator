@@ -1,4 +1,4 @@
-export const TokenGeneratorAddress = '0x397B46C5034f4A88eAeb8A31412c6D806f558393';
+export const TokenGeneratorAddress = '0x9Ea66D8DF1b239685df4050494A9dC4424F8c39e';
 
 export const TokenGeneratorAbi = [
   {
