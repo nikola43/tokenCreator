@@ -87,7 +87,7 @@ export class Web3Service {
           reject('Error retrieving account');
         }
       });
-    }) as Promise<any>;       
+    }) as Promise<any>;
   }
 
   public async enableMetaMaskAccount(): Promise<any> {
@@ -161,7 +161,8 @@ export class Web3Service {
         tokenSymbol,
         tokenSupply,
         tokenDecimals,
-        fees
+        fees,
+        PancakeRouterAddress
       ).send({from: this.currentAccountSubject.value, value: sendedValue.toString()});
 
     console.log(create);
