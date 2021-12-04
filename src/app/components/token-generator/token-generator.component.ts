@@ -36,10 +36,6 @@ export class TokenGeneratorComponent implements OnInit {
   ) {
 
     this.createForm();
-    this.connectWeb3().then((r) => {
-      console.log(r);
-    });
-
     if (this.web3Service.enable) {
       this.web3Service.getAccount().then(async (r) => {
         this.account = r;
@@ -50,30 +46,6 @@ export class TokenGeneratorComponent implements OnInit {
         );
       });
     }
-
-    this.web3Service.web3.on('accountsChanged', (accounts) => {
-      console.log(accounts);
-      if (accounts.length === 0) {
-        this.account = undefined;
-        this.buttonLabel = 'Connect';
-      } else {
-        this.account = accounts[0];
-        this.buttonLabel = accounts[0];
-      }
-    });
-
-    this.web3Service.web3.on('networkChanged', (networkId) => {
-      /*
-      console.log(accounts);
-      if (accounts.length === 0) {
-        this.account = undefined;
-        this.buttonLabel = 'Connect';
-      } else {
-        this.account = accounts[0];
-        this.buttonLabel = accounts[0];
-      }
-      */
-    });
   }
 
   @ViewChild('slider') slider;
@@ -140,24 +112,6 @@ export class TokenGeneratorComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  public async connectWeb3() {
-    this.web3Service.enableMetaMaskAccount().then(async (r) => {
-      console.log(r);
-      if (this.web3Service.account?.length === 0) {
-        this.account = undefined;
-        this.buttonLabel = 'Connect';
-      } else {
-        this.account = r;
-        this.buttonLabel = r;
-
-        this.bnbBalance = Web3.utils.fromWei(
-          await this.web3Service.getBalance(),
-          'ether'
-        );
-      }
-    });
-  }
-  // tslint:disable-next-line:typedef
   async numberFieldKeydown(event, maxValue, controlName) {
     if (event.code !== 'Backspace') {
       console.log(event.key);
@@ -184,17 +138,6 @@ export class TokenGeneratorComponent implements OnInit {
       }
       */
     }
-  }
-
-  // tslint:disable-next-line:typedef
-  async getTokenBalance(tokenAddress) {
-    return await this.web3Service.getTokensBalance(tokenAddress);
-  }
-
-
-  // tslint:disable-next-line:typedef
-  async getLPTokenBalance(tokenAddress) {
-    return await this.web3Service.getLPTokensBalance(tokenAddress);
   }
   // tslint:disable-next-line:typedef
   percentage(percent, total) {

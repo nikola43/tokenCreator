@@ -18,6 +18,7 @@ import {LockLiquidityComponent} from './components/lock-liquidity/lock-liquidity
 import {WhitelistBlacklistComponent} from './components/whitelist-blacklist/whitelist-blacklist.component';
 import {BurnTokensComponent} from './components/burn-tokens/burn-tokens.component';
 import { RemoveLiquidityDialogComponent } from './components/remove-liquidity-dialog/remove-liquidity-dialog.component';
+import {NetworkSelectorComponent} from "./components/network-selector/network-selector.component";
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { RemoveLiquidityDialogComponent } from './components/remove-liquidity-di
     AddLiquidityComponent,
     LockLiquidityComponent,
     WhitelistBlacklistComponent,
-    BurnTokensComponent
+    BurnTokensComponent,
+    NetworkSelectorComponent
   ],
   imports: [
     BrowserModule,

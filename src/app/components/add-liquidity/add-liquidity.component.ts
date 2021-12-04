@@ -40,7 +40,7 @@ export class AddLiquidityComponent implements OnInit {
     tokenAmount: 0,
   };
   constructor(public web3Service: Web3Service,
-              private formBuilder: FormBuilder, 
+              private formBuilder: FormBuilder,
               private notificationUtils: NotificationUtils,
               public dialog: MatDialog) {
     this.createForm();
@@ -68,7 +68,7 @@ export class AddLiquidityComponent implements OnInit {
   public async connectWeb3() {
     this.web3Service.enableMetaMaskAccount().then(async (r) => {
       console.log(r);
-      if (this.web3Service.account?.length === 0) {
+      if (r?.length === 0) {
         this.account = undefined;
         this.buttonLabel = 'Connect';
       } else {
@@ -377,7 +377,7 @@ export class AddLiquidityComponent implements OnInit {
       this.tokenBalance = 0;
     }
   }
-  
+
   async openRemoveLiquidityDialog() {
     const pairAddress = await this.getPair(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
     const dialogRef = this.dialog.open(RemoveLiquidityDialogComponent, {
@@ -410,7 +410,7 @@ export class AddLiquidityComponent implements OnInit {
           await this.web3Service.getBalance(),
           'ether'
         );
-      } 
+      }
 
 
     });
@@ -452,9 +452,9 @@ export class AddLiquidityComponent implements OnInit {
       const isValid = /^0x[a-fA-F0-9]{40}$/.test(
         address
       );
-      if (!isValid) {   
+      if (!isValid) {
         throw new Error(msg);
-        
+
       };
     }
     catch(e) {

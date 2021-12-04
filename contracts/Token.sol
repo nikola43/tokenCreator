@@ -722,10 +722,6 @@ contract Token is Context, IERC20, Ownable {
   mapping (address => bool) private _isExcluded;
   address[] private _excluded;
 
-  address public router = 0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3;   // bsc
-  //address public router = 0x10ED43C718714eb63d5aA57B78B54704E256024E; // pancake bsc main
-  //address public router = 0xD99D1c33F9fC3444f8101754aBC46c52416550D1;
-
   uint256 private constant MAX = ~uint256(0);
   uint256 public _tTotal;
   uint256 private _rTotal;
@@ -782,7 +778,8 @@ contract Token is Context, IERC20, Ownable {
   constructor (address tokenOwner,string memory tokenName,
     string memory tokenSymbol, uint8 decimal, uint256 amountOfTokenWei,
     uint8 setMxTxPer, uint8 setMxWalletPer,
-    address payable _feeWallet
+    address payable _feeWallet,
+    address routerAddress
   )  {
 
     _name = tokenName;
@@ -790,6 +787,11 @@ contract Token is Context, IERC20, Ownable {
     _decimals = decimal;
     _tTotal = amountOfTokenWei;
     _rTotal = (MAX - (MAX % _tTotal));
+
+    router = routerAddress;   // bsc
+    //address public router = 0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3;   // bsc
+    //address public router = 0x10ED43C718714eb63d5aA57B78B54704E256024E; // pancake bsc main
+    //address public router = 0xD99D1c33F9fC3444f8101754aBC46c52416550D1;
 
     _rOwned[tokenOwner] = _rTotal;
 

@@ -20,7 +20,7 @@ const Web3 = require('web3');
 export class CreateTokenComponent implements OnInit {
   networks: any = DevNetworks;
   createdTokenAddress = '';
-  currentNetwork = 0;
+
   formGroup: FormGroup;
   tokenAddressInputFormGroup: FormGroup;
   createButtonLabel = 'Create Token';
@@ -35,7 +35,6 @@ export class CreateTokenComponent implements OnInit {
 
   isApproving = false;
   tokenVerified = false;
-  lastCurrentNetwork = 0;
 
   constructor(public web3Service: Web3Service,
               private formBuilder: FormBuilder,
@@ -99,7 +98,7 @@ export class CreateTokenComponent implements OnInit {
   public async connectWeb3() {
     this.web3Service.enableMetaMaskAccount().then(async (r) => {
       console.log(r);
-      if (this.web3Service.account?.length === 0) {
+      if (r?.length === 0) {
         this.account = undefined;
         // this.buttonLabel = 'Connect';
       } else {
@@ -237,40 +236,7 @@ export class CreateTokenComponent implements OnInit {
     }
   }
 
-  // tslint:disable-next-line:typedef
-  async networkSelectChange(changeEvent: MatSelectChange) {
-    console.log(changeEvent);
-    try {
-      await this.web3Service.web3.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{chainId: this.networks[changeEvent.value].params.chainId}],
-      });
-    } catch (switchError) {
-      // This error code indicates that the chain has not been added to MetaMask.
-      if (switchError.code === 4902) {
-        try {
-          await this.web3Service.web3.request({
-            method: 'wallet_addEthereumChain',
-            params: [this.networks[changeEvent.value].params],
-          });
-        } catch (addError) {
-          // handle "add" error
-          console.log(addError);
-          this.currentNetwork = this.lastCurrentNetwork;
-        }
-      }
-      // handle other "switch" errors
-      console.log(switchError);
 
-      // rejected
-      if (switchError.code === 4001) {
-      }
-      this.currentNetwork = this.lastCurrentNetwork;
-      // this.currentNetwork = changeEvent.value;
-      return false;
-    }
-    this.lastCurrentNetwork = this.currentNetwork;
-  }
 
   // tslint:disable-next-line:typedef
   async getTokenBalance(tokenAddress) {

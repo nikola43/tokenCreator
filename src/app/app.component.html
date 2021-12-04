@@ -2,6 +2,7 @@
   <mat-toolbar-row>
     <span><img src="assets/ORIGINAL.png" /><span class="mobile-hidden"> MIDAS Token Generator</span></span>
     <span class="example-spacer"></span>
+    <app-network-selector (selectedNetwork)="onNetworkChanged($event)"></app-network-selector>
     <button class="connect-button" color="primary" type="button" mat-raised-button
       (click)="connectWeb3()">{{buttonLabel}}</button>
   </mat-toolbar-row>

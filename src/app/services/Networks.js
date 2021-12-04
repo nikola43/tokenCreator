@@ -4,7 +4,7 @@ export const DevNetworks = [
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
     name: 'Binance Smart Chain Testnet',
     params: {
-      chainId: 97,
+      chainId: '0x61',
       chainName: 'Binance Smart Chain Testnet',
       nativeCurrency: {
         name: 'Binance Coin',
@@ -13,7 +13,13 @@ export const DevNetworks = [
       },
       rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'],
       blockExplorerUrls: ['https://testnet.bscscan.com']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
   {
     index: 1,
@@ -29,7 +35,13 @@ export const DevNetworks = [
       },
       rpcUrls: ['https://mainnet.infura.io/v3/63393c0bfeb8400c909cfdf303044f3e'],
       blockExplorerUrls: ['https://etherscan.io']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
   {
     index: 2,
@@ -45,7 +57,13 @@ export const DevNetworks = [
       },
       rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
       blockExplorerUrls: ['https://explorer.matic.network/']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
   {
     index: 3,
@@ -61,7 +79,13 @@ export const DevNetworks = [
       },
       rpcUrls: ['https://api.harmony.one'],
       blockExplorerUrls: ['https://explorer.harmony.one']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
   {
     index: 4,
@@ -77,7 +101,13 @@ export const DevNetworks = [
       },
       rpcUrls: ['https://rpc.ftm.tools'],
       blockExplorerUrls: ['https://ftmscan.com']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
   {
     index: 5,
@@ -93,7 +123,13 @@ export const DevNetworks = [
       },
       rpcUrls: ['https://public-node.testnet.rsk.co'],
       blockExplorerUrls: ['https://ftmscan.com']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
   {
     index: 5,
@@ -109,7 +145,13 @@ export const DevNetworks = [
       },
       rpcUrls: ['https://exchaintestrpc.okex.org'],
       blockExplorerUrls: ['https://www.oklink.com/okexchain-test']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
   {
     index: 6,
@@ -125,7 +167,13 @@ export const DevNetworks = [
       },
       rpcUrls: ['https://babel-api.testnet.iotex.io'],
       blockExplorerUrls: ['https://testnet.iotexscan.io']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
 ];
 
@@ -144,7 +192,13 @@ export const ProdNetworks = [
       },
       rpcUrls: ['https://bsc-dataseed.binance.org/'],
       blockExplorerUrls: ['https://bscscan.com']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
   {
     index: 1,
@@ -160,7 +214,13 @@ export const ProdNetworks = [
       },
       rpcUrls: ['https://mainnet.infura.io/v3/63393c0bfeb8400c909cfdf303044f3e'],
       blockExplorerUrls: ['https://etherscan.io']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
   {
     index: 2,
@@ -176,6 +236,12 @@ export const ProdNetworks = [
       },
       rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
       blockExplorerUrls: ['https://explorer.matic.network/']
-    }
+    },
+    acceptedPaymentTokens: [
+      '0xsss',
+      '0xsss',
+      '0xsss',
+      '0xsss',
+    ]
   },
 ];
