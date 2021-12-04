@@ -7,7 +7,7 @@
       <span
         style="margin-left: 5px !important; font-weight: bold; color: white">{{networks[networkId].acceptedPaymentTokens[currentToken].symbol}}</span>
     </mat-select-trigger>
-    <mat-option *ngFor="let paymentToken of acceptedPaymentTokens" [value]="currentToken">
+    <mat-option *ngFor="let paymentToken of acceptedPaymentTokens; let i = index" [attr.data-index]="i" [value]="i">
       <img style="width: 25px; height: 25px;" [src]="paymentToken.image"> <span
       style="margin-left: 5px !important; font-weight: bold">{{paymentToken.symbol}}</span>
     </mat-option>
