@@ -193,6 +193,8 @@
     </ng-container>
     <div style="height: 15px"></div>
 
+    <app-service-token-payment-selector (selectedTokenAddres)="onChangePaymentToken($event)"></app-service-token-payment-selector>
+
     <div style="width: 100%">
       <button class="create-tokenButton" [disabled]="isLoading" id="submit-button" color="primary" type="submit" mat-raised-button><span
         *ngIf="isLoading" class="spinner-border spinner-border-sm mr-1"></span>

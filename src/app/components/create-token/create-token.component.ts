@@ -213,6 +213,11 @@ export class CreateTokenComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
+  async onChangePaymentToken($event) {
+    console.log({$event});
+  }
+
+  // tslint:disable-next-line:typedef
   async addTokenToMetamask() {
     try {
       // wasAdded is a boolean. Like any RPC method, an error may be thrown.
