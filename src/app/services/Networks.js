@@ -96,7 +96,7 @@ export const DevNetworks = [
     index: 2,
     name: 'Polygon (MATIC)',
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
-    routerAddress: '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3',
+    routerAddress: '0xa5e0829caced8ffdd4de3c43696c57f7d7a678ff',
     params: {
       chainId: '0x89',
       chainName: 'Polygon (MATIC)',
@@ -106,7 +106,7 @@ export const DevNetworks = [
         decimals: 18
       },
       rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
-      blockExplorerUrls: ['https://explorer.matic.network/']
+      blockExplorerUrls: ['https://polygonscan.com/']
     },
     acceptedPaymentTokens: [
       {
@@ -432,7 +432,7 @@ export const ProdNetworks = [
     index: 1,
     name: 'Ethereum',
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
-    routerAddress: '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3',
+    routerAddress: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
     params: {
       chainId: '0x1',
       chainName: 'Ethereum',
