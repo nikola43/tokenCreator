@@ -21,6 +21,7 @@ import { RemoveLiquidityDialogComponent } from './components/remove-liquidity-di
 import {FromWeiPipe} from '../utils/FromWei.pipe';
 import { CountdownTimerModule } from './../../projects/countdown-timer/src/lib/countdown-timer.module';
 import {NetworkSelectorComponent} from "./components/network-selector/network-selector.component";
+import {ServiceTokenPaymentSelectorComponent} from "./components/service-token-payment-selector/service-token-payment-selector.component";
 
 @NgModule({
   declarations: [
@@ -35,7 +36,9 @@ import {NetworkSelectorComponent} from "./components/network-selector/network-se
     WhitelistBlacklistComponent,
     BurnTokensComponent,
     NetworkSelectorComponent,
-    FromWeiPipe
+    FromWeiPipe,
+    NetworkSelectorComponent,
+    ServiceTokenPaymentSelectorComponent
   ],
   imports: [
     BrowserModule,

@@ -15,10 +15,31 @@ export const DevNetworks = [
       blockExplorerUrls: ['https://testnet.bscscan.com']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
   {
@@ -37,10 +58,31 @@ export const DevNetworks = [
       blockExplorerUrls: ['https://etherscan.io']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
   {
@@ -59,10 +101,31 @@ export const DevNetworks = [
       blockExplorerUrls: ['https://explorer.matic.network/']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
   {
@@ -81,10 +144,31 @@ export const DevNetworks = [
       blockExplorerUrls: ['https://explorer.harmony.one']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
   {
@@ -103,10 +187,31 @@ export const DevNetworks = [
       blockExplorerUrls: ['https://ftmscan.com']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
   {
@@ -125,10 +230,31 @@ export const DevNetworks = [
       blockExplorerUrls: ['https://ftmscan.com']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
   {
@@ -147,10 +273,31 @@ export const DevNetworks = [
       blockExplorerUrls: ['https://www.oklink.com/okexchain-test']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
   {
@@ -169,10 +316,31 @@ export const DevNetworks = [
       blockExplorerUrls: ['https://testnet.iotexscan.io']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
 ];
@@ -194,10 +362,31 @@ export const ProdNetworks = [
       blockExplorerUrls: ['https://bscscan.com']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
   {
@@ -216,10 +405,31 @@ export const ProdNetworks = [
       blockExplorerUrls: ['https://etherscan.io']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
   {
@@ -238,10 +448,31 @@ export const ProdNetworks = [
       blockExplorerUrls: ['https://explorer.matic.network/']
     },
     acceptedPaymentTokens: [
-      '0xsss',
-      '0xsss',
-      '0xsss',
-      '0xsss',
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xdsfsd"
+      },
     ]
   },
 ];
