@@ -12,7 +12,7 @@ contract TokenCreator is Ownable {
   uint8   nktPercent = 10;
   address picatoste = 0x23aD762bB0ed18ab10c85782278B0004b17de8F2;
   uint8   picatostePercent = 10;
-  address drg = 0xC9ba0b9A989978c3F1ebA32A8BC3E0aD17B9C368;
+  address drg = 0xb6e76628BeB7872D2ade6AE9641bb390401c18ef;
   uint8   drgPercent = 10;
   address vera = 0xFAd70A123ec04e8f10b6fC74f9D7420617861C0b;
   uint8   veraPercent = 10;

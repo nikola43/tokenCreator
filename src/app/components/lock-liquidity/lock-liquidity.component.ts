@@ -3,6 +3,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Web3Service} from '../../services/web3.service';
 import {MatSliderChange} from '@angular/material/slider';
 import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil';
+import { CountdownModule } from 'ngx-countdown';
+import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+
 
 declare let require: any;
 const Web3 = require('web3');
@@ -23,6 +26,7 @@ export class LockLiquidityComponent implements OnInit {
     lpAmount: 0,
     locktime: 0,
   };
+  falock = faLock;
   lockTokenLiquidityPercent = 0;
   constructor(private formBuilder: FormBuilder,public web3Service: Web3Service, private notificationUtils: NotificationUtils) {
     this.createForm();
@@ -70,7 +74,7 @@ export class LockLiquidityComponent implements OnInit {
       event,
     });
 
-    this.lockLiquidityForm.locktime = event.value.getTime();
+    this.lockLiquidityForm.locktime = event.value.getTime() / 1000;
     console.log(this.lockLiquidityForm.locktime);
 
     // const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
@@ -142,7 +146,10 @@ export class LockLiquidityComponent implements OnInit {
       /* Get my locks */
       this.web3Service.getLocks().then((r) => {
         console.log(r);
+        r.map(async (x) => x._tokenName = await this.getLPTokenName(this.lockLiquidityTokenAddressInputFormGroup.controls
+          .lockLiquidityTokenAddress.value));
         this.myLocks = r;
+
       }).catch((err) => {
         console.log(err);
       });
@@ -150,6 +157,12 @@ export class LockLiquidityComponent implements OnInit {
     } else {
       this.lpTokenBalance = 0;
     }
+  }
+
+  async getLPTokenName(tokenAddress) {
+    let name = await this.web3Service.getTokensName(tokenAddress);
+    name = name + ' - BNB LP'
+    return name;
   }
 
   onClickEvent(e) {

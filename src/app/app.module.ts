@@ -18,6 +18,8 @@ import {LockLiquidityComponent} from './components/lock-liquidity/lock-liquidity
 import {WhitelistBlacklistComponent} from './components/whitelist-blacklist/whitelist-blacklist.component';
 import {BurnTokensComponent} from './components/burn-tokens/burn-tokens.component';
 import { RemoveLiquidityDialogComponent } from './components/remove-liquidity-dialog/remove-liquidity-dialog.component';
+import {FromWeiPipe} from '../utils/FromWei.pipe';
+import { CountdownTimerModule } from './../../projects/countdown-timer/src/lib/countdown-timer.module';
 import {NetworkSelectorComponent} from "./components/network-selector/network-selector.component";
 
 @NgModule({
@@ -32,7 +34,8 @@ import {NetworkSelectorComponent} from "./components/network-selector/network-se
     LockLiquidityComponent,
     WhitelistBlacklistComponent,
     BurnTokensComponent,
-    NetworkSelectorComponent
+    NetworkSelectorComponent,
+    FromWeiPipe
   ],
   imports: [
     BrowserModule,
@@ -44,6 +47,7 @@ import {NetworkSelectorComponent} from "./components/network-selector/network-se
     FontAwesomeModule,
     FormsModule,
     AngularEmojisModule,
+    CountdownTimerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
