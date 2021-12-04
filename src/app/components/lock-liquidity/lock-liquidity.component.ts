@@ -1,11 +1,13 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Web3Service} from '../../services/web3.service';
-import {MatSliderChange} from '@angular/material/slider';
-import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Web3Service } from '../../services/web3.service';
+import { MatSliderChange } from '@angular/material/slider';
+import {
+  NotificationUtils,
+  SnackBarColorEnum,
+} from 'src/utils/NotificationUtil';
 import { CountdownModule } from 'ngx-countdown';
 import { faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
-
 
 declare let require: any;
 const Web3 = require('web3');
@@ -13,7 +15,7 @@ const Web3 = require('web3');
 @Component({
   selector: 'app-lock-liquidity',
   templateUrl: './lock-liquidity.component.html',
-  styleUrls: ['./lock-liquidity.component.scss']
+  styleUrls: ['./lock-liquidity.component.scss'],
 })
 export class LockLiquidityComponent implements OnInit {
   @ViewChild('lockLiquidityTokenAddress') tokenAddressInput: ElementRef;
@@ -28,7 +30,11 @@ export class LockLiquidityComponent implements OnInit {
   };
   falock = faLock;
   lockTokenLiquidityPercent = 0;
-  constructor(private formBuilder: FormBuilder,public web3Service: Web3Service, private notificationUtils: NotificationUtils) {
+  constructor(
+    private formBuilder: FormBuilder,
+    public web3Service: Web3Service,
+    private notificationUtils: NotificationUtils
+  ) {
     this.createForm();
   }
 
@@ -38,27 +44,36 @@ export class LockLiquidityComponent implements OnInit {
   }
   // tslint:disable-next-line:typedef
   async tokenInputKeyUp() {
-    console.log(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress);
+    console.log(
+      this.lockLiquidityTokenAddressInputFormGroup.controls
+        .lockLiquidityTokenAddress
+    );
 
     const isValid = /^0x[a-fA-F0-9]{40}$/.test(
-      this.lockLiquidityTokenAddressInputFormGroup.controls.burnTokenAddress.value
+      this.lockLiquidityTokenAddressInputFormGroup.controls.burnTokenAddress
+        .value
     );
     if (isValid) {
       this.tokenBalance = Number(
         Web3.utils.fromWei(
           await this.getTokenBalance(
-            this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value
+            this.lockLiquidityTokenAddressInputFormGroup.controls
+              .lockLiquidityTokenAddress.value
           ),
           'ether'
         )
-      ).toFixed(18).toString();
-      console.log(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value);
+      )
+        .toFixed(18)
+        .toString();
+      console.log(
+        this.lockLiquidityTokenAddressInputFormGroup.controls
+          .lockLiquidityTokenAddress.value
+      );
     } else {
       this.tokenBalance = 0;
     }
   }
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   // tslint:disable-next-line:typedef
   formatLabel(value: number) {
     if (value >= 1000) {
@@ -81,17 +96,30 @@ export class LockLiquidityComponent implements OnInit {
   }
   // tslint:disable-next-line:typedef
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
-
     console.log({
       tokenAddress,
       time,
-      tokenAmount
+      tokenAmount,
     });
-
-    const r = await this.web3Service.lockLiquidity(tokenAddress, time, tokenAmount);
-    console.log({
-      r,
-    });
+    try {
+      const r = await this.web3Service.lockLiquidity(
+        tokenAddress,
+        time,
+        tokenAmount
+      );
+      console.log({
+        r,
+      });
+      this.notificationUtils.showSnackBar(
+        'Liquidity locked Successfully.',
+        SnackBarColorEnum.Green
+      );
+    } catch (e) {
+      this.notificationUtils.showSnackBar(
+        'Fail to lock liqquidity. Try again please',
+        SnackBarColorEnum.Red
+      );
+    }
   }
   // tslint:disable-next-line:typedef
   mapValue(x, inMin, inMax, outMin, outMax) {
@@ -144,16 +172,22 @@ export class LockLiquidityComponent implements OnInit {
         .toString();
 
       /* Get my locks */
-      this.web3Service.getLocks().then((r) => {
-        console.log(r);
-        r.map(async (x) => x._tokenName = await this.getLPTokenName(this.lockLiquidityTokenAddressInputFormGroup.controls
-          .lockLiquidityTokenAddress.value));
-        this.myLocks = r;
-
-      }).catch((err) => {
-        console.log(err);
-      });
-
+      this.web3Service
+        .getLocks()
+        .then((r) => {
+          console.log(r);
+          r.map(
+            async (x) =>
+              (x._tokenName = await this.getLPTokenName(
+                this.lockLiquidityTokenAddressInputFormGroup.controls
+                  .lockLiquidityTokenAddress.value
+              ))
+          );
+          this.myLocks = r;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       this.lpTokenBalance = 0;
     }
@@ -161,7 +195,7 @@ export class LockLiquidityComponent implements OnInit {
 
   async getLPTokenName(tokenAddress) {
     let name = await this.web3Service.getTokensName(tokenAddress);
-    name = name + ' - BNB LP'
+    name = name + ' - BNB LP';
     return name;
   }
 
@@ -170,25 +204,30 @@ export class LockLiquidityComponent implements OnInit {
     return this.checkValue(e, 'Please enter a valid token.');
   }
 
-  checkValue(address:string,msg:string = 'The address is invalid.') {
+  checkValue(address: string, msg: string = 'The address is invalid.') {
     try {
-      const isValid = /^0x[a-fA-F0-9]{40}$/.test(
-        address
-      );
-      if (!isValid) {   
+      const isValid = /^0x[a-fA-F0-9]{40}$/.test(address);
+      if (!isValid) {
         throw new Error(msg);
-        
-      };
-    }
-    catch(e) {
-      this.notificationUtils.showSnackBar(
-        msg,
-        SnackBarColorEnum.Red,
-      );
+      }
+    } catch (e) {
+      this.notificationUtils.showSnackBar(msg, SnackBarColorEnum.Red);
     }
   }
 
-  withdraw(id:string) {
-    console.log(id);
+  async withdraw(id: string) {
+    try {
+      const res = await this.web3Service.withdrawLockedTokens(id);
+      this.notificationUtils.showSnackBar(
+        'Successful withdraw.',
+        SnackBarColorEnum.Green
+      );
+      return res;
+    } catch (e) {
+      this.notificationUtils.showSnackBar(
+        'Fail to withdraw. Wait until unlock.',
+        SnackBarColorEnum.Red
+      );
+    }
   }
 }

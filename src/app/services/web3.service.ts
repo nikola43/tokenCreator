@@ -425,7 +425,7 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
     const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
-    const a = await lockLiquidityContract.methods.lockTokens(await this.getPair(this.wethAddress, tokenAddress), this.currentAccountSubject.value, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).send({from: this.account, value: '80000000000000000'});
+    const a = await lockLiquidityContract.methods.lockTokens(await this.getPair(this.wethAddress, tokenAddress), this.currentAccountSubject.value, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).send({from: this.currentAccountSubject.value, value: '80000000000000000'});
     console.log(a);
     return a;
   }

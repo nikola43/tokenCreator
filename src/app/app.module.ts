@@ -22,6 +22,7 @@ import {FromWeiPipe} from '../utils/FromWei.pipe';
 import { CountdownTimerModule } from './../../projects/countdown-timer/src/lib/countdown-timer.module';
 import {NetworkSelectorComponent} from "./components/network-selector/network-selector.component";
 import {ServiceTokenPaymentSelectorComponent} from "./components/service-token-payment-selector/service-token-payment-selector.component";
+import { MatDatetimepickerModule, MatNativeDatetimeModule } from '@mat-datetimepicker/core';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,9 @@ import {ServiceTokenPaymentSelectorComponent} from "./components/service-token-p
     FontAwesomeModule,
     FormsModule,
     AngularEmojisModule,
-    CountdownTimerModule
+    CountdownTimerModule,
+    MatNativeDatetimeModule,
+    MatDatetimepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

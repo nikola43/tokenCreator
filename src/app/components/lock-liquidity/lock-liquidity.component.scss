@@ -9,3 +9,8 @@
 :host ::ng-deep .mat-form-field-outline:not(:invalid) {
    color: white;
 }
+::ng-deep .mat-datetimepicker-calendar-header-year,
+::ng-deep .mat-datetimepicker-calendar-header-date,
+::ng-deep .mat-datetimepicker-calendar-header-time {
+   color: black;
+}

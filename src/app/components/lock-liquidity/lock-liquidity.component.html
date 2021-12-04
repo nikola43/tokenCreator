@@ -40,10 +40,10 @@
 
     <mat-form-field>
       <input [disabled]="!lockLiquidityTokenAddressInputFormGroup.controls['lockLiquidityTokenAddress'].valid" matInput
-        [matDatepicker]="picker" placeholder="Lock until..." (dateInput)="addEvent('input', $event)"
+        [matDatetimepicker]="picker" placeholder="Lock until..." (dateInput)="addEvent('input', $event)"
         (dateChange)="addEvent('change', $event)">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <mat-datetimepicker-toggle matSuffix [for]="picker"></mat-datetimepicker-toggle>
+      <mat-datetimepicker type="datetime" openOnFocus="true" #picker></mat-datetimepicker>
     </mat-form-field>
 
   </mat-card>
@@ -66,10 +66,10 @@
       <div class="col-sm liquidity-locked">
         <div>
           <h5>Locked {{lock[2] | fromWei }}  {{lock['_tokenName']}} </h5>
-          <p><fa-icon [icon]="falock"></fa-icon> Unlocks {{lock[3] | date:'short'}}</p>
+          <p><fa-icon [icon]="falock"></fa-icon> Unlocks {{lock[3]*1000 | date:'dd/MM/yyyy hh:mm'}}</p>
         </div>
         <div>
-          <ctimer-countdown-timer [finishDateString]="'2021-12-05 18:18:18'"></ctimer-countdown-timer>
+          <ctimer-countdown-timer [finishDateString]="lock[3]*1000"></ctimer-countdown-timer>
         </div>
         <button (click)="withdraw(lock['id'])" class="remove-lock-btn" color="warn" type="button" mat-raised-button>Withdraw</button>
       </div>
