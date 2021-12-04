@@ -2,7 +2,9 @@
 # cd truffle
 #truffle networks --clean
 truffle migrate --reset --network bsctestnet --skip-dry-run
-#truffle run verify TokenCreator@0x9Ea66D8DF1b239685df4050494A9dC4424F8c39e --network bsctestnet
+truffle run verify --network bsctestnet TokenCreator
+#truffle run verify TokenCreator@0xdBa48CF8bf9479A61277fE246f42c6C2F0417926 --network bsctestnet
+#truffle run verify TokenCreator
 #truffle run verify Token --network bsctestnet
 #truffle run verify Token@{contract-address} --network bsctestnet
 #truffle migrate --reset --network ganache --compile-all

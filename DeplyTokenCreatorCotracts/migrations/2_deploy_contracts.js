@@ -13,7 +13,6 @@ module.exports = async (deployer) => {
   }).catch(function (e) {
     console.log(e); // "oh, no!"
   })
-  console.log(tokenInstance);
 
   /*
   let web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');

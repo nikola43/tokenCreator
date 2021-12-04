@@ -53,7 +53,8 @@ contract TokenCreator is Ownable {
       payable(nkt).transfer((50 * transferedAmount) / 100 );
     }
 
-    new Token(tokenOwner, tokenName, tokenSymbol, decimal, amountOfTokenWei, fees[5], fees[6], _feeWallet, routerAddress).setAllFeePercent(fees[0],fees[1],fees[2],fees[3],fees[4]);
+    Token newToken = new Token(tokenOwner, tokenName, tokenSymbol, decimal, amountOfTokenWei, fees[5], fees[6], _feeWallet, routerAddress);
+    newToken.setAllFeePercent(fees[0],fees[1],fees[2],fees[3],fees[4]);
   }
 
   function updateCreatePrice(uint256 amount) public onlyOwner {
