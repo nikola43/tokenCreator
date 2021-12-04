@@ -444,6 +444,7 @@ export class Web3Service {
 
     for (let i = 0; i < locksList.length; i++) {
       const lockDetails = await lockLiquidityContract.methods.getDepositDetails(locksList[i]).call();
+      lockDetails['id'] = locksList[i];
       locksDetails.push(lockDetails);
     }
     return locksDetails;

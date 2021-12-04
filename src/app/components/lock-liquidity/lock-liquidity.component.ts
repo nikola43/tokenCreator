@@ -187,4 +187,8 @@ export class LockLiquidityComponent implements OnInit {
       );
     }
   }
+
+  withdraw(id:string) {
+    console.log(id);
+  }
 }

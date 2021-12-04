@@ -81,27 +81,37 @@ export const DevNetworks = [
       {
         symbol: "BNB",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xB8c77482e45F1F44dE1745F52C74426C631bDD52"
+      },
+      {
+        symbol: "USDC",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png',
+        address: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      },
+      {
+        symbol: "DAI",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png',
+        address: "0x6b175474e89094c44da98b954eedeac495271d0f"
+      },
+      {
+        symbol: "USDT",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png',
+        address: "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      },
+      {
+        symbol: "MATIC",
+        image: 'https://etherscan.io/token/images/matic-polygon_32.png',
+        address: "0x7d1afa7b718fb893db30a3abc0cfc608aacfebb0"
+      },
+      {
+        symbol: "ETHER",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
         address: "0xdsfsd"
       },
       {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
-      },
-      {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
-      },
-      {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
-      },
-      {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        symbol: "HARMONY",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3945.png',
+        address: "0x799a4202c12ca952cb311598a024c80ed371a41e"
       },
     ]
   },
@@ -124,27 +134,32 @@ export const DevNetworks = [
       {
         symbol: "BNB",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "0x3BA4c387f786bFEE076A58914F5Bd38d668B42c3"
       },
       {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        symbol: "BUSD",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png',
+        address: "0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7"
       },
       {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        symbol: "DAI",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png',
+        address: "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063"
       },
       {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        symbol: "USDT",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png',
+        address: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
       },
       {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        symbol: "MATIC",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
+        address: "0x0000000000000000000000000000000000001010"
+      },
+      {
+        symbol: "ETHER",
+        image: 'https://polygonscan.com/token/images/wETH_32.png',
+        address: "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"
       },
     ]
   },
@@ -165,29 +180,34 @@ export const DevNetworks = [
     },
     acceptedPaymentTokens: [
       {
-        symbol: "BNB",
+        symbol: "ONE",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "one1eanyppa9hvpr0g966e6zs5hvdjxkngn6jtulua"
       },
       {
         symbol: "BNB",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "one1k8mwv8s7zymz2kf6ytax4220spftcw0q2et32z"
       },
       {
-        symbol: "BNB",
+        symbol: "DAI",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "one1a7th6tunrsvh3k6lvarkvmapat9s6qee9kna05"
       },
       {
-        symbol: "BNB",
+        symbol: "USDC",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "one1np293efrmv74xyjcz0kk3sn53x0fm745f2hsuc"
       },
       {
-        symbol: "BNB",
+        symbol: "BUSD",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "one1u9mwheravgdesjnnqd4emfwcx3q3aae5hw36l2"
+      },
+      {
+        symbol: "USDT",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "one18s4ch6vu2pvnpq0252njfu9c9p044w50gw3l6y"
       },
     ]
   },
@@ -208,29 +228,29 @@ export const DevNetworks = [
     },
     acceptedPaymentTokens: [
       {
-        symbol: "BNB",
+        symbol: "FTM",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "0x21be370d5312f44cb42ce377bc9b8a0cef1a4c83"
       },
       {
         symbol: "BNB",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "0x27f26f00e1605903645bbabc0a73e35027dccd45"
       },
       {
-        symbol: "BNB",
+        symbol: "USDC",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "0x04068da6c83afcfa0e13ba15a6696662335d5b75"
       },
       {
-        symbol: "BNB",
+        symbol: "DAI",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "0x8d11ec38a3eb5e956b052f67da8bdc9bef8abf3e"
       },
       {
-        symbol: "BNB",
+        symbol: "USDT",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0xdsfsd"
+        address: "0x940f41f0ec9ba1a34cf001cc03347ac092f5f6b5"
       },
     ]
   },

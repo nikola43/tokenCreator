@@ -71,7 +71,7 @@
         <div>
           <ctimer-countdown-timer [finishDateString]="'2021-12-05 18:18:18'"></ctimer-countdown-timer>
         </div>
-        <button class="remove-lock-btn" color="warn" type="button" mat-raised-button>Remove</button>
+        <button (click)="withdraw(lock['id'])" class="remove-lock-btn" color="warn" type="button" mat-raised-button>Withdraw</button>
       </div>
     </mat-card>
   </div>
