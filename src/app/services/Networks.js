@@ -18,26 +18,46 @@ export const DevNetworks = [
       {
         symbol: "BNB",
         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0xae13d989dac2f0debff460ac112a837c89baa7cd"
+      },
+      {
+        symbol: "BUSD",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png',
+        address: "0x78867bbeef44f2326bf8ddd1941a4439382ef2a7"
+      },
+      {
+        symbol: "DAI",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png',
+        address: "0x8a9424745056eb399fd19a0ec26a14316684e274"
+      },
+      {
+        symbol: "USDT",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png',
+        address: "0x7ef95a0fee0dd31b22626fa2e10ee6a223f8a684"
+      },
+      {
+        symbol: "CAKE",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/7186.png',
         address: "0xdsfsd"
       },
       {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        symbol: "SOLANA",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/5426.png',
         address: "0xdsfsd"
       },
       {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        symbol: "MATIC",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
         address: "0xdsfsd"
       },
       {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        symbol: "ETHER",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1027.png',
         address: "0xdsfsd"
       },
       {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        symbol: "HARMONY",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3945.png',
         address: "0xdsfsd"
       },
     ]

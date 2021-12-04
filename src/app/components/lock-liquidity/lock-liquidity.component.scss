@@ -6,3 +6,6 @@
    max-height: 40px;
    margin-top: 1.5%;
 }
+:host ::ng-deep .mat-form-field-outline:not(:invalid) {
+   color: white;
+}
