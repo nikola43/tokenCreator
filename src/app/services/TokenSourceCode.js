@@ -1159,7 +1159,7 @@ contract Token is Context, IERC20, Ownable {
     require(findAddress(whitelist ? wlist : blist, addr), "NF");
     uint256 length = whitelist ? wlist.length : blist.length;
     for (uint256 i = 0; i < length; i++) {
-    address a = whitelist ? wlist[i] : blist[i];
+      address a = whitelist ? wlist[i] : blist[i];
       if (a == addr) {
         whitelist ? wlist[i] = wlist[length - 1] : blist[i] = blist[length - 1];
         whitelist ? wlist.pop() : blist.pop();

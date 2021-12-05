@@ -78,8 +78,8 @@ module.exports = {
         bsctestnet: {
             provider: () => new HDWalletProvider(seed, `https://apis-sj.ankr.com/d39155d1e5344cbca9262b1de2010e49/8e1a6b2b88490d4e20818137e607c759/binance/full/test`),
             network_id: 97,
-            gas: 28765632,
-            gasPrice: 20000000000, // 20 Gwei
+            gas: 30560199,
+            gasPrice: 10000000000, // 10 Gwei
             //confirmations: 2,
             //from: "0xB06a4327FF7dB3D82b51bbD692063E9a180b79D9",
             //gas: 29990542,   // <--- Twice as much
