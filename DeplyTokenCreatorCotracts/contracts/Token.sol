@@ -699,10 +699,6 @@ contract Token is Context, IERC20, Ownable {
   uint8 public minMxTxPer = 1;
   uint8 public minMxWalletPer = 1;
 
-
-  address[] public blist = new address[](0);
-  address[] public wlist = new address[](0);
-
   mapping (address => uint256) private _rOwned;
   mapping (address => uint256) private _tOwned;
   mapping (address => mapping (address => uint256)) private _allowances;
@@ -743,7 +739,6 @@ contract Token is Context, IERC20, Ownable {
 
   bool inSwapAndLiquify;
   bool public swapAndLiquifyEnabled = true;
-  bool public onlyWlisted = false;
 
   bool public touchedByMidas = true;
 
@@ -1084,12 +1079,6 @@ contract Token is Context, IERC20, Ownable {
     require(to != address(0),"to 0");
     require(amount > 0, "a = 0");
 
-    require(!findAddress(blist, from), "F_BL_A");
-    require(!findAddress(blist, to), "T_BL_A");
-
-    if(from != owner() && onlyWlisted) {
-      require(findAddress(wlist, from), "W_E");
-    }
 
     if(from != owner() && to != owner()) {
       require(amount <= _maxTxAmount, "maxTX");
@@ -1143,37 +1132,6 @@ contract Token is Context, IERC20, Ownable {
 
     //transfer amount, it will take tax, burn, liquidity fee
     _tokenTransfer(from,to,amount,takeFee);
-  }
-
-  function addList(address addr,bool whitelist) public onlyOwner {
-    require(!findAddress(whitelist ? wlist : blist, addr), "AW");
-    wlist.push(addr);
-  }
-
-  function enableWlist(bool active) external onlyOwner {
-    onlyWlisted = active;
-  }
-
-  function removeFromList(address addr, bool whitelist) external onlyOwner {
-    require(findAddress(whitelist ? wlist : blist, addr), "NF");
-    uint256 length = whitelist ? wlist.length : blist.length;
-    for (uint256 i = 0; i < length; i++) {
-      address a = whitelist ? wlist[i] : blist[i];
-      if (a == addr) {
-        whitelist ? wlist[i] = wlist[length - 1] : blist[i] = blist[length - 1];
-        whitelist ? wlist.pop() : blist.pop();
-        break;
-      }
-    }
-  }
-
-  function findAddress(address[] memory list, address addr) private pure returns (bool) {
-    for (uint i = 0; i < list.length; i++) {
-      if (list[i] == addr) {
-        return true;
-      }
-    }
-    return false;
   }
 
   function burn(uint256 burnAmount) public {
