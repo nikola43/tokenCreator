@@ -10,6 +10,8 @@ import {PancakeFactoryAbi, PancakeFactoryAddress} from './PancakeFactoryAbi.js';
 import {LPTokenAbi} from './LPTokenAbi.js';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {DevNetworks} from './Networks';
+import {INetwork} from '../../../models/network.interface';
+
 
 declare let require: any;
 declare let window: any;
@@ -60,6 +62,13 @@ export class Web3Service {
   setNetworkId(id: number): void {
     this.currentNetworkIdSubject = new BehaviorSubject<number>(id);
     this.currentNetworkId = this.currentNetworkIdSubject.asObservable();
+  }
+  getNetworkId(): INetwork {
+    let networdID = 0;
+    this.currentNetworkId.subscribe((x:number) => {
+      networdID = x;
+    })
+    return { id: networdID };
   }
   getWethAddress(): string {
     return this.wethAddress;

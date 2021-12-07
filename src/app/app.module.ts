@@ -48,7 +48,6 @@ export function playerFactory() {
     BurnTokensComponent,
     NetworkSelectorComponent,
     FromWeiPipe,
-    NetworkSelectorComponent,
     ServiceTokenPaymentSelectorComponent
   ],
   imports: [
@@ -64,9 +63,7 @@ export function playerFactory() {
     CountdownTimerModule,
     MatNativeDatetimeModule,
     MatDatetimepickerModule,
-    LottieModule.forRoot({ player: playerFactory }),
-    StoreModule.forRoot({}, {}),
-    EffectsModule.forRoot([])
+    LottieModule.forRoot({ player: playerFactory })
   ],
   providers: [],
   bootstrap: [AppComponent]

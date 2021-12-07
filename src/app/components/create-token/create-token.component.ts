@@ -304,16 +304,15 @@ export class CreateTokenComponent implements OnInit {
         isCreating: true,
         isChecking: true,
         isVerified: true,
+        step: 1,
         createdToken: {
           address: '0xECd6ef88C1657B697858B14CC1b824c259dd6E7d',
           symbol: this.formGroup.get('tokenSymbol').value,
           decimals: Number(this.formGroup.get('tokenDecimals').value),
         },
-        step: 2,
       },
     });
 
-    console.log(this.tokenDialogRef.componentInstance);
     this.web3Service
       .createToken(
         this.selectedPayToken?.address,
@@ -351,8 +350,6 @@ export class CreateTokenComponent implements OnInit {
             },
             step: 2,
           };
-
-          console.log(this.tokenDialogRef.componentInstance.data);
 
           const interval = setInterval(() => {
             const formData: any = new FormData();

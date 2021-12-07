@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatSelectChange} from '@angular/material/select';
 import {Web3Service} from '../../services/web3.service';
-import {DevNetworks} from '../../services/Networks';
+import {DevNetworks} from '../../services/Networks.js';
 
 @Component({
   selector: 'app-service-token-payment-selector',

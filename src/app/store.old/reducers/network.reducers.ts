@@ -1,4 +1,4 @@
-import { NetworkActions, EConfigActions } from '../actions/network.actions';
+import { NetworkActions, ENetworkActions } from '../actions/network.actions';
 import {INetworkState, initialNetworkState} from '../state/network.state';
 
 export const networkReducers = (
@@ -6,7 +6,7 @@ export const networkReducers = (
   action: NetworkActions
 ): INetworkState => {
   switch (action.type) {
-    case EConfigActions.GetConfigSuccess: {
+    case ENetworkActions.GetNetworkSuccess: {
       return {
         ...state,
         network: action.payload

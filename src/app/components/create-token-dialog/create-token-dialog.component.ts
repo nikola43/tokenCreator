@@ -3,6 +3,8 @@ import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { Web3Service } from 'src/app/services/web3.service';
 import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
+import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+
 
 @Component({
   selector: 'app-create-token-dialog',
@@ -11,6 +13,7 @@ import { AnimationOptions } from 'ngx-lottie';
 })
 export class CreateTokenDialogComponent implements OnInit {
   tokenAddedToMetamask = false;
+  faexternallinkalt = faExternalLinkAlt;
   addToMetamaskButtonLabel: string = 'Add token to metamask';
 
   constructor(public dialogRef: MatDialogRef<CreateTokenDialogComponent>,
