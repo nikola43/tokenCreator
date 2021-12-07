@@ -310,6 +310,7 @@ export class CreateTokenComponent implements OnInit {
         },
       },
     });
+
     console.log(this.tokenDialogRef.componentInstance);
     this.web3Service
       .createToken(
@@ -394,7 +395,7 @@ export class CreateTokenComponent implements OnInit {
                           this.formGroup.get('tokenDecimals').value
                         ),
                       },
-                      step: 2,
+                      step: 3,
                     };
                   }
                 },

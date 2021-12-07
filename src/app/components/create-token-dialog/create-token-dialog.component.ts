@@ -8,28 +8,14 @@ import { Web3Service } from 'src/app/services/web3.service';
   styleUrls: ['./create-token-dialog.component.scss']
 })
 export class CreateTokenDialogComponent implements OnInit {
-  // isCreating = false;
-  // isChecking = false;
-  // isVerified = false;
-  // tokenAddedToMetamask = false;
-  // step: number;
-  // createButtonLabel: string;
-  // createdToken: any;
-  // addToMetamaskButtonLabel: string;
+  tokenAddedToMetamask = false;
+  addToMetamaskButtonLabel: string = '';
 
   constructor(public dialogRef: MatDialogRef<CreateTokenDialogComponent>,
     public web3Service: Web3Service,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    console.log(data);
-
-    // this.createButtonLabel = data.createButtonLabel;
-    // this.isCreating = data.isCreating;
-    // this.isChecking = data.isChecking;
-    // this.isVerified = data.isVerified;
-    // this.step = data.step;
-    // this.createdToken = data.createdToken;
-    
+    dialogRef.disableClose = true;
   }
 
   onNoClick(): void {
@@ -56,9 +42,8 @@ export class CreateTokenDialogComponent implements OnInit {
         },
       });
 
-      console.log('Thanks for your interest!');
-      this.data.addToMetamaskButtonLabel = 'Token added to metamask successfully';
-      this.data.tokenAddedToMetamask = true;
+      this.addToMetamaskButtonLabel = 'Token added to metamask successfully';
+      this.tokenAddedToMetamask = true;
     } catch (error) {
       console.log(error);
     }

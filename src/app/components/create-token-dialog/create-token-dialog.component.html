@@ -4,36 +4,30 @@
 <div class="dialog-content">
   <div style="height: 25px"></div>
 
-  <p *ngIf="!data.isVerified" style="margin: auto; padding-left: 2rem; padding-right: 2rem; color: white">Token creation in progress... </p>
-  <p *ngIf="!data.isVerified" style="margin: auto; padding-left: 2rem; padding-right: 2rem; color: white">Please wait until your token is created and verified, the process may take a few more minutes depending on network congestion. Don't refresh or reload this page.</p>
-  <span *ngIf="!data.isChecking" class="spinner-border spinner-border-sm mr-1" style="color: white"></span>
-
-  <div *ngIf="data.isCreating && !data.isChecking" style="height: 250px">
-    <p>Congratulations! Your token has been created, the token verification process will now begin.</p>
+  <p *ngIf="!data.isVerified">Token creation in progress... </p>
+  <p *ngIf="!data.isVerified">Please wait until your token is created and verified, the process may take a few more
+    minutes depending on network congestion. Don't refresh or reload this page.</p>
+  <div *ngIf="data.isCreating && data.isChecking && !data.isVerified">
+    <div *ngIf="data.isCreating && data.isChecking" style="height: 20px"></div>
+    <p><b>Congratulations!</b> Your token has been created, the token verification process will now begin.</p>
   </div>
-  <div *ngIf="data.isCreating && data.isChecking" id="fire-container" class="fire-container">
-    <p>Congratulations! Your token has been verified.</p>
-    <div style="height: 15px" *ngIf="data.createdToken.length > 0"></div>
-    <span *ngIf="data.createdToken.length > 0" style="color: #39C0ED">
+  <div *ngIf="!data.isVerified" style="height: 50px"></div>
+  <span *ngIf="!data.isVerified" class="spinner-border spinner-border-sm mr-1" style="color: white"></span>
+  <div *ngIf="!data.isVerified" style="height: 50px"></div>
+  <div *ngIf="data.isChecking && data.isVerified">
+    <p><b>Process completed successfully.</b></p>
+    <p><b>Congratulations!</b> Your token has been verified.</p>
+    <div style="height: 15px" *ngIf="data.createdToken.address.length > 0"></div>
+    <span *ngIf="data.createdToken.address.length > 0" style="color: #39C0ED;display: block;">
       Token created successfully
-                <a target="_blank"
-                   [href]="'https://testnet.bscscan.com/address/'+data.createdToken.address">https://testnet.bscscan.com/token/{{data.createdToken.address}}</a>
-              </span>
-    <span *ngIf="data.createdToken.length > 0 && data.tokenVerified === false" style="color: #39C0ED">
-                <span class="spinner-border spinner-border-sm mr-1" style="color: #39C0ED"></span>
-                Verifying token
-              </span>
+    </span>
 
+    <a target="_blank"
+      [href]="'https://testnet.bscscan.com/address/'+data.createdToken.address">https://testnet.bscscan.com/token/{{data.createdToken.address}}</a>
+    <br *ngIf="data.isVerified">
 
-    <span *ngIf="data.createdToken.length > 0 && data.tokenVerified === true" style="color: #39C0ED">
-               Success
-              </span>
-
-    <br *ngIf="data.tokenVerified">
-
-    <button *ngIf="data.tokenVerified" (click)="addTokenToMetamask()" color="primary" type="button"
-            mat-raised-button>
-      <fa-icon *ngIf="data.tokenVerified && data.tokenAddedToMetamask" ></fa-icon>
+    <button *ngIf="data.isVerified" (click)="addTokenToMetamask()" color="primary" type="button" mat-raised-button>
+      <fa-icon *ngIf="data.isVerified && data.tokenAddedToMetamask"></fa-icon>
       {{data.addToMetamaskButtonLabel}}
     </button>
 
@@ -44,19 +38,15 @@
       Add liquidity
     </a>
     -->
-    <br *ngIf="tokenVerified">
-  <div style="height: 50px"></div>
-</div>
+    <br *ngIf="isVerified">
+    <div style="height: 50px"></div>
+  </div>
 
-<mat-divider class="dialog-divider"></mat-divider>
+  <mat-divider class="dialog-divider"></mat-divider>
 
-<div class="dialog-footer">
-  <div style="height: 15px"></div>
-  <button style="color: white" mat-button (click)="onNoClick()">Close</button>
-  <div style="height: 15px"></div>
+  <div class="dialog-footer">
+    <div style="height: 15px"></div>
+    <button style="color: white" mat-button (click)="onNoClick()">Close</button>
+    <div style="height: 15px"></div>
 
-</div>
-
-
-
-
+  </div>
