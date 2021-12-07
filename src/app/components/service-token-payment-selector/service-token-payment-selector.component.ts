@@ -17,6 +17,12 @@ export class ServiceTokenPaymentSelectorComponent implements OnInit {
   @Output() selectedTokenAddres = new EventEmitter();
   acceptedPaymentTokens = this.networks[this.networkId].acceptedPaymentTokens;
   constructor(public web3Service: Web3Service) {
+
+    //algunas veces manda networkId como un numero y otras como un hexadecimal como texto, funcionan la bsc y eter
+    //porque coincide en ambos pero al cambiar a polygon o harmony peta. Lo he intentado convirtiendo a hex primero 
+    //con this.networdId.toFixed(16) y luego con este código de abajo. Sigue petando a veces, hay que unificar todo,
+    //no podemos mandar un number y en network.js tener hexadecimales.
+
     const res = this.networks.find(x => x.params.chainId == "0x"+("0"+(Number(this.networkId).toString(16))).slice(-2).toUpperCase());
     if (res) this.networkId = res.index;
     
