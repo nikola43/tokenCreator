@@ -1,5 +1,5 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component, OnDestroy, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Web3Service} from './services/web3.service';
 import Typewriter from 'typewriter-effect/dist/core';
 import {faBurn, faLock, faCoins, faAtom, faBook, faFunnelDollar} from '@fortawesome/free-solid-svg-icons';
@@ -9,7 +9,7 @@ import {faBurn, faLock, faCoins, faAtom, faBook, faFunnelDollar} from '@fortawes
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnDestroy , OnInit {
   buttonLabel = 'Connect';
   account: any = undefined;
   mobileQuery: MediaQueryList;
@@ -36,7 +36,7 @@ export class AppComponent implements OnDestroy {
 
           console.log({
             account
-          })
+          });
 
           this.account = account;
           this.buttonLabel = account.charAt(0) + '' + account.charAt(1) + '' +
@@ -139,7 +139,7 @@ export class AppComponent implements OnDestroy {
   onNetworkChanged(event: any) {
     console.log({event});
     this.selectedNetwork = event;
-
+    this.web3Service.setNetworkId(this.selectedNetwork);
   }
 
   // tslint:disable-next-line:typedef

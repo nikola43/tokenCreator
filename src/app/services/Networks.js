@@ -4,7 +4,9 @@ export const DevNetworks = [
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
     name: 'Binance Smart Chain Testnet',
     routerAddress: '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3',
-    tokenCreatorContractAddress: '0x4798f9D67D0fA3BB4A8b8227A7C8B5792fd9D6e9',
+    tokenCreatorContractAddress: '0x257dd621B41E4eaBcC7ef142e3875eD7CEcC585B',
+    lockLiquidityContractAddress: '0x118cbB6BFAe71E4Fe10d5f83429C439281dA319b',
+    launchpadContractAddress: '0x4798f9D67D0fA3BB4A8b8227A7C8B5792fd9D6e9',
     explorerApiKey: 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY',
     params: {
       chainId: '0x61',
@@ -376,7 +378,8 @@ export const ProdNetworks = [
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
     name: 'Binance Smart Chain',
     routerAddress: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
-    tokenCreatorContractAddress: '0x4798f9D67D0fA3BB4A8b8227A7C8B5792fd9D6e9',
+    tokenCreatorContractAddress: '0xA90654767d1f00a306A54aA6Fc37B5b5dD781B8e',
+    lockLiquidityContractAddress: '0x118cbB6BFAe71E4Fe10d5f83429C439281dA319b',
     explorerApiKey: 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY',
     params: {
       chainId: '0x38',
@@ -486,7 +489,8 @@ export const ProdNetworks = [
      name: 'Polygon (MATIC)',
      image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
      routerAddress: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff',
-     tokenCreatorContractAddress: '0x4798f9D67D0fA3BB4A8b8227A7C8B5792fd9D6e9',
+     tokenCreatorContractAddress: '0xA90654767d1f00a306A54aA6Fc37B5b5dD781B8e',
+     lockLiquidityContractAddress: '0x118cbB6BFAe71E4Fe10d5f83429C439281dA319b',
      explorerApiKey: 'C88WPK1DEGCHQRS74BNNR78QV7ZDRBRRS9',
      params: {
        network_id: 137,

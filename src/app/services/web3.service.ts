@@ -28,6 +28,9 @@ export class Web3Service {
   enable: any;
   private currentAccountSubject: BehaviorSubject<string>;
   public currentAccount: Observable<string>;
+
+  private currentNetworkIdSubject: BehaviorSubject<number>;
+  public currentNetworkId: Observable<number>;
   pancakeRouter: any;
   wethAddress: string;
   networks: any = DevNetworks;
@@ -50,6 +53,10 @@ export class Web3Service {
     }
   }
 
+  setNetworkId(id: number): void {
+    this.currentNetworkIdSubject = new BehaviorSubject<number>(id);
+    this.currentNetworkId = this.currentNetworkIdSubject.asObservable();
+  }
   getWethAddress(): string {
     return this.wethAddress;
   }
@@ -76,6 +83,9 @@ export class Web3Service {
         if (retAccount.length > 0) {
           this.currentAccountSubject = new BehaviorSubject<string>(retAccount[0]);
           this.currentAccount = this.currentAccountSubject.asObservable();
+
+          this.currentNetworkIdSubject = new BehaviorSubject<number>(0);
+          this.currentNetworkId = this.currentNetworkIdSubject.asObservable();
           resolve(retAccount[0]);
         } else {
           // alert('transfer.service :: getAccount :: no accounts found.');
@@ -237,7 +247,6 @@ export class Web3Service {
       feeWallet: constructorArguments.FeeReceiverWallet,
       routerAddress: constructorArguments.routerAddress,
     });
-    console.log("-------------------------------------------------------------------------------");
 
     const encodedConstructorArguments = this.encodeTokenConstructor({
       account: this.currentAccountSubject.value,
