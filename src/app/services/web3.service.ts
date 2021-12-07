@@ -4,13 +4,12 @@ import {TokenGeneratorAbi, TokenGeneratorAddress} from './TokenGeneratorAbi.js';
 import {TokenSourceCode} from './TokenSourceCode.js';
 import {TokenAbi} from './TokenAbi.js';
 import {MinTokenAbi} from './MinTokenAbi.js';
-import {PancakeRouterAbi, PancakeRouterAddress} from './PancakeRouterAbi.js';
+import {PancakeRouterAbi} from './PancakeRouterAbi.js';
 import {LockLiquidityContractAbi, LockLiquidityContractAddress} from './LockTokenAbi.js';
 import {PancakeFactoryAbi, PancakeFactoryAddress} from './PancakeFactoryAbi.js';
-import {BnbTokenAbi, BnbTokenAddress} from './BnbTokenAbi.js';
 import {LPTokenAbi} from './LPTokenAbi.js';
 import {BehaviorSubject, Observable} from 'rxjs';
-import BigNumber from 'bignumber.js';
+import {DevNetworks} from './Networks';
 
 declare let require: any;
 declare let window: any;
@@ -30,7 +29,9 @@ export class Web3Service {
   private currentAccountSubject: BehaviorSubject<string>;
   public currentAccount: Observable<string>;
   pancakeRouter: any;
-  wethAddress: any;
+  wethAddress: string;
+  networks: any = DevNetworks;
+  networkId = 0;
 
   constructor(private http: HttpClient) {
     if (window.ethereum === undefined) {
@@ -43,21 +44,21 @@ export class Web3Service {
       }
       window.web3 = new Web3(window.ethereum);
       this.enable = this.enableMetaMaskAccount();
-      this.pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
-      //this.pancakeRouter.methods.WETH().call().then((x) => this.wethAddress = x);
+      this.pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[0].routerAddress);
+      // this.pancakeRouter.methods.WETH().call().then((x) => this.wethAddress = x);
       this.wethAddress = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd';
     }
   }
 
-  getWethAddress() {
+  getWethAddress(): string {
     return this.wethAddress;
   }
 
-  getRouterAddress() {
-    return PancakeRouterAddress;
+  getRouterAddress(): string  {
+    return this.networks[this.networkId].routerAddress;
   }
 
-  getTokenCreatorAddress() {
+  getTokenCreatorAddress(): void  {
     return TokenGeneratorAddress;
   }
 
@@ -111,7 +112,8 @@ export class Web3Service {
     TxFeePercentToBuybackTokens,
     MaxWalletPercent,
     MaxTxPercent,
-    FeeReceiverWallet
+    FeeReceiverWallet,
+    networkId
   ) {
 
     console.log({
@@ -141,7 +143,7 @@ export class Web3Service {
 
     const ownerAddress = await createdToken.methods.owner().call();
     console.log({ownerAddress});
-    const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : (paymentToken != this.wethAddress ? 0 : createPrice);
+    const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : (paymentToken !== this.wethAddress ? 0 : createPrice);
     console.log({sendedValue});
 
     const fees = [
@@ -163,7 +165,7 @@ export class Web3Service {
         tokenSupply,
         tokenDecimals,
         fees,
-        PancakeRouterAddress,
+        this.networks[networkId].routerAddress,
       ).send({from: this.currentAccountSubject.value, value: sendedValue.toString()});
 
     console.log(create);
@@ -189,8 +191,8 @@ export class Web3Service {
       MaxTxPercent,
       MaxWalletPercent,
       FeeReceiverWallet,
-      routerAddress: PancakeRouterAddress
-    }, contractAddress).subscribe((r) => {
+      routerAddress: this.networks[networkId].routerAddress,
+    }, contractAddress, networkId).subscribe((r) => {
       console.log(r);
 
       create.guid = r.result;
@@ -217,7 +219,7 @@ export class Web3Service {
   }
 
 // tslint:disable-next-line:typedef
-  verifyContract(constructorArguments: any, contractAddress): Observable<any> {
+  verifyContract(constructorArguments: any, contractAddress, networkId): Observable<any> {
     const encodedConstructorArguments = this.encodeTokenConstructor({
       account: this.currentAccountSubject.value,
       tokenName: constructorArguments.tokenName,
@@ -230,19 +232,27 @@ export class Web3Service {
       routerAddress: constructorArguments.routerAddress,
     });
 
+    console.log(networkId);
+
+    const apiKey = this.networks[networkId].explorerApiKey;
 
     const data = {
-      apikey: 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY',                     // A valid API-Key is required
+      apikey: apiKey,                     // A valid API-Key is required
       module: 'contract',                             // Do not change
       action: 'verifysourcecode',                     // Do not change
       contractaddress: contractAddress,   // Contract Address starts with 0x...
       sourceCode: TokenSourceCode,             // Contract Source Code (Flattened if necessary)
+      // tslint:disable-next-line:max-line-length
       codeformat: 'solidity-single-file',             // solidity-single-file (default) or solidity-standard-json-input (for std-input-json-format support
+      // tslint:disable-next-line:max-line-length
       contractname: 'Token',         // ContractName (if codeformat=solidity-standard-json-input, then enter contractname as ex: erc20.sol:erc20)
       compilerversion: 'v0.8.10+commit.fc410830',   // see https://BscScan.com/solcversions for list of support versions
       optimizationUsed: 1, // 0 = No Optimization, 1 = Optimization used (applicable when codeformat=solidity-single-file)
+      // tslint:disable-next-line:max-line-length
       runs: 200,                                      // set to 200 as default unless otherwise  (applicable when codeformat=solidity-single-file)
+      // tslint:disable-next-line:max-line-length
       constructorArguements: encodedConstructorArguments,   // if applicable
+      // tslint:disable-next-line:max-line-length
       evmversion: '',             // leave blank for compiler default, homestead, tangerineWhistle, spuriousDragon, byzantium, constantinople, petersburg, istanbul (applicable when codeformat=solidity-single-file)
       licenseType: '3',           // Valid codes 1-12 where 1=No License .. 12=Apache 2.0, see https://BscScan.com/contract-license-types
     };
@@ -282,7 +292,8 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async burnTokens(tokenAddress: string, amount) {
     const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
-    const burnResult = await token.methods.burn(Web3.utils.toWei(amount.toString(), 'ether')).send({from: this.currentAccountSubject.value});
+    const burnResult = await token.methods.burn(Web3.utils.toWei(amount.toString(), 'ether')).
+    send({from: this.currentAccountSubject.value});
 
     console.log(token);
     console.log(burnResult);
@@ -323,7 +334,7 @@ export class Web3Service {
     ];
     const message = {
       owner: this.currentAccountSubject.value,
-      spender: PancakeRouterAddress,
+      spender: this.networks[this.networkId].routerAddress,
       value: Web3.utils.toWei(amount.toString(), 'ether'),
       nonce: nonce.toString(16),
       deadline: deadline.toString(),
@@ -368,9 +379,12 @@ export class Web3Service {
         const minA = Aout - this.percentage(1, Aout);
         const minB = Bout - this.percentage(1, Bout);
 
-        const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+        const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[this.networkId].routerAddress);
 
-        const trans = await pancakeRouter.methods.removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(tokenAddress, Web3.utils.toWei(amount.toString(), 'ether'), Web3.utils.toWei(minB.toString(), 'ether'), Web3.utils.toWei(minA.toString(), 'ether'),  this.currentAccountSubject.value, deadline, false, v, r, s).send({from: this.currentAccountSubject.value, value: '0'});
+        const trans = await pancakeRouter.methods.removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(tokenAddress,
+          Web3.utils.toWei(amount.toString(),
+          'ether'), Web3.utils.toWei(minB.toString(), 'ether'), Web3.utils.toWei(minA.toString(), 'ether'),
+          this.currentAccountSubject.value, deadline, false, v, r, s).send({from: this.currentAccountSubject.value, value: '0'});
         return trans;
       }
     );
@@ -427,7 +441,9 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
     const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
-    const a = await lockLiquidityContract.methods.lockTokens(await this.getPair(this.wethAddress, tokenAddress), this.currentAccountSubject.value, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).send({from: this.currentAccountSubject.value, value: '80000000000000000'});
+    const a = await lockLiquidityContract.methods.lockTokens(await this.getPair(this.wethAddress, tokenAddress),
+      this.currentAccountSubject.value, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).
+    send({from: this.currentAccountSubject.value, value: '80000000000000000'});
     console.log(a);
     return a;
   }
@@ -444,9 +460,10 @@ export class Web3Service {
     const locksList = await lockLiquidityContract.methods.getDepositsByWithdrawalAddress(this.currentAccountSubject.value).call();
     const locksDetails = [];
 
+    // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < locksList.length; i++) {
       const lockDetails = await lockLiquidityContract.methods.getDepositDetails(locksList[i]).call();
-      lockDetails['id'] = locksList[i];
+      lockDetails.id = locksList[i];
       locksDetails.push(lockDetails);
     }
     return locksDetails;
@@ -454,7 +471,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async getEstimatedTokensForETH(tokenAddress: string, tokenAmount: number) {
-    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[this.networkId].routerAddress);
     const path = await this.getPathForTokenETH(tokenAddress);
     const estimatedTokens = await pancakeRouter.methods.getAmountsIn(Web3.utils.toWei(tokenAmount.toString(), 'ether'), path).call();
     return estimatedTokens[0];
@@ -462,7 +479,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async getEstimatedETHForTokens(tokenAddress: string, tokenAmount: number) {
-    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, PancakeRouterAddress);
+    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[this.networkId].routerAddress);
     const path = await this.getPathETHForToken(tokenAddress);
     const estimatedTokens = await pancakeRouter.methods.getAmountsIn(Web3.utils.toWei(tokenAmount.toString(), 'ether'), path).call();
     return estimatedTokens[0];
@@ -526,21 +543,24 @@ export class Web3Service {
   async isAllowed(address, spender) {
     const pairAddress = await this.getPair(this.wethAddress, address);
     const LPTokenBalance = await this.getLPTokensBalance(address);
-    const isAddresAllowed = window.web3.utils.toWei(await this.getAddressAllowance(address,spender), 'ether') < window.web3.utils.toWei(LPTokenBalance, 'ether');
+    const isAddresAllowed = window.web3.utils.toWei(
+      await this.getAddressAllowance(address, spender), 'ether') < window.web3.utils.toWei(LPTokenBalance, 'ether');
     return isAddresAllowed;
   }
 
   // tslint:disable-next-line:typedef
   async getAddressAllowance(address, spender) {
     const contract = new window.web3.eth.Contract(MinTokenAbi, address);
-    const contractAllowance = await contract.methods.allowance(this.currentAccountSubject.value, spender).call(); // 29803630997051883414242659
+    const contractAllowance = await contract.methods.allowance(this.currentAccountSubject.value, spender)
+      .call(); // 29803630997051883414242659
     return contractAllowance;
   }
 
   // tslint:disable-next-line:typedef
   async approveToken(address, spender, amount) {
     const token = new window.web3.eth.Contract(MinTokenAbi, address);
-    const approveResult = await token.methods.approve(spender, '115792089237316195423570985008687907853269984665640564039457584007913129639935').send({from: this.currentAccountSubject.value});
+    const approveResult = await token.methods.approve(spender, '115792089237316195423570985008687907853269984665640564039457584007913129639935').
+    send({from: this.currentAccountSubject.value});
     return approveResult;
   }
 
