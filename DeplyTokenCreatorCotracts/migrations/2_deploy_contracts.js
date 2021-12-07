@@ -8,9 +8,26 @@ const Web3 = require('web3');
 
 // you need deploy iterable Mapping first then link with your token
 module.exports = async (deployer) => {
+
+  //BSC devnet
+  /*
+  const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3';
+  await deployer.deploy(TokenCreator, routerAddress).then((r) => {
+    //console.log(r)
+  }).catch(function (e) {
+    console.log(e); // "oh, no!"
+  })
+  */
+
+  await deployer.deploy(Locker).then((r) => {
+    //console.log(r)
+  }).catch(function (e) {
+    console.log(e); // "oh, no!"
+  })
+
   /*
   Polygon mainnet
-   */
+
   const routerAddress = '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff';
   await deployer.deploy(TokenCreator, routerAddress).then((r) => {
     console.log(r)
@@ -23,6 +40,7 @@ module.exports = async (deployer) => {
   }).catch(function (e) {
     console.log(e); // "oh, no!"
   })
+  */
 
   /*
   let web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');

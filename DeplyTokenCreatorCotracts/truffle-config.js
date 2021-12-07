@@ -106,7 +106,7 @@ module.exports = {
 
     api_keys: {
         //etherscan: "UCKNP8D26CKHUMIJ36UFKUXSD1QFN9434V"
-        //etherscan: "V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY", // BSC
-        etherscan: "C88WPK1DEGCHQRS74BNNR78QV7ZDRBRRS9" // matic
+        etherscan: "V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY", // BSC
+        //etherscan: "C88WPK1DEGCHQRS74BNNR78QV7ZDRBRRS9" // matic
     },
 };

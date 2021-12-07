@@ -4,8 +4,8 @@ export const DevNetworks = [
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
     name: 'Binance Smart Chain Testnet',
     routerAddress: '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3',
-    tokenCreatorContractAddress: '0x257dd621B41E4eaBcC7ef142e3875eD7CEcC585B',
-    lockLiquidityContractAddress: '0x118cbB6BFAe71E4Fe10d5f83429C439281dA319b',
+    tokenCreatorContractAddress: '0x45FF5E5f35747aE2296AB9d804CA7C0d3C7F863a',
+    lockLiquidityContractAddress: '0x2fBeEc08c73E6E2F391ef6c282F6C370Ff9e82E9',
     launchpadContractAddress: '0x4798f9D67D0fA3BB4A8b8227A7C8B5792fd9D6e9',
     explorerApiKey: 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY',
     params: {
