@@ -8,9 +8,9 @@ import { Web3Service } from '../../services/web3.service';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSelectChange } from '@angular/material/select';
-import { DevNetworks } from '../../services/Networks';
 import { faCheck, IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import { CreateTokenDialogComponent } from '../create-token-dialog/create-token-dialog.component';
+import {ProdNetworks} from "../../services/Networks";
 
 declare let require: any;
 declare let window: any;
@@ -22,7 +22,7 @@ const Web3 = require('web3');
   styleUrls: ['./create-token.component.scss'],
 })
 export class CreateTokenComponent implements OnInit {
-  networks: any = DevNetworks;
+  networks: any = ProdNetworks;
   createdTokenAddress = '';
   networkId = 0;
   formGroup: FormGroup;
@@ -102,8 +102,19 @@ export class CreateTokenComponent implements OnInit {
     });
 
     this.web3Service.web3.on('networkChanged', (networkId) => {
-      this.networkId = networkId.toString(16);
-      console.log({ networkId });
+      // this.networkId = networkId.toString(16);
+      // console.log({ networkId });
+
+
+      //this.networkId = networkId.toString(16);
+      this.web3Service.currentNetworkId.subscribe((nID) => {
+        this.networkId = nID;
+        console.log({
+          nID
+        });
+      });
+      console.log({networkId});
+
       /*
       console.log(accounts);
       if (accounts.length === 0) {

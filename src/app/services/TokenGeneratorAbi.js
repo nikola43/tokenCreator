@@ -217,6 +217,82 @@ export const TokenGeneratorAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "pp",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "np",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "dp",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "kp",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "ep",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint8",
+        "name": "pap",
+        "type": "uint8"
+      }
+    ],
+    "name": "updatePercents",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "pw",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "nw",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "dw",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "kw",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "ew",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "paw",
+        "type": "address"
+      }
+    ],
+    "name": "updateWallets",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "stateMutability": "payable",
     "type": "receive"
   }

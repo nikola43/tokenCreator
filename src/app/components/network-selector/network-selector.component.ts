@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {MatSelectChange} from '@angular/material/select';
 import {Web3Service} from '../../services/web3.service';
-import {DevNetworks} from '../../services/Networks';
+import {ProdNetworks} from '../../services/Networks';
 import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil';
 
 @Component({
@@ -10,7 +10,7 @@ import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil
   styleUrls: ['./network-selector.component.scss']
 })
 export class NetworkSelectorComponent implements OnInit {
-  networks: any = DevNetworks;
+  networks: any = ProdNetworks;
   currentNetwork = 0;
   lastCurrentNetwork = 0;
   @Output() selectedNetwork = new EventEmitter();

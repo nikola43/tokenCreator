@@ -93,7 +93,8 @@ mat-sidenav {
   box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%),
     0px 1px 1px 0px rgb(0 0 0 / 14%), 0px 1px 3px 0px rgb(0 0 0 / 12%);
   border-right: 1px solid rgba(255, 255, 255, 0.125);
-  width: 14vw;
+  width: 240px !important;
+  min-width: 240px !important;
 }
 :host ::ng-deep .mat-nav-list {
   min-height: 50%;

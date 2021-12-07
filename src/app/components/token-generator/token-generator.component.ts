@@ -9,7 +9,6 @@ import {
 import {MatSelect, MatSelectChange} from '@angular/material/select';
 import {MatSliderChange} from '@angular/material/slider';
 import {Web3Service} from '../../services/web3.service';
-import {DevNetworks} from '../../services/Networks.js';
 import {BnbTokenAddress} from '../../services/BnbTokenAbi';
 import Typewriter from 'typewriter-effect/dist/core';
 

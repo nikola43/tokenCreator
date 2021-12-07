@@ -1,9 +1,9 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
-import { Web3Service } from 'src/app/services/web3.service';
-import { AnimationItem } from 'lottie-web';
-import { AnimationOptions } from 'ngx-lottie';
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import {Web3Service} from 'src/app/services/web3.service';
+import {AnimationItem} from 'lottie-web';
+import {AnimationOptions} from 'ngx-lottie';
+import {faExternalLinkAlt} from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -14,11 +14,11 @@ import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
 export class CreateTokenDialogComponent implements OnInit {
   tokenAddedToMetamask = false;
   faexternallinkalt = faExternalLinkAlt;
-  addToMetamaskButtonLabel: string = 'Add token to metamask';
+  addToMetamaskButtonLabel = 'Add token to metamask';
 
   constructor(public dialogRef: MatDialogRef<CreateTokenDialogComponent>,
-    public web3Service: Web3Service,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+              public web3Service: Web3Service,
+              @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     dialogRef.disableClose = true;
   }
@@ -61,5 +61,5 @@ export class CreateTokenDialogComponent implements OnInit {
       console.log(error);
     }
   }
-  
+
 }

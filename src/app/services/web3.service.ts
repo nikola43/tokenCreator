@@ -9,8 +9,8 @@ import {LockLiquidityContractAbi, LockLiquidityContractAddress} from './LockToke
 import {PancakeFactoryAbi, PancakeFactoryAddress} from './PancakeFactoryAbi.js';
 import {LPTokenAbi} from './LPTokenAbi.js';
 import {BehaviorSubject, Observable} from 'rxjs';
-import {DevNetworks} from './Networks';
 import {INetwork} from '../../../models/network.interface';
+import {ProdNetworks} from "./Networks";
 
 
 declare let require: any;
@@ -35,7 +35,7 @@ export class Web3Service {
   public currentNetworkId: Observable<number>;
   pancakeRouter: any;
   wethAddress: string;
-  networks: any = DevNetworks;
+  networks: any = ProdNetworks;
 
   constructor(private http: HttpClient) {
     if (window.ethereum === undefined) {
@@ -49,11 +49,15 @@ export class Web3Service {
       window.web3 = new Web3(window.ethereum);
       this.enable = this.enableMetaMaskAccount();
       this.pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[0].routerAddress);
-      this.wethAddress = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd';
+      //this.wethAddress = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd';
+      this.wethAddress = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270';
+
+      /*
       this.pancakeRouter.methods.WETH().call().then((x) => {
         this.wethAddress = x;
         console.log({x});
       });
+      */
       this.currentNetworkIdSubject = new BehaviorSubject<number>(0);
       this.currentNetworkId = this.currentNetworkIdSubject.asObservable();
     }
@@ -63,22 +67,24 @@ export class Web3Service {
     this.currentNetworkIdSubject = new BehaviorSubject<number>(id);
     this.currentNetworkId = this.currentNetworkIdSubject.asObservable();
   }
+
   getNetworkId(): INetwork {
     let networdID = 0;
-    this.currentNetworkId.subscribe((x:number) => {
+    this.currentNetworkId.subscribe((x: number) => {
       networdID = x;
-    })
-    return { id: networdID };
+    });
+    return {id: networdID};
   }
+
   getWethAddress(): string {
     return this.wethAddress;
   }
 
-  getRouterAddress(): string  {
+  getRouterAddress(): string {
     return this.networks[this.currentNetworkIdSubject.value].routerAddress;
   }
 
-  getTokenCreatorAddress(): void  {
+  getTokenCreatorAddress(): void {
     return this.networks[this.currentNetworkIdSubject.value].tokenCreatorContractAddress;
   }
 
@@ -156,16 +162,24 @@ export class Web3Service {
       networkId
     });
 
+    console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
+
+    console.log({
+      nets: this.networks[networkId].tokenCreatorContractAddress
+    })
+
     const createdToken = new window.web3.eth.Contract(TokenGeneratorAbi, this.networks[networkId].tokenCreatorContractAddress);
 
 
+
     tokenSupply = Web3.utils.toWei(tokenSupply.toString(), 'ether');
-
-
     const createPrice = await createdToken.methods.creationTokenPrice().call();
-
     const ownerAddress = await createdToken.methods.owner().call();
     const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : (paymentToken !== this.wethAddress ? 0 : createPrice);
+    console.log({
+
+    });
+
 
     const fees = [
       TxFeePercentToHolders,
@@ -221,9 +235,8 @@ export class Web3Service {
     }, error => {
       console.log(error);
     });
-
-
     return create;
+    // return {events: [], guid: "sd"}
   }
 
   // tslint:disable-next-line:typedef
@@ -249,8 +262,8 @@ export class Web3Service {
      */
 
 
-
-    console.log({account: this.currentAccountSubject.value,
+    console.log({
+      account: this.currentAccountSubject.value,
       tokenName: constructorArguments.tokenName,
       tokenSymbol: constructorArguments.tokenSymbol,
       decimal: constructorArguments.tokenDecimals,
@@ -334,8 +347,7 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async burnTokens(tokenAddress: string, amount) {
     const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
-    const burnResult = await token.methods.burn(Web3.utils.toWei(amount.toString(), 'ether')).
-    send({from: this.currentAccountSubject.value});
+    const burnResult = await token.methods.burn(Web3.utils.toWei(amount.toString(), 'ether')).send({from: this.currentAccountSubject.value});
 
     return burnResult;
   }
@@ -354,10 +366,10 @@ export class Web3Service {
     const nonce = await LpTokenContract.methods.nonces(this.currentAccountSubject.value).call();
 
     const EIP712Domain = [
-      { name: 'name', type: 'string' },
-      { name: 'version', type: 'string' },
-      { name: 'chainId', type: 'uint256' },
-      { name: 'verifyingContract', type: 'address' },
+      {name: 'name', type: 'string'},
+      {name: 'version', type: 'string'},
+      {name: 'chainId', type: 'uint256'},
+      {name: 'verifyingContract', type: 'address'},
     ];
     const domain = {
       name: 'Pancake LPs',
@@ -366,11 +378,11 @@ export class Web3Service {
       verifyingContract: pairAddress,
     };
     const Permit = [
-      { name: 'owner', type: 'address' },
-      { name: 'spender', type: 'address' },
-      { name: 'value', type: 'uint256' },
-      { name: 'nonce', type: 'uint256' },
-      { name: 'deadline', type: 'uint256' },
+      {name: 'owner', type: 'address'},
+      {name: 'spender', type: 'address'},
+      {name: 'value', type: 'uint256'},
+      {name: 'nonce', type: 'uint256'},
+      {name: 'deadline', type: 'uint256'},
     ];
     const message = {
       owner: this.currentAccountSubject.value,
@@ -389,9 +401,9 @@ export class Web3Service {
       message,
     });
 
-    let r =  '';
-    let s =  '';
-    let v =  0;
+    let r = '';
+    let s = '';
+    let v = 0;
 
     await window.web3.currentProvider.sendAsync(
       {
@@ -423,8 +435,11 @@ export class Web3Service {
 
         const trans = await pancakeRouter.methods.removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(tokenAddress,
           Web3.utils.toWei(amount.toString(),
-          'ether'), Web3.utils.toWei(minB.toString(), 'ether'), Web3.utils.toWei(minA.toString(), 'ether'),
-          this.currentAccountSubject.value, deadline, false, v, r, s).send({from: this.currentAccountSubject.value, value: '0'});
+            'ether'), Web3.utils.toWei(minB.toString(), 'ether'), Web3.utils.toWei(minA.toString(), 'ether'),
+          this.currentAccountSubject.value, deadline, false, v, r, s).send({
+          from: this.currentAccountSubject.value,
+          value: '0'
+        });
         return trans;
       }
     );
@@ -459,7 +474,6 @@ export class Web3Service {
     ).send({from: this.currentAccountSubject.value, value: Web3.utils.toWei(bnbAmount.toString(), 'ether')});
 
 
-
     return addLiquidityResult;
   }
 
@@ -467,8 +481,10 @@ export class Web3Service {
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
     const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
     const a = await lockLiquidityContract.methods.lockTokens(await this.getPair(this.wethAddress, tokenAddress),
-      this.currentAccountSubject.value, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).
-    send({from: this.currentAccountSubject.value, value: '80000000000000000'});
+      this.currentAccountSubject.value, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).send({
+      from: this.currentAccountSubject.value,
+      value: '80000000000000000'
+    });
     return a;
   }
 
@@ -582,8 +598,7 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async approveToken(address, spender, amount) {
     const token = new window.web3.eth.Contract(MinTokenAbi, address);
-    const approveResult = await token.methods.approve(spender, '115792089237316195423570985008687907853269984665640564039457584007913129639935').
-    send({from: this.currentAccountSubject.value});
+    const approveResult = await token.methods.approve(spender, '115792089237316195423570985008687907853269984665640564039457584007913129639935').send({from: this.currentAccountSubject.value});
     return approveResult;
   }
 

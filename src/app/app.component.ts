@@ -139,6 +139,11 @@ export class AppComponent implements OnDestroy , OnInit {
   onNetworkChanged(event: any) {
     console.log({event});
     this.selectedNetwork = event;
+
+    console.log({
+     n: this.selectedNetwork
+    })
+
     this.web3Service.setNetworkId(this.selectedNetwork);
   }
 
