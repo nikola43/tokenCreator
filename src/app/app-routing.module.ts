@@ -16,10 +16,11 @@ const routes: Routes = [
   {path: 'burn-token', component: BurnTokensComponent},
   {path: 'whitelist-blacklist', component: WhitelistBlacklistComponent},
   {path: 'presale', component: WhitelistBlacklistComponent},
+  {path: '', redirectTo: '/create-token', pathMatch: 'full'},
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { onSameUrlNavigation: 'reload' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

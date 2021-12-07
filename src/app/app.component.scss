@@ -123,6 +123,14 @@ mat-sidenav {
 ::ng-deep .mat-button-wrapper {
   color: white !important;
 }
+:host ::ng-deep .soon-advise {
+  margin-left: 1vh;
+  font-weight: 900;
+  color: red;
+  font-size: .9rem;
+  margin-top: 0.5vw;
+}
+
 // :host ::ng-deep .mat-form-field-outline {
 //   border:1px solid white;
 //   border-radius: 5px;
