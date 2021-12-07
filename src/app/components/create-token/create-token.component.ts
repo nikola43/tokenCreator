@@ -3,7 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NotificationUtils, SnackBarColorEnum} from '../../../utils/NotificationUtil';
 import {Web3Service} from '../../services/web3.service';
 import {HttpClient} from '@angular/common/http';
-import {MatDialog} from '@angular/material/dialog';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatSelectChange} from '@angular/material/select';
 import {DevNetworks} from '../../services/Networks';
 import {faCheck, IconDefinition} from '@fortawesome/free-solid-svg-icons';
@@ -42,6 +42,8 @@ export class CreateTokenComponent implements OnInit {
 
   isApproving = false;
   tokenVerified = false;
+
+  private tokenDialogRef: MatDialogRef<CreateTokenDialogComponent>
 
   constructor(public web3Service: Web3Service,
               private formBuilder: FormBuilder,
@@ -286,14 +288,16 @@ export class CreateTokenComponent implements OnInit {
     }
 
 
-    const dialogRef = this.dialog.open(CreateTokenDialogComponent, {
+    this.tokenDialogRef = this.dialog.open(CreateTokenDialogComponent, {
       data: {
         createButtonLabel: this.createButtonLabel,
         isCreating: false,
         isChecking: false,
         isVerified: false,
         step: 1,
-        createdTokenAddress: ''
+        createdToken: {
+          address: ''
+        }
       },
     });
 
@@ -321,7 +325,7 @@ export class CreateTokenComponent implements OnInit {
 
         if (r.events['1'].address.length > 0) {
           this.createdTokenAddress = r.events['1'].address;
-          dialogRef.componentInstance.data = {createButtonLabel: this.createButtonLabel, isCreating: true, isChecking: true, isVerified: false, createdTokenAddress: this.createdTokenAddress, step: 2};
+          this.tokenDialogRef.componentInstance.data = {createButtonLabel: this.createButtonLabel, isCreating: true, isChecking: true, isVerified: false, createdToken: {address: this.createdTokenAddress, symbol: this.formGroup.get('tokenSymbol').value, decimals: Number(this.formGroup.get('tokenDecimals').value)}, step: 2};
 
           const interval = setInterval(() => {
             const formData: any = new FormData();
@@ -354,23 +358,25 @@ export class CreateTokenComponent implements OnInit {
                     this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.setValue(
                       this.createdTokenAddress
                     );
-                    dialogRef.componentInstance.data = {createButtonLabel: this.createButtonLabel, isCreating: true, isChecking: true, isVerified: true, createdTokenAddress: this.createdTokenAddress, step: 2};
+                    this.tokenDialogRef.componentInstance.data = {createButtonLabel: this.createButtonLabel, isCreating: true, isChecking: true, isVerified: true, createdToken: {address: this.createdTokenAddress, symbol: this.formGroup.get('tokenSymbol').value, decimals: Number(this.formGroup.get('tokenDecimals').value)}, step: 3};
                   }
                 },
                 (error) => {
                   this.hasError = true;
                   console.log('error');
                   console.log(error);
+                  this.tokenDialogRef.close();
                 }
               );
           }, 5000);
         } else {
           alert('error creando token');
+          this.tokenDialogRef.close();
         }
       })
       .catch((e) => {
         console.log({e});
-
+        this.tokenDialogRef.close();
         if (e.code === 4001) {
           this.notificationUtils.showSnackBar(
             'Error: Transaction rejected by user',
