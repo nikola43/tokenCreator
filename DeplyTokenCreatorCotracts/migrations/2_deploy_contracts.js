@@ -2,7 +2,7 @@
 //const Token = artifacts.require("Token.sol");
 const TokenCreator = artifacts.require("TokenCreator.sol");
 const Locker = artifacts.require("Locker.sol");
-const Web3 = require('web3');
+//const Web3 = require('web3');
 //const RickToken = artifacts.require("RickToken.sol");
 //const IterableMapping = artifacts.require("IterableMapping.sol");
 
@@ -10,20 +10,19 @@ const Web3 = require('web3');
 module.exports = async (deployer) => {
 
   //BSC devnet
-  /*
   const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3';
   await deployer.deploy(TokenCreator, routerAddress).then((r) => {
     //console.log(r)
   }).catch(function (e) {
     console.log(e); // "oh, no!"
   })
-  */
 
   await deployer.deploy(Locker).then((r) => {
     //console.log(r)
   }).catch(function (e) {
     console.log(e); // "oh, no!"
   })
+
 
   /*
   Polygon mainnet
