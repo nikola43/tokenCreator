@@ -1,0 +1,62 @@
+<div class="dialog-header">
+  <h4 class="header-title">Token creation Step {{step}}</h4>
+</div>
+<div class="dialog-content">
+  <div style="height: 25px"></div>
+
+  <p *ngIf="!isVerified" style="margin: auto; padding-left: 2rem; padding-right: 2rem; color: white">Token creation in progress... </p>
+  <p *ngIf="!isVerified" style="margin: auto; padding-left: 2rem; padding-right: 2rem; color: white">Please wait until your token is created and verified, the process may take a few more minutes depending on network congestion. Don't refresh or reload this page.</p>
+  <span *ngIf="!isChecking" class="spinner-border spinner-border-sm mr-1" style="color: white"></span>
+
+  <div *ngIf="isCreating && !isChecking" style="height: 250px">
+    <p>Congratulations! Your token has been created, the token verification process will now begin.</p>
+  </div>
+  <div *ngIf="isCreating && isChecking" id="fire-container" class="fire-container">
+    <p>Congratulations! Your token has been verified.</p>
+    <div style="height: 15px" *ngIf="this.createdToken.length > 0"></div>
+    <span *ngIf="this.createdToken.length > 0" style="color: #39C0ED">
+      Token created successfully
+                <a target="_blank"
+                   [href]="'https://testnet.bscscan.com/address/'+this.createdToken.address">https://testnet.bscscan.com/token/{{this.createdToken.address}}</a>
+              </span>
+    <span *ngIf="this.createdToken.length > 0 && this.tokenVerified === false" style="color: #39C0ED">
+                <span class="spinner-border spinner-border-sm mr-1" style="color: #39C0ED"></span>
+                Verifying token
+              </span>
+
+
+    <span *ngIf="this.createdToken.length > 0 && this.tokenVerified === true" style="color: #39C0ED">
+               Success
+              </span>
+
+    <br *ngIf="tokenVerified">
+
+    <button *ngIf="tokenVerified" (click)="addTokenToMetamask()" color="primary" type="button"
+            mat-raised-button>
+      <fa-icon *ngIf="tokenVerified && tokenAddedToMetamask" ></fa-icon>
+      {{addToMetamaskButtonLabel}}
+    </button>
+
+    <!--
+    <a target="_blank" *ngIf="createdTokenAddress && createdTokenAddress.length > 0" class="bnt"
+       [href]="'https://pancakeswap.finance/add/BNB/'+ this.createdTokenAddress" [disabled]="isLoading"
+       color="primary" type="button" mat-raised-button>
+      Add liquidity
+    </a>
+    -->
+    <br *ngIf="tokenVerified">
+  <div style="height: 50px"></div>
+</div>
+
+<mat-divider class="dialog-divider"></mat-divider>
+
+<div class="dialog-footer">
+  <div style="height: 15px"></div>
+  <button style="color: white" mat-button (click)="onNoClick()">Close</button>
+  <div style="height: 15px"></div>
+
+</div>
+
+
+
+

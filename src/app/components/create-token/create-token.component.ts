@@ -7,6 +7,8 @@ import {MatDialog} from '@angular/material/dialog';
 import {MatSelectChange} from '@angular/material/select';
 import {DevNetworks} from '../../services/Networks';
 import {faCheck, IconDefinition} from '@fortawesome/free-solid-svg-icons';
+import {CreateTokenDialogComponent} from '../create-token-dialog/create-token-dialog.component';
+
 
 declare let require: any;
 declare let window: any;
@@ -283,6 +285,18 @@ export class CreateTokenComponent implements OnInit {
       console.log('d');
     }
 
+
+    const dialogRef = this.dialog.open(CreateTokenDialogComponent, {
+      data: {
+        createButtonLabel: this.createButtonLabel,
+        isCreating: false,
+        isChecking: false,
+        isVerified: false,
+        step: 1,
+        createdTokenAddress: ''
+      },
+    });
+
     this.web3Service
       .createToken(
         this.selectedPayToken?.address,
@@ -301,12 +315,14 @@ export class CreateTokenComponent implements OnInit {
       )
       .then(async (r) => {
         console.log(r);
-
         this.createButtonLabel = 'Verifying Token';
+
         await this.sleep(5000);
 
         if (r.events['1'].address.length > 0) {
           this.createdTokenAddress = r.events['1'].address;
+          dialogRef.componentInstance.data = {createButtonLabel: this.createButtonLabel, isCreating: true, isChecking: true, isVerified: false, createdTokenAddress: this.createdTokenAddress, step: 2};
+
           const interval = setInterval(() => {
             const formData: any = new FormData();
 
@@ -338,6 +354,7 @@ export class CreateTokenComponent implements OnInit {
                     this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.setValue(
                       this.createdTokenAddress
                     );
+                    dialogRef.componentInstance.data = {createButtonLabel: this.createButtonLabel, isCreating: true, isChecking: true, isVerified: true, createdTokenAddress: this.createdTokenAddress, step: 2};
                   }
                 },
                 (error) => {

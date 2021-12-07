@@ -12,6 +12,7 @@ import {TwoDigitDecimaNumberDirective} from './two-digit-decima-number.directive
 import {AngularEmojisModule} from 'angular-emojis';
 import {TokenGeneratorComponent} from './components/token-generator/token-generator.component';
 import {BurnDialogComponent} from './components/burn-dialog/burn-dialog.component';
+import {CreateTokenDialogComponent} from './components/create-token-dialog/create-token-dialog.component';
 import {CreateTokenComponent} from './components/create-token/create-token.component';
 import {AddLiquidityComponent} from './components/add-liquidity/add-liquidity.component';
 import {LockLiquidityComponent} from './components/lock-liquidity/lock-liquidity.component';
@@ -31,6 +32,7 @@ import { MatDatetimepickerModule, MatNativeDatetimeModule } from '@mat-datetimep
     TokenGeneratorComponent,
     BurnDialogComponent,
     RemoveLiquidityDialogComponent,
+    CreateTokenDialogComponent,
     CreateTokenComponent,
     AddLiquidityComponent,
     LockLiquidityComponent,
