@@ -16,7 +16,6 @@ export class TwoDigitDecimaNumberDirective {
   @HostListener('keydown', ['$event'])
   // tslint:disable-next-line:typedef
   onKeyDown(event: KeyboardEvent) {
-    console.log(this.el.nativeElement.value);
     // Allow Backspace, tab, end, and home keys
     if (this.specialKeys.indexOf(event.key) !== -1) {
       return;

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {TokenGeneratorAbi, TokenGeneratorAddress} from './TokenGeneratorAbi.js';
+import {TokenGeneratorAbi} from './TokenGeneratorAbi.js';
 import {TokenSourceCode} from './TokenSourceCode.js';
 import {TokenAbi} from './TokenAbi.js';
 import {MinTokenAbi} from './MinTokenAbi.js';
@@ -59,7 +59,7 @@ export class Web3Service {
   }
 
   getTokenCreatorAddress(): void  {
-    return TokenGeneratorAddress;
+    return this.networks[this.networkId].tokenCreatorContractAddress;
   }
 
   // tslint:disable-next-line:typedef
@@ -120,8 +120,8 @@ export class Web3Service {
       paymentToken,
       tokenName,
       tokenSymbol,
-      tokenDecimals,
       tokenSupply,
+      tokenDecimals,
       TxFeePercentToHolders,
       TxFeePercentToLP,
       TxFeePercentToBurned,
@@ -129,22 +129,20 @@ export class Web3Service {
       TxFeePercentToBuybackTokens,
       MaxWalletPercent,
       MaxTxPercent,
-      FeeReceiverWallet
+      FeeReceiverWallet,
+      networkId
     });
 
-    const createdToken = new window.web3.eth.Contract(TokenGeneratorAbi, TokenGeneratorAddress);
+    const createdToken = new window.web3.eth.Contract(TokenGeneratorAbi, this.networks[networkId].tokenCreatorContractAddress);
 
 
     tokenSupply = Web3.utils.toWei(tokenSupply.toString(), 'ether');
 
 
     const createPrice = await createdToken.methods.creationTokenPrice().call();
-    console.log({createPrice});
 
     const ownerAddress = await createdToken.methods.owner().call();
-    console.log({ownerAddress});
     const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : (paymentToken !== this.wethAddress ? 0 : createPrice);
-    console.log({sendedValue});
 
     const fees = [
       TxFeePercentToHolders,
@@ -168,20 +166,18 @@ export class Web3Service {
         this.networks[networkId].routerAddress,
       ).send({from: this.currentAccountSubject.value, value: sendedValue.toString()});
 
-    console.log(create);
 
     await this.sleep(5000);
 
     const a = await window.web3.eth.getTransaction(create.transactionHash);
-    console.log({a});
-
-
     const b = await window.web3.eth.getTransactionReceipt(create.transactionHash);
-    console.log({b});
 
     const contractAddress = b.logs[0].address;
-    console.log({contractAddress});
     create.contractAddress = contractAddress;
+
+    console.log({
+      a: this.networks[networkId].routerAddress
+    });
 
     this.verifyContract({
       tokenName,
@@ -193,7 +189,6 @@ export class Web3Service {
       FeeReceiverWallet,
       routerAddress: this.networks[networkId].routerAddress,
     }, contractAddress, networkId).subscribe((r) => {
-      console.log(r);
 
       create.guid = r.result;
 
@@ -220,6 +215,30 @@ export class Web3Service {
 
 // tslint:disable-next-line:typedef
   verifyContract(constructorArguments: any, contractAddress, networkId): Observable<any> {
+    /*
+          tokenName,
+      tokenSymbol,
+      tokenDecimals,
+      tokenSupply,
+      MaxTxPercent,
+      MaxWalletPercent,
+      FeeReceiverWallet,
+     */
+
+
+
+    console.log({account: this.currentAccountSubject.value,
+      tokenName: constructorArguments.tokenName,
+      tokenSymbol: constructorArguments.tokenSymbol,
+      decimal: constructorArguments.tokenDecimals,
+      amountOfTokenWei: constructorArguments.tokenSupply,
+      MaxTxPercent: constructorArguments.MaxTxPercent,
+      MaxWalletPercent: constructorArguments.MaxWalletPercent,
+      feeWallet: constructorArguments.FeeReceiverWallet,
+      routerAddress: constructorArguments.routerAddress,
+    });
+    console.log("-------------------------------------------------------------------------------");
+
     const encodedConstructorArguments = this.encodeTokenConstructor({
       account: this.currentAccountSubject.value,
       tokenName: constructorArguments.tokenName,
@@ -232,9 +251,11 @@ export class Web3Service {
       routerAddress: constructorArguments.routerAddress,
     });
 
-    console.log(networkId);
 
     const apiKey = this.networks[networkId].explorerApiKey;
+    console.log({
+      explorerApiKey: apiKey
+    });
 
     const data = {
       apikey: apiKey,                     // A valid API-Key is required
@@ -285,7 +306,6 @@ export class Web3Service {
       tokenAddressB,
     ).call();
 
-    console.log({getPairResult});
     return getPairResult;
   }
 
@@ -295,8 +315,6 @@ export class Web3Service {
     const burnResult = await token.methods.burn(Web3.utils.toWei(amount.toString(), 'ether')).
     send({from: this.currentAccountSubject.value});
 
-    console.log(token);
-    console.log(burnResult);
     return burnResult;
   }
 
@@ -409,20 +427,6 @@ export class Web3Service {
     const to = this.currentAccountSubject.value;
     const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
 
-    console.log({
-      tokenA,
-      tokenB,
-      amountADesired,
-      amountBDesired,
-      amountAMin,
-      amountBMin,
-      to,
-      deadline,
-      amountBDesiredWei: Web3.utils.toWei(amountBDesired.toString(), 'ether'),
-      amountBMinWei: Web3.utils.toWei(amountBMin.toString(), 'ether'),
-      amountAMinWei: Web3.utils.toWei(amountAMin.toString(), 'ether'),
-    });
-
     const addLiquidityResult = await this.pancakeRouter.methods.addLiquidityETH(
       tokenB,
       Web3.utils.toWei(amountBDesired.toString(), 'ether'),      // desiredB
@@ -432,7 +436,6 @@ export class Web3Service {
       deadline
     ).send({from: this.currentAccountSubject.value, value: Web3.utils.toWei(bnbAmount.toString(), 'ether')});
 
-    console.log(addLiquidityResult);
 
 
     return addLiquidityResult;
@@ -444,7 +447,6 @@ export class Web3Service {
     const a = await lockLiquidityContract.methods.lockTokens(await this.getPair(this.wethAddress, tokenAddress),
       this.currentAccountSubject.value, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).
     send({from: this.currentAccountSubject.value, value: '80000000000000000'});
-    console.log(a);
     return a;
   }
 
@@ -497,7 +499,6 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async getLPTokensBalance(tokenAddress: string) {
-    console.log({tokenAddress});
     const pairAddress = await this.getPair(this.wethAddress, tokenAddress);
     const token = new window.web3.eth.Contract(LPTokenAbi, pairAddress);
     return await token.methods.balanceOf(this.currentAccountSubject.value).call();
@@ -566,7 +567,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   encodeTokenConstructor(data: any) {
-    console.log(data);
+    console.log({data});
     /*
           account: this.currentAccountSubject.value,
       tokenName: constructorArguments.tokenName,
@@ -578,7 +579,7 @@ export class Web3Service {
       feeWallet: constructorArguments.FeeReceiverWallet,
      */
 
-    const x = abi.simpleEncode('constructor(address,string,string,uint8,uint256,uint8,uint8,address)',
+    const x = abi.simpleEncode('constructor(address,string,string,uint8,uint256,uint8,uint8,address,address)',
       this.currentAccountSubject.value,
       data.tokenName,
       data.tokenSymbol,
@@ -587,6 +588,7 @@ export class Web3Service {
       data.MaxWalletPercent,
       data.MaxTxPercent,
       data.feeWallet,
+      data.routerAddress
     );
 
     const r = x.toString('hex').substring(8);

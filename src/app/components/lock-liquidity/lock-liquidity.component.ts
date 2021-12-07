@@ -120,13 +120,8 @@ export class LockLiquidityComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   addEvent(type, event) {
-    console.log({
-      type,
-      event,
-    });
 
     this.lockLiquidityForm.locktime = event.value.getTime() / 1000;
-    console.log(this.lockLiquidityForm.locktime);
 
     // const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
   }
@@ -197,12 +192,11 @@ export class LockLiquidityComponent implements OnInit {
       )
         .toFixed(18)
         .toString();
-        this.isAllowed = await this.web3Service.isAllowed(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value, this.web3Service.getRouterAddress()); 
+        this.isAllowed = await this.web3Service.isAllowed(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value, this.web3Service.getRouterAddress());
       /* Get my locks */
       this.web3Service
         .getLocks()
         .then((r) => {
-          console.log(r);
           r.map(
             async (x) =>
               (x._tokenName = await this.getLPTokenName(

@@ -1379,9 +1379,7 @@ describe('Token Test', function () {
       let web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
       const walletAddress = web3.eth.accounts.privateKeyToAccount('904738fb61a7b034d0acd51a1c8cb43e11bca8b035c6f33cbec1a23380f91838');
       const tokenContractInstance = new web3.eth.Contract(tokenContractAbi, "0x8b205C8Eb1F71DBF658c492ef8b7E3C9C29D7597");
-      console.log(walletAddress.address);
       const r1 = await tokenContractInstance.methods.setDevFeePercent(1).send({from: walletAddress.address});
-      console.log(r1);
       //expect(sum(1, 2, 3, 4, 5)).to.equal(15);
    })
 
