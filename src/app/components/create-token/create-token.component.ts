@@ -1,14 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {NotificationUtils, SnackBarColorEnum} from '../../../utils/NotificationUtil';
-import {Web3Service} from '../../services/web3.service';
-import {HttpClient} from '@angular/common/http';
-import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import {MatSelectChange} from '@angular/material/select';
-import {DevNetworks} from '../../services/Networks';
-import {faCheck, IconDefinition} from '@fortawesome/free-solid-svg-icons';
-import {CreateTokenDialogComponent} from '../create-token-dialog/create-token-dialog.component';
-
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  NotificationUtils,
+  SnackBarColorEnum,
+} from '../../../utils/NotificationUtil';
+import { Web3Service } from '../../services/web3.service';
+import { HttpClient } from '@angular/common/http';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
+import { DevNetworks } from '../../services/Networks';
+import { faCheck, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import { CreateTokenDialogComponent } from '../create-token-dialog/create-token-dialog.component';
 
 declare let require: any;
 declare let window: any;
@@ -17,7 +19,7 @@ const Web3 = require('web3');
 @Component({
   selector: 'app-create-token',
   templateUrl: './create-token.component.html',
-  styleUrls: ['./create-token.component.scss']
+  styleUrls: ['./create-token.component.scss'],
 })
 export class CreateTokenComponent implements OnInit {
   networks: any = DevNetworks;
@@ -35,21 +37,23 @@ export class CreateTokenComponent implements OnInit {
   showAdvancedSettings = false;
   bnbBalance: any;
   selectedPayToken: {
-    id: number,
-    address: string
+    id: number;
+    address: string;
   };
   routerAddress: string;
 
   isApproving = false;
   tokenVerified = false;
 
-  private tokenDialogRef: MatDialogRef<CreateTokenDialogComponent>
+  private tokenDialogRef: MatDialogRef<CreateTokenDialogComponent>;
 
-  constructor(public web3Service: Web3Service,
-              private formBuilder: FormBuilder,
-              private http: HttpClient,
-              private notificationUtils: NotificationUtils,
-              public dialog: MatDialog) {
+  constructor(
+    public web3Service: Web3Service,
+    private formBuilder: FormBuilder,
+    private http: HttpClient,
+    private notificationUtils: NotificationUtils,
+    public dialog: MatDialog
+  ) {
     this.createForm();
 
     this.createForm();
@@ -61,7 +65,10 @@ export class CreateTokenComponent implements OnInit {
       this.web3Service.getAccount().then(async (r) => {
         this.account = r;
 
-        this.selectedPayToken = {id: 0, address: this.web3Service.getWethAddress()};
+        this.selectedPayToken = {
+          id: 0,
+          address: this.web3Service.getWethAddress(),
+        };
 
         console.log(this.account);
         // this.buttonLabel = r;
@@ -96,7 +103,7 @@ export class CreateTokenComponent implements OnInit {
 
     this.web3Service.web3.on('networkChanged', (networkId) => {
       this.networkId = networkId.toString(16);
-      console.log({networkId});
+      console.log({ networkId });
       /*
       console.log(accounts);
       if (accounts.length === 0) {
@@ -140,8 +147,7 @@ export class CreateTokenComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   // tslint:disable-next-line:typedef
   createForm() {
@@ -220,11 +226,16 @@ export class CreateTokenComponent implements OnInit {
   // tslint:disable-next-line:typedef
   async approveToken() {
     const tokenAddress = this.selectedPayToken.address;
-    const tokenAmount = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
-    console.log({tokenAddress});
+    const tokenAmount =
+      '115792089237316195423570985008687907853269984665640564039457584007913129639935';
+    console.log({ tokenAddress });
 
     await this.web3Service
-      .approveToken(tokenAddress, this.web3Service.getTokenCreatorAddress(), tokenAmount)
+      .approveToken(
+        tokenAddress,
+        this.web3Service.getTokenCreatorAddress(),
+        tokenAmount
+      )
       .then((r) => {
         if (r) {
           return true;
@@ -273,7 +284,6 @@ export class CreateTokenComponent implements OnInit {
     }
   }
 
-
   // tslint:disable-next-line:typedef
   async getTokenBalance(tokenAddress) {
     return await this.web3Service.getTokensBalance(tokenAddress);
@@ -288,7 +298,6 @@ export class CreateTokenComponent implements OnInit {
       console.log('d');
     }
 
-
     this.tokenDialogRef = this.dialog.open(CreateTokenDialogComponent, {
       data: {
         createButtonLabel: this.createButtonLabel,
@@ -297,11 +306,11 @@ export class CreateTokenComponent implements OnInit {
         isVerified: false,
         step: 1,
         createdToken: {
-          address: ''
-        }
+          address: '',
+        },
       },
     });
-
+    console.log(this.tokenDialogRef.componentInstance);
     this.web3Service
       .createToken(
         this.selectedPayToken?.address,
@@ -332,9 +341,15 @@ export class CreateTokenComponent implements OnInit {
             isCreating: true,
             isChecking: true,
             isVerified: false,
-            createdTokenAddress: this.createdTokenAddress,
-            step: 2
+            createdToken: {
+              address: this.createdTokenAddress,
+              symbol: this.formGroup.get('tokenSymbol').value,
+              decimals: Number(this.formGroup.get('tokenDecimals').value),
+            },
+            step: 2,
           };
+
+          console.log(this.tokenDialogRef.componentInstance.data);
 
           const interval = setInterval(() => {
             const formData: any = new FormData();
@@ -372,8 +387,14 @@ export class CreateTokenComponent implements OnInit {
                       isCreating: true,
                       isChecking: true,
                       isVerified: true,
-                      createdTokenAddress: this.createdTokenAddress,
-                      step: 2
+                      createdToken: {
+                        address: this.createdTokenAddress,
+                        symbol: this.formGroup.get('tokenSymbol').value,
+                        decimals: Number(
+                          this.formGroup.get('tokenDecimals').value
+                        ),
+                      },
+                      step: 2,
                     };
                   }
                 },
@@ -391,7 +412,7 @@ export class CreateTokenComponent implements OnInit {
         }
       })
       .catch((e) => {
-        console.log({e});
+        console.log({ e });
         this.tokenDialogRef.close();
         if (e.code === 4001) {
           this.notificationUtils.showSnackBar(

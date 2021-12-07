@@ -8,14 +8,14 @@ import { Web3Service } from 'src/app/services/web3.service';
   styleUrls: ['./create-token-dialog.component.scss']
 })
 export class CreateTokenDialogComponent implements OnInit {
-  isCreating = false;
-  isChecking = false;
-  isVerified = false;
-  tokenAddedToMetamask = false;
-  step: number;
-  createButtonLabel: string;
-  createdToken: any;
-  addToMetamaskButtonLabel: string;
+  // isCreating = false;
+  // isChecking = false;
+  // isVerified = false;
+  // tokenAddedToMetamask = false;
+  // step: number;
+  // createButtonLabel: string;
+  // createdToken: any;
+  // addToMetamaskButtonLabel: string;
 
   constructor(public dialogRef: MatDialogRef<CreateTokenDialogComponent>,
     public web3Service: Web3Service,
@@ -23,12 +23,13 @@ export class CreateTokenDialogComponent implements OnInit {
   ) {
     console.log(data);
 
-    this.createButtonLabel = data.createButtonLabel;
-    this.isCreating = data.isCreating;
-    this.isChecking = data.isChecking;
-    this.isVerified = data.isVerified;
-    this.step = data.step;
-    this.createdToken = data.createdToken;
+    // this.createButtonLabel = data.createButtonLabel;
+    // this.isCreating = data.isCreating;
+    // this.isChecking = data.isChecking;
+    // this.isVerified = data.isVerified;
+    // this.step = data.step;
+    // this.createdToken = data.createdToken;
+    
   }
 
   onNoClick(): void {
@@ -37,6 +38,7 @@ export class CreateTokenDialogComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
 
   // tslint:disable-next-line:typedef
   async addTokenToMetamask() {
@@ -47,20 +49,19 @@ export class CreateTokenDialogComponent implements OnInit {
         params: {
           type: 'ERC20', // Initially only supports ERC20, but eventually more!
           options: {
-            address: this.createdToken.address, // The address that the token is at.
-            symbol: this.createdToken.symbol, // A ticker symbol or shorthand, up to 5 chars.
-            decimals: this.createdToken.decimals, // The number of decimals in the token
+            address: this.data.createdToken.address, // The address that the token is at.
+            symbol: this.data.createdToken.symbol, // A ticker symbol or shorthand, up to 5 chars.
+            decimals: this.data.decimals, // The number of decimals in the token
           },
         },
       });
 
       console.log('Thanks for your interest!');
-      this.addToMetamaskButtonLabel = 'Token added to metamask successfully';
-      this.tokenAddedToMetamask = true;
+      this.data.addToMetamaskButtonLabel = 'Token added to metamask successfully';
+      this.data.tokenAddedToMetamask = true;
     } catch (error) {
       console.log(error);
     }
   }
-
   
 }
