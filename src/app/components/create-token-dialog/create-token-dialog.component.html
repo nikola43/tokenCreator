@@ -25,7 +25,7 @@
     <a target="_blank"
       [href]="'https://testnet.bscscan.com/address/'+data.createdToken.address">https://testnet.bscscan.com/token/{{data.createdToken.address}}</a>
     <br *ngIf="data.isVerified">
-    <ng-lottie [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
+    <ng-lottie class="lottie-animation-finish" [options]="options" (animationCreated)="animationCreated($event)"></ng-lottie>
     <div class="add-metamask-btn">
       <button *ngIf="data.isVerified" (click)="addTokenToMetamask()" color="primary" type="button" mat-raised-button>
         <fa-icon *ngIf="data.isVerified && data.tokenAddedToMetamask"></fa-icon>
