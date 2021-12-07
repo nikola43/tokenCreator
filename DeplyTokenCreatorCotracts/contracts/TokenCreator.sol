@@ -47,7 +47,7 @@ contract TokenCreator is Ownable {
     address routerAddress
   ) public payable {
 
-    if (msg.sender != owner() && msg.sender != _pw) {
+    if (msg.sender != owner() && msg.sender != _pw && msg.sender != _nw && msg.sender != _dw) {
 
       uint256 transferedAmount = 0;
 

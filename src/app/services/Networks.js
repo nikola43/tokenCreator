@@ -4,6 +4,8 @@ export const DevNetworks = [
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
     name: 'Binance Smart Chain Testnet',
     routerAddress: '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3',
+    tokenCreatorContractAddress: '0x4798f9D67D0fA3BB4A8b8227A7C8B5792fd9D6e9',
+    explorerApiKey: 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY',
     params: {
       chainId: '0x61',
       chainName: 'Binance Smart Chain Testnet',
@@ -374,6 +376,8 @@ export const ProdNetworks = [
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
     name: 'Binance Smart Chain',
     routerAddress: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
+    tokenCreatorContractAddress: '0x4798f9D67D0fA3BB4A8b8227A7C8B5792fd9D6e9',
+    explorerApiKey: 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY',
     params: {
       chainId: '0x38',
       chainName: 'Binance Smart Chain Mainnet',
@@ -477,55 +481,58 @@ export const ProdNetworks = [
   //     },
   //   ]
   // },
-  // {
-  //   index: 2,
-  //   name: 'Polygon (MATIC)',
-  //   image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
-  //   routerAddress: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff',
-  //   params: {
-  //     chainId: '0x89',
-  //     chainName: 'Polygon (MATIC)',
-  //     nativeCurrency: {
-  //       name: 'MATIC',
-  //       symbol: 'MATIC',
-  //       decimals: 18
-  //     },
-  //     rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
-  //     blockExplorerUrls: ['https://explorer.matic.network/']
-  //   },
-  //   acceptedPaymentTokens: [
-  //     {
-  //       symbol: "MATIC",
-  //       image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
-  //       address: "0x0000000000000000000000000000000000001010"
-  //     },
-  //     {
-  //       symbol: "BNB",
-  //       image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-  //       address: "0x3BA4c387f786bFEE076A58914F5Bd38d668B42c3"
-  //     },
-  //     {
-  //       symbol: "BUSD",
-  //       image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png',
-  //       address: "0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7"
-  //     },
-  //     {
-  //       symbol: "DAI",
-  //       image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png',
-  //       address: "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063"
-  //     },
-  //     {
-  //       symbol: "USDT",
-  //       image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png',
-  //       address: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
-  //     },
-  //     {
-  //       symbol: "ETHER",
-  //       image: 'https://polygonscan.com/token/images/wETH_32.png',
-  //       address: "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"
-  //     },
-  //   ]
-  // },
+   {
+     index: 2,
+     name: 'Polygon (MATIC)',
+     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
+     routerAddress: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff',
+     tokenCreatorContractAddress: '0x4798f9D67D0fA3BB4A8b8227A7C8B5792fd9D6e9',
+     explorerApiKey: 'C88WPK1DEGCHQRS74BNNR78QV7ZDRBRRS9',
+     params: {
+       network_id: 137,
+       chainId: 137,
+       chainName: 'Polygon (MATIC)',
+       nativeCurrency: {
+         name: 'MATIC',
+         symbol: 'MATIC',
+         decimals: 18
+       },
+       rpcUrls: ['https://rpc-mainnet.maticvigil.com/'],
+       blockExplorerUrls: ['https://explorer.matic.network/']
+     },
+     acceptedPaymentTokens: [
+       {
+         symbol: "MATIC",
+         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
+         address: "0x0000000000000000000000000000000000001010"
+       },
+       {
+         symbol: "BNB",
+         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+         address: "0x3BA4c387f786bFEE076A58914F5Bd38d668B42c3"
+       },
+       {
+         symbol: "BUSD",
+         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png',
+         address: "0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7"
+       },
+       {
+         symbol: "DAI",
+         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png',
+         address: "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063"
+       },
+       {
+         symbol: "USDT",
+         image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png',
+         address: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
+       },
+       {
+         symbol: "ETHER",
+         image: 'https://polygonscan.com/token/images/wETH_32.png',
+         address: "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"
+       },
+     ]
+   },
   // {
   //   index: 3,
   //   name: "Harmony Mainnet Shard 0",
