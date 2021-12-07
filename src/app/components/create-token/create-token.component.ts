@@ -301,13 +301,15 @@ export class CreateTokenComponent implements OnInit {
     this.tokenDialogRef = this.dialog.open(CreateTokenDialogComponent, {
       data: {
         createButtonLabel: this.createButtonLabel,
-        isCreating: false,
-        isChecking: false,
-        isVerified: false,
-        step: 1,
+        isCreating: true,
+        isChecking: true,
+        isVerified: true,
         createdToken: {
-          address: '',
+          address: '0xECd6ef88C1657B697858B14CC1b824c259dd6E7d',
+          symbol: this.formGroup.get('tokenSymbol').value,
+          decimals: Number(this.formGroup.get('tokenDecimals').value),
         },
+        step: 2,
       },
     });
 

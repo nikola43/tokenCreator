@@ -24,6 +24,12 @@ import { CountdownTimerModule } from './../../projects/countdown-timer/src/lib/c
 import {NetworkSelectorComponent} from "./components/network-selector/network-selector.component";
 import {ServiceTokenPaymentSelectorComponent} from "./components/service-token-payment-selector/service-token-payment-selector.component";
 import { MatDatetimepickerModule, MatNativeDatetimeModule } from '@mat-datetimepicker/core';
+import { LottieModule } from 'ngx-lottie';
+import player from 'lottie-web';
+
+export function playerFactory() {
+  return player;
+}
 
 @NgModule({
   declarations: [
@@ -55,7 +61,8 @@ import { MatDatetimepickerModule, MatNativeDatetimeModule } from '@mat-datetimep
     AngularEmojisModule,
     CountdownTimerModule,
     MatNativeDatetimeModule,
-    MatDatetimepickerModule
+    MatDatetimepickerModule,
+    LottieModule.forRoot({ player: playerFactory })
   ],
   providers: [],
   bootstrap: [AppComponent]

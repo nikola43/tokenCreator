@@ -1,6 +1,8 @@
 import {Component, Inject, OnInit} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { Web3Service } from 'src/app/services/web3.service';
+import { AnimationItem } from 'lottie-web';
+import { AnimationOptions } from 'ngx-lottie';
 
 @Component({
   selector: 'app-create-token-dialog',
@@ -9,13 +11,21 @@ import { Web3Service } from 'src/app/services/web3.service';
 })
 export class CreateTokenDialogComponent implements OnInit {
   tokenAddedToMetamask = false;
-  addToMetamaskButtonLabel: string = '';
+  addToMetamaskButtonLabel: string = 'Add token to metamask';
 
   constructor(public dialogRef: MatDialogRef<CreateTokenDialogComponent>,
     public web3Service: Web3Service,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
     dialogRef.disableClose = true;
+  }
+
+  options: AnimationOptions = {
+    path: '../../../assets/video.json',
+  };
+
+  animationCreated(animationItem: AnimationItem): void {
+    console.log(animationItem);
   }
 
   onNoClick(): void {
@@ -37,7 +47,7 @@ export class CreateTokenDialogComponent implements OnInit {
           options: {
             address: this.data.createdToken.address, // The address that the token is at.
             symbol: this.data.createdToken.symbol, // A ticker symbol or shorthand, up to 5 chars.
-            decimals: this.data.decimals, // The number of decimals in the token
+            decimals: this.data.createdToken.decimals, // The number of decimals in the token
           },
         },
       });
