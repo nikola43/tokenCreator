@@ -22,7 +22,7 @@ const Web3 = require('web3');
 export class CreateTokenComponent implements OnInit {
   networks: any = DevNetworks;
   createdTokenAddress = '';
-  networkId: number = 0;
+  networkId = 0;
   formGroup: FormGroup;
   tokenAddressInputFormGroup: FormGroup;
   createButtonLabel = 'Create Token';
@@ -35,8 +35,8 @@ export class CreateTokenComponent implements OnInit {
   showAdvancedSettings = false;
   bnbBalance: any;
   selectedPayToken: {
-    id: 0,
-    address: ''
+    id: number,
+    address: string
   };
   routerAddress: string;
 
@@ -60,6 +60,9 @@ export class CreateTokenComponent implements OnInit {
     if (this.web3Service.enable) {
       this.web3Service.getAccount().then(async (r) => {
         this.account = r;
+
+        this.selectedPayToken = {id: 0, address: this.web3Service.getWethAddress()};
+
         console.log(this.account);
         // this.buttonLabel = r;
         this.bnbBalance = Web3.utils.fromWei(
@@ -77,7 +80,6 @@ export class CreateTokenComponent implements OnInit {
         this.formGroup.controls.MaxTxPercent.setValue('100');
         this.formGroup.controls.FeeReceiverWallet.setValue(this.account);
         this.routerAddress = this.web3Service.getRouterAddress();
-        this.selectedPayToken = {address: this.web3Service.getWethAddress(), id: 0};
       });
     }
 
@@ -92,7 +94,7 @@ export class CreateTokenComponent implements OnInit {
       }
     });
 
-    this.web3Service.web3.on('networkChanged', (networkId) => {      
+    this.web3Service.web3.on('networkChanged', (networkId) => {
       this.networkId = networkId.toString(16);
       console.log({networkId});
       /*
@@ -220,7 +222,7 @@ export class CreateTokenComponent implements OnInit {
     const tokenAddress = this.selectedPayToken.address;
     const tokenAmount = '115792089237316195423570985008687907853269984665640564039457584007913129639935';
     console.log({tokenAddress});
-   
+
     await this.web3Service
       .approveToken(tokenAddress, this.web3Service.getTokenCreatorAddress(), tokenAmount)
       .then((r) => {
@@ -272,7 +274,6 @@ export class CreateTokenComponent implements OnInit {
   }
 
 
-
   // tslint:disable-next-line:typedef
   async getTokenBalance(tokenAddress) {
     return await this.web3Service.getTokensBalance(tokenAddress);
@@ -282,7 +283,7 @@ export class CreateTokenComponent implements OnInit {
   async onSubmit(value: any) {
     this.isLoading = true;
     this.createButtonLabel = 'Deploying token';
-    if(this.selectedPayToken?.id !== 0) {
+    if (this.selectedPayToken?.id !== 0) {
       await this.approveToken();
       console.log('d');
     }
@@ -315,7 +316,8 @@ export class CreateTokenComponent implements OnInit {
         Number(this.formGroup.get('TxFeePercentToBuybackTokens').value),
         Number(this.formGroup.get('MaxWalletPercent').value),
         Number(this.formGroup.get('MaxTxPercent').value),
-        this.formGroup.get('FeeReceiverWallet').value
+        this.formGroup.get('FeeReceiverWallet').value,
+        this.networkId
       )
       .then(async (r) => {
         console.log(r);
@@ -325,7 +327,14 @@ export class CreateTokenComponent implements OnInit {
 
         if (r.events['1'].address.length > 0) {
           this.createdTokenAddress = r.events['1'].address;
-          this.tokenDialogRef.componentInstance.data = {createButtonLabel: this.createButtonLabel, isCreating: true, isChecking: true, isVerified: false, createdToken: {address: this.createdTokenAddress, symbol: this.formGroup.get('tokenSymbol').value, decimals: Number(this.formGroup.get('tokenDecimals').value)}, step: 2};
+          this.tokenDialogRef.componentInstance.data = {
+            createButtonLabel: this.createButtonLabel,
+            isCreating: true,
+            isChecking: true,
+            isVerified: false,
+            createdTokenAddress: this.createdTokenAddress,
+            step: 2
+          };
 
           const interval = setInterval(() => {
             const formData: any = new FormData();
@@ -358,7 +367,14 @@ export class CreateTokenComponent implements OnInit {
                     this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.setValue(
                       this.createdTokenAddress
                     );
-                    this.tokenDialogRef.componentInstance.data = {createButtonLabel: this.createButtonLabel, isCreating: true, isChecking: true, isVerified: true, createdToken: {address: this.createdTokenAddress, symbol: this.formGroup.get('tokenSymbol').value, decimals: Number(this.formGroup.get('tokenDecimals').value)}, step: 3};
+                    this.tokenDialogRef.componentInstance.data = {
+                      createButtonLabel: this.createButtonLabel,
+                      isCreating: true,
+                      isChecking: true,
+                      isVerified: true,
+                      createdTokenAddress: this.createdTokenAddress,
+                      step: 2
+                    };
                   }
                 },
                 (error) => {
