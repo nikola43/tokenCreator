@@ -302,13 +302,11 @@ export class CreateTokenComponent implements OnInit {
       data: {
         createButtonLabel: this.createButtonLabel,
         isCreating: true,
-        isChecking: true,
-        isVerified: true,
+        isChecking: false,
+        isVerified: false,
         step: 1,
         createdToken: {
-          address: '0xECd6ef88C1657B697858B14CC1b824c259dd6E7d',
-          symbol: this.formGroup.get('tokenSymbol').value,
-          decimals: Number(this.formGroup.get('tokenDecimals').value),
+          address: '',
         },
       },
     });

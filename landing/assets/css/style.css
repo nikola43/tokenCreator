@@ -8,7 +8,7 @@ html {
    height: 100%;
    background: linear-gradient(
     180deg, #14003d, #100138, #0d0233, #0b022d, #080227, #050221, #03021b, #000114);
-   font-family: "Montserrat", sans-serif;
+   font-family: "Montserrat-Regular", sans-serif;
    color: #fff;
    font-size: 1.2rem;
 }
@@ -65,14 +65,13 @@ ul.navbar-nav {
 }
 
 #home {
+  height: 100vh;
   background-image: url('../img/home.png');
   background-repeat: no-repeat;
-  height: 100vh;
   background-size: cover;
   background-position: center;
 }
 .home-text {
-  height: 100vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -106,9 +105,8 @@ ul.navbar-nav {
   font-weight: 700;
 }
 #about {
-  background-image: url('../img/about.png');
-  background-repeat: no-repeat;
   height: 100vh;
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   border-top: 5px solid black;
@@ -117,9 +115,8 @@ ul.navbar-nav {
   margin-bottom: 3vh;
 }
 #chains {
-  background-image: url('../img/chains.png');
-  background-repeat: no-repeat;
   height: 100vh;
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
   border-top: 5px solid black;
@@ -133,9 +130,9 @@ ul.navbar-nav {
   margin-bottom: 7vh;
 }
 #contact {
+  height: 100vh;
   background-image: url('../img/contact.png');
   background-repeat: no-repeat;
-  height: 100vh;
   background-size: cover;
   background-position: center;
   border-top: 5px solid black;
@@ -165,8 +162,57 @@ footer h3 {
 .pl-3 {
   padding-left: 1rem;
 }
-@media screen and (max-width: 512px) {
+@media screen and (max-width: 768px) {
   .mobile-hidden {
     display: none;
+  }
+  #about {
+    background-image: url('../img/about.png');
+  }
+  #chains {
+    background-image: url('../img/chains.png');
+  }
+  #contact {
+    background-image: url('../img/contact.png');
+  }
+  .navbar {
+    padding: 0 20px;
+  }
+  .home-text {
+    justify-content: center;
+    padding: 0 15vw 0 15vw;
+    text-align: center;
+    height: 75%;
+    align-items: center;
+  }
+  #home p {
+    font-size: 1.2rem;
+  }
+  #home button.btn {
+    width: 60%;
+    height: 7vh;
+    font-size: 1rem;
+    margin-top: 2vh;
+  }
+  .container-fuild>div.row {
+    height: 100vh;
+  }
+}
+@media screen and (min-width: 768px) {}
+@media screen and (min-width: 991px) {
+  .screen-hidden {
+    display: none;
+  }
+  .home-text {
+    height: 100vh;
+  }
+  #about {
+    background-image: url('../img/about.png');
+  }
+  #chains {
+    background-image: url('../img/chains.png');
+  }
+  #contact {
+    background-image: url('../img/contact.png');
   }
 }
