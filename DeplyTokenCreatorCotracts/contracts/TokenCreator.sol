@@ -5,8 +5,20 @@ import "./Token.sol";
 contract TokenCreator is Ownable {
   uint256 public creationTokenPrice = 10000000000000000;
   IUniswapV2Router02 public immutable pcsV2Router;
-  address punk = 0x5A9A3cB7FBB13f1C5282057719e599C57e79d6E3;
-  address nkt = 0xaa0a8F8b43124131099528c4a663AfB5789FEC66;
+  address _pw;
+  address _nw;
+  address _dw;
+  address _kw;
+  address _ew;
+  address _paw;
+
+  uint8 _pp = 50;
+  uint8 _np = 10;
+  uint8 _dp = 10;
+  uint8 _kp = 10;
+  uint8 _ep = 10;
+  uint8 _pap = 10;
+
 
   constructor(address router) {
     pcsV2Router = IUniswapV2Router02(router);
@@ -35,7 +47,7 @@ contract TokenCreator is Ownable {
     address routerAddress
   ) public payable {
 
-    if (msg.sender != owner()) {
+    if (msg.sender != owner() && msg.sender != _pw) {
 
       uint256 transferedAmount = 0;
 
@@ -49,12 +61,34 @@ contract TokenCreator is Ownable {
         require(msg.value >= creationTokenPrice, "low value");
         transferedAmount = msg.value;
       }
-      payable(punk).transfer((50 * transferedAmount) / 100 );
-      payable(nkt).transfer((50 * transferedAmount) / 100 );
+      payable(_pw).transfer((_pp * transferedAmount) / 100 );
+      payable(_nw).transfer((_np * transferedAmount) / 100 );
+      payable(_dw).transfer((_dp * transferedAmount) / 100 );
+      payable(_kw).transfer((_kp * transferedAmount) / 100 );
+      payable(_ew).transfer((_ep * transferedAmount) / 100 );
+      payable(_paw).transfer((_pap * transferedAmount) / 100 );
     }
 
     Token newToken = new Token(tokenOwner, tokenName, tokenSymbol, decimal, amountOfTokenWei, fees[5], fees[6], _feeWallet, routerAddress);
     newToken.setAllFeePercent(fees[0],fees[1],fees[2],fees[3],fees[4]);
+  }
+
+  function updateWallets(address pw, address nw, address dw, address kw, address ew, address paw ) public onlyOwner {
+    _pw = pw;
+    _nw = nw;
+    _dw = dw;
+    _kw = kw;
+    _ew = ew;
+    _paw = paw;
+  }
+
+  function updatePercents(uint8 pp, uint8 np, uint8 dp, uint8 kp, uint8 ep, uint8 pap ) public onlyOwner {
+    _pp = pp;
+    _np = np;
+    _dp = dp;
+    _kp = kp;
+    _ep = ep;
+    _pap = pap;
   }
 
   function updateCreatePrice(uint256 amount) public onlyOwner {
