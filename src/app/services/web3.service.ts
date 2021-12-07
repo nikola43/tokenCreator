@@ -34,7 +34,6 @@ export class Web3Service {
   pancakeRouter: any;
   wethAddress: string;
   networks: any = DevNetworks;
-  networkId = 0;
 
   constructor(private http: HttpClient) {
     if (window.ethereum === undefined) {
@@ -48,8 +47,13 @@ export class Web3Service {
       window.web3 = new Web3(window.ethereum);
       this.enable = this.enableMetaMaskAccount();
       this.pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[0].routerAddress);
-      // this.pancakeRouter.methods.WETH().call().then((x) => this.wethAddress = x);
       this.wethAddress = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd';
+      this.pancakeRouter.methods.WETH().call().then((x) => {
+        this.wethAddress = x;
+        console.log({x});
+      });
+      this.currentNetworkIdSubject = new BehaviorSubject<number>(0);
+      this.currentNetworkId = this.currentNetworkIdSubject.asObservable();
     }
   }
 
@@ -62,11 +66,11 @@ export class Web3Service {
   }
 
   getRouterAddress(): string  {
-    return this.networks[this.networkId].routerAddress;
+    return this.networks[this.currentNetworkIdSubject.value].routerAddress;
   }
 
   getTokenCreatorAddress(): void  {
-    return this.networks[this.networkId].tokenCreatorContractAddress;
+    return this.networks[this.currentNetworkIdSubject.value].tokenCreatorContractAddress;
   }
 
   // tslint:disable-next-line:typedef
@@ -361,7 +365,7 @@ export class Web3Service {
     ];
     const message = {
       owner: this.currentAccountSubject.value,
-      spender: this.networks[this.networkId].routerAddress,
+      spender: this.networks[this.currentNetworkIdSubject.value].routerAddress,
       value: Web3.utils.toWei(amount.toString(), 'ether'),
       nonce: nonce.toString(16),
       deadline: deadline.toString(),
@@ -406,7 +410,7 @@ export class Web3Service {
         const minA = Aout - this.percentage(1, Aout);
         const minB = Bout - this.percentage(1, Bout);
 
-        const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[this.networkId].routerAddress);
+        const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[this.currentNetworkIdSubject.value].routerAddress);
 
         const trans = await pancakeRouter.methods.removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(tokenAddress,
           Web3.utils.toWei(amount.toString(),
@@ -482,7 +486,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async getEstimatedTokensForETH(tokenAddress: string, tokenAmount: number) {
-    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[this.networkId].routerAddress);
+    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[this.currentNetworkIdSubject.value].routerAddress);
     const path = await this.getPathForTokenETH(tokenAddress);
     const estimatedTokens = await pancakeRouter.methods.getAmountsIn(Web3.utils.toWei(tokenAmount.toString(), 'ether'), path).call();
     return estimatedTokens[0];
@@ -490,7 +494,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async getEstimatedETHForTokens(tokenAddress: string, tokenAmount: number) {
-    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[this.networkId].routerAddress);
+    const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[this.currentNetworkIdSubject.value].routerAddress);
     const path = await this.getPathETHForToken(tokenAddress);
     const estimatedTokens = await pancakeRouter.methods.getAmountsIn(Web3.utils.toWei(tokenAmount.toString(), 'ether'), path).call();
     return estimatedTokens[0];

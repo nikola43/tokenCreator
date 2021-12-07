@@ -26,6 +26,8 @@ import {ServiceTokenPaymentSelectorComponent} from "./components/service-token-p
 import { MatDatetimepickerModule, MatNativeDatetimeModule } from '@mat-datetimepicker/core';
 import { LottieModule } from 'ngx-lottie';
 import player from 'lottie-web';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
 export function playerFactory() {
   return player;
@@ -62,7 +64,9 @@ export function playerFactory() {
     CountdownTimerModule,
     MatNativeDatetimeModule,
     MatDatetimepickerModule,
-    LottieModule.forRoot({ player: playerFactory })
+    LottieModule.forRoot({ player: playerFactory }),
+    StoreModule.forRoot({}, {}),
+    EffectsModule.forRoot([])
   ],
   providers: [],
   bootstrap: [AppComponent]
