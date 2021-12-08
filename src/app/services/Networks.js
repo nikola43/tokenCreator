@@ -433,8 +433,8 @@ export const ProdNetworks = [
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
     name: 'Binance Smart Chain',
     routerAddress: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
-    tokenCreatorContractAddress: '0xA90654767d1f00a306A54aA6Fc37B5b5dD781B8e',
-    lockLiquidityContractAddress: '0x118cbB6BFAe71E4Fe10d5f83429C439281dA319b',
+    tokenCreatorContractAddress: '0xFb75367BedC01a22d6cd78aB4932E33629ee2272',
+    lockLiquidityContractAddress: '0x45FF5E5f35747aE2296AB9d804CA7C0d3C7F863a',
     explorerApiKey: 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY',
     verifyApiUrl: 'https://api.bscscan.com/api',
     params: {
