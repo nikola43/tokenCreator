@@ -94,7 +94,7 @@ ul.navbar-nav {
 #home p{
   font-size: 1.8rem;
 }
-#home button.btn {
+#home a.btn {
   background: rgb(178,62,206);
   background: linear-gradient(0deg, rgba(178,62,206,1) 0%, rgba(255,21,229,1) 100%);
   width: 30%;
@@ -103,6 +103,7 @@ ul.navbar-nav {
   color: white;
   font-size: 1.2rem;
   font-weight: 700;
+  padding: 1vh;
 }
 #about {
   height: 100vh;

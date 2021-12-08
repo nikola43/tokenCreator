@@ -46,8 +46,10 @@ export class CountdownTimerComponent implements OnInit {
     };
     // Creamos la fecha a partir de la fecha en formato string AAAA-MM-dd HH:mm:ss
     this.finishDate = new Date(this.finishDateString);
-    this.percentage = (100 * Date.now()) / this.finishDate.getTime() + '%';
-
+    this.percentage = ((100 * Date.now()) / this.finishDate.getTime()) + '%';
+    console.log((Date.now() / this.finishDate.getTime()) * 100 );
+    console.log(Date.now());
+    console.log(this.finishDate.getTime());
     let counterTimer$ = this.start().subscribe((_) => {
       if (this.time.minutes <= 0 && this.time.seconds <= 0) {
         this.time = {
