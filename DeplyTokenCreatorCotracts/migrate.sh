@@ -1,7 +1,7 @@
 #!/bin/bash
 # cd truffle
 #truffle networks --clean
-truffle migrate --network bsc TokenCreator Locker
+truffle migrate --reset --network bsc TokenCreator
 #truffle run verify --network bsctestnet TokenCreator@0x4798f9D67D0fA3BB4A8b8227A7C8B5792fd9D6e9
 
 truffle migrate --reset --network bsctestnet TokenCreator Locker

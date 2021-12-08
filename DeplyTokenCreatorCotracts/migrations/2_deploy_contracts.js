@@ -1,7 +1,7 @@
 //const TIME = artifacts.require("TIME.sol");
 //const Token = artifacts.require("Token.sol");
 const TokenCreator = artifacts.require("TokenCreator.sol");
-const Locker = artifacts.require("Locker.sol");
+//const Locker = artifacts.require("Locker.sol");
 //const Web3 = require('web3');
 //const RickToken = artifacts.require("RickToken.sol");
 //const IterableMapping = artifacts.require("IterableMapping.sol");
@@ -9,6 +9,23 @@ const Locker = artifacts.require("Locker.sol");
 // you need deploy iterable Mapping first then link with your token
 module.exports = async (deployer) => {
 
+  //BSC devnet
+  const routerAddress = '0x10ED43C718714eb63d5aA57B78B54704E256024E';
+  await deployer.deploy(TokenCreator, routerAddress).then((r) => {
+    //console.log(r)
+  }).catch(function (e) {
+    console.log(e); // "oh, no!"
+  })
+
+  /*
+  await deployer.deploy(Locker).then((r) => {
+    //console.log(r)
+  }).catch(function (e) {
+    console.log(e); // "oh, no!"
+  })
+  */
+
+  /*
   //BSC devnet
   const routerAddress = '0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3';
   await deployer.deploy(TokenCreator, routerAddress).then((r) => {
@@ -22,7 +39,7 @@ module.exports = async (deployer) => {
   }).catch(function (e) {
     console.log(e); // "oh, no!"
   })
-
+*/
 
   /*
   Polygon mainnet

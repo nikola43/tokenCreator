@@ -27,12 +27,11 @@ module.exports = {
       network_id: "5777"
     },
     bsc: {
-      provider: () => new HDWalletProvider(seed, `https://bsc-dataseed1.binance.org`),
-      network_id: 56,
-      confirmations: 10,
-      timeoutBlocks: 200,
-      skipDryRun: true,
-      gas: 93599804,
+      provider: () => new HDWalletProvider(seed, `https://apis-sj.ankr.com/6cf6b0f6c2714019b2a8fe2312103a66/8e1a6b2b88490d4e20818137e607c759/binance/full/main`),
+      network_id: 56, // Chain id
+      gas: 4612388, // Chain has a lower block limit than mainnet
+      timeoutBlocks: 200, // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true, // Skip dry run before migrations? (default: false for public nets )
       gasPrice: 10000000000, // 10 Gwei
     },
     matic: {

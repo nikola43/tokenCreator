@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {
   NotificationUtils,
   SnackBarColorEnum,
 } from '../../../utils/NotificationUtil';
-import { Web3Service } from '../../services/web3.service';
-import { HttpClient } from '@angular/common/http';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { MatSelectChange } from '@angular/material/select';
-import { faCheck, IconDefinition } from '@fortawesome/free-solid-svg-icons';
-import { CreateTokenDialogComponent } from '../create-token-dialog/create-token-dialog.component';
+import {Web3Service} from '../../services/web3.service';
+import {HttpClient} from '@angular/common/http';
+import {MatDialog, MatDialogRef} from '@angular/material/dialog';
+import {MatSelectChange} from '@angular/material/select';
+import {faCheck, IconDefinition} from '@fortawesome/free-solid-svg-icons';
+import {CreateTokenDialogComponent} from '../create-token-dialog/create-token-dialog.component';
 import {ProdNetworks} from "../../services/Networks";
 
 declare let require: any;
@@ -158,7 +158,8 @@ export class CreateTokenComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   // tslint:disable-next-line:typedef
   createForm() {
@@ -239,7 +240,7 @@ export class CreateTokenComponent implements OnInit {
     const tokenAddress = this.selectedPayToken.address;
     const tokenAmount =
       '115792089237316195423570985008687907853269984665640564039457584007913129639935';
-    console.log({ tokenAddress });
+    console.log({tokenAddress});
 
     await this.web3Service
       .approveToken(
@@ -360,6 +361,10 @@ export class CreateTokenComponent implements OnInit {
             step: 2,
           };
 
+
+          const verifyApiUrl = this.networks[this.networkId].verifyApiUrl;
+
+
           const interval = setInterval(() => {
             const formData: any = new FormData();
 
@@ -369,7 +374,7 @@ export class CreateTokenComponent implements OnInit {
             formData.append('apikey', 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY');
 
             this.http
-              .post('https://api-testnet.bscscan.com/api', formData)
+              .post(verifyApiUrl, formData)
               .subscribe(
                 async (response: any) => {
                   console.log('response');
@@ -421,7 +426,7 @@ export class CreateTokenComponent implements OnInit {
         }
       })
       .catch((e) => {
-        console.log({ e });
+        console.log({e});
         this.tokenDialogRef.close();
         if (e.code === 4001) {
           this.notificationUtils.showSnackBar(

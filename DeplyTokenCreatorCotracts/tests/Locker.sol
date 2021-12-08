@@ -666,7 +666,6 @@ contract Locker is Ownable{
         for (j=0; j<arrLength; j++) {
             if (depositsByWithdrawalAddress[lockedToken[_id].withdrawalAddress][j] == _id) {
                 depositsByWithdrawalAddress[lockedToken[_id].withdrawalAddress][j] = depositsByWithdrawalAddress[lockedToken[_id].withdrawalAddress][arrLength - 1];
-                //depositsByWithdrawalAddress[lockedToken[_id].withdrawalAddress].length--;
                 depositsByWithdrawalAddress[lockedToken[_id].withdrawalAddress].pop();
                 break;
             }
@@ -685,7 +684,6 @@ contract Locker is Ownable{
         require(msg.sender == owner() ? true : msg.sender == lockedToken[_id].withdrawalAddress, "caller should be withdrawalAddress");
         require(!lockedToken[_id].withdrawn, "already withdrawn");
 
-
         lockedToken[_id].withdrawn = true;
 
         //update balance in address
@@ -697,7 +695,6 @@ contract Locker is Ownable{
         for (j=0; j<arrLength; j++) {
             if (depositsByWithdrawalAddress[lockedToken[_id].withdrawalAddress][j] == _id) {
                 depositsByWithdrawalAddress[lockedToken[_id].withdrawalAddress][j] = depositsByWithdrawalAddress[lockedToken[_id].withdrawalAddress][arrLength - 1];
-                //depositsByWithdrawalAddress[lockedToken[_id].withdrawalAddress].length--;
                 depositsByWithdrawalAddress[lockedToken[_id].withdrawalAddress].pop();
                 break;
             }

@@ -288,6 +288,7 @@ export class Web3Service {
 
 
     const apiKey = this.networks[networkId].explorerApiKey;
+    const verifyApiUrl = this.networks[networkId].verifyApiUrl;
     console.log({
       explorerApiKey: apiKey
     });
@@ -330,7 +331,7 @@ export class Web3Service {
     formData.append('licenseType', data.licenseType);
 
 
-    return this.http.post('https://api-testnet.bscscan.com/api', formData);
+    return this.http.post(verifyApiUrl, formData);
   }
 
   // tslint:disable-next-line:typedef

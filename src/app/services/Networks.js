@@ -7,6 +7,7 @@ export const DevNetworks = [
     tokenCreatorContractAddress: '0x45FF5E5f35747aE2296AB9d804CA7C0d3C7F863a',
     lockLiquidityContractAddress: '0x2fBeEc08c73E6E2F391ef6c282F6C370Ff9e82E9',
     launchpadContractAddress: '0x4798f9D67D0fA3BB4A8b8227A7C8B5792fd9D6e9',
+    verifyApiUrl: 'https://api-testnet.bscscan.com/api',
     explorerApiKey: 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY',
     params: {
       chainId: '0x61',
@@ -381,6 +382,7 @@ export const ProdNetworks = [
     tokenCreatorContractAddress: '0xA90654767d1f00a306A54aA6Fc37B5b5dD781B8e',
     lockLiquidityContractAddress: '0x118cbB6BFAe71E4Fe10d5f83429C439281dA319b',
     explorerApiKey: 'C88WPK1DEGCHQRS74BNNR78QV7ZDRBRRS9',
+    verifyApiUrl: 'https://api.polygonscan.com/api',
     params: {
       network_id: '0x89',
       chainId: '0x89',
@@ -434,6 +436,7 @@ export const ProdNetworks = [
     tokenCreatorContractAddress: '0xA90654767d1f00a306A54aA6Fc37B5b5dD781B8e',
     lockLiquidityContractAddress: '0x118cbB6BFAe71E4Fe10d5f83429C439281dA319b',
     explorerApiKey: 'V28HJCGUP2XCHSV5IXXG6IK9W14HHXKDCY',
+    verifyApiUrl: 'https://api.bscscan.com/api',
     params: {
       chainId: '0x38',
       chainName: 'Binance Smart Chain Mainnet',
