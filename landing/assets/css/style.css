@@ -236,12 +236,12 @@ footer h3 {
     width: 150px;
     line-height: 25px;
   }
+  .navbar .container-fluid {
+    background-color: #231d56c7;
+  }
   .navbar-collapse {
     display: flex;
     justify-content: space-evenly;
-  }
-  .navbar .container-fluid {
-    background-color: #231d56c7;
     padding-bottom: 3vh;
   }
 }

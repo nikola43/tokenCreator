@@ -10,7 +10,7 @@ import { map } from 'rxjs/internal/operators/map';
       <div class="progress">
         <div
           class="progress-bar"
-          style="width: 82%"
+          style="width: {{percentage}}"
           role="progressbar"
           aria-valuenow="0"
           aria-valuemin="0"
@@ -32,6 +32,7 @@ export class CountdownTimerComponent implements OnInit {
     minutes: number;
     seconds: number;
   };
+  percentage: string = '99%';
   @Input() finishDateString: string = '';
   finishDate: Date = new Date();
 
@@ -45,6 +46,7 @@ export class CountdownTimerComponent implements OnInit {
     };
     // Creamos la fecha a partir de la fecha en formato string AAAA-MM-dd HH:mm:ss
     this.finishDate = new Date(this.finishDateString);
+    this.percentage = (100 * Date.now()) / this.finishDate.getTime() + '%';
 
     let counterTimer$ = this.start().subscribe((_) => {
       if (this.time.minutes <= 0 && this.time.seconds <= 0) {

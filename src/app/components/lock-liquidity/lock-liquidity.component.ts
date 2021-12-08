@@ -192,8 +192,9 @@ export class LockLiquidityComponent implements OnInit {
       )
         .toFixed(18)
         .toString();
-        this.isAllowed = await this.web3Service.isAllowed(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value, this.web3Service.getRouterAddress());
-      /* Get my locks */
+        this.isAllowed = await this.web3Service.isAllowed(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value, this.web3Service.getLockedAddress());
+          console.log(this.isAllowed);
+        /* Get my locks */
       this.web3Service
         .getLocks()
         .then((r) => {

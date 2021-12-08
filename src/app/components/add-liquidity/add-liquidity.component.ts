@@ -20,8 +20,8 @@ const Web3 = require('web3');
 export class AddLiquidityComponent implements OnInit {
   tokenAddressInputFormGroup: FormGroup;
   burnTokenAddressInputFormGroup: FormGroup;
-  tokenBalance: any;
-  lpTokenBalance: any;
+  tokenBalance: any = 0;
+  lpTokenBalance: any = 0;
   bnbBalance: any;
   approveButtonLabel = 'Approve Token';
   approveButtonIcon: IconDefinition = faCheck;
@@ -354,6 +354,8 @@ export class AddLiquidityComponent implements OnInit {
     );
 
     if (isValid) {
+      console.log('petaso')
+      console.log(this.tokenBalance);
       this.tokenBalance = Number(
         Web3.utils.fromWei(
           await this.getTokenBalance(
@@ -364,10 +366,13 @@ export class AddLiquidityComponent implements OnInit {
       )
         .toFixed(8)
         .toString();
+      console.log('lptokenbalance')
       this.lpTokenBalance = Number(
         Web3.utils.fromWei(await this.getLPTokenBalance(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value), 'ether')
       );
-      this.isAllowed = await this.web3Service.isAllowed(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value, this.web3Service.getRouterAddress()); 
+      console.log('swdsdsd');
+      this.isAllowed = await this.web3Service.isAllowed(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value, this.web3Service.getRouterAddress());
+      console.log(this.isAllowed);
     } else {
       this.tokenBalance = 0;
     }

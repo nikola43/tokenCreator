@@ -36,7 +36,6 @@ export class Web3Service {
   private currentNetworkIdSubject: BehaviorSubject<number>;
   public currentNetworkId: Observable<number>;
   pancakeRouter: any;
-  wethAddress: string;
   networks: any = DevNetworks;
 
   constructor(private http: HttpClient, private notificationUtils: NotificationUtils, public dialog: MatDialog) {
@@ -69,12 +68,15 @@ export class Web3Service {
   }
 
   async getWethAddress(): Promise<string> {
-    this.wethAddress = await this.pancakeRouter.methods.WETH().call();
-    return this.wethAddress;
+    return await this.pancakeRouter.methods.WETH().call();
   }
 
   getRouterAddress(): string {
     return this.networks[this.currentNetworkIdSubject.value].routerAddress;
+  }
+
+  getLockedAddress(): string {
+    return this.networks[this.currentNetworkIdSubject.value].lockLiquidityContractAddress;
   }
 
   getTokenCreatorAddress(): void {
@@ -83,7 +85,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async getEstimatedTokensForBNB(tokenAddress) {
-    const pair = await this.getPair(this.wethAddress, tokenAddress);
+    const pair = await this.getPair(await this.getWethAddress(), tokenAddress);
     const lpTokenContract = new window.web3.eth.Contract(LPTokenAbi, pair);
 
     return await lpTokenContract.methods.getReserves().call();
@@ -172,7 +174,7 @@ export class Web3Service {
     tokenSupply = Web3.utils.toWei(tokenSupply.toString(), 'ether');
     const createPrice = await createdToken.methods.creationTokenPrice().call();
     const ownerAddress = await createdToken.methods.owner().call();
-    const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : (paymentToken !== this.wethAddress ? 0 : createPrice);
+    const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : (paymentToken !== await this.getWethAddress() ? 0 : createPrice);
     console.log({});
 
 
@@ -451,7 +453,7 @@ export class Web3Service {
     minTokenAmount = Number(minTokenAmount);
 
 
-    const tokenA = this.wethAddress;
+    const tokenA = await this.getWethAddress();
     const tokenB = tokenAddress;
     const amountADesired = bnbAmount;
     const amountAMin = minBnbAmount;
@@ -476,7 +478,7 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
     const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
-    const a = await lockLiquidityContract.methods.lockTokens(await this.getPair(this.wethAddress, tokenAddress),
+    const a = await lockLiquidityContract.methods.lockTokens(await this.getPair(await this.getWethAddress(), tokenAddress),
       this.currentAccountSubject.value, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).send({
       from: this.currentAccountSubject.value,
       value: '80000000000000000'
@@ -523,17 +525,17 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async getPathForTokenETH(tokenAddress: string) {
-    return [tokenAddress, this.wethAddress];
+    return [tokenAddress, await this.getWethAddress()];
   }
 
   // tslint:disable-next-line:typedef
   async getPathETHForToken(tokenAddress: string) {
-    return [this.wethAddress, tokenAddress];
+    return [await this.getWethAddress(), tokenAddress];
   }
 
   // tslint:disable-next-line:typedef
   async getLPTokensBalance(tokenAddress: string) {
-    const pairAddress = await this.getPair(this.wethAddress, tokenAddress);
+    const pairAddress = await this.getPair(await this.getWethAddress(), tokenAddress);
     const token = new window.web3.eth.Contract(LPTokenAbi, pairAddress);
     return await token.methods.balanceOf(this.currentAccountSubject.value).call();
   }
@@ -576,7 +578,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async isAllowed(address, spender) {
-    const pairAddress = await this.getPair(this.wethAddress, address);
+    const pairAddress = await this.getPair(await this.getWethAddress(), address);
     const LPTokenBalance = await this.getLPTokensBalance(address);
     const isAddresAllowed = window.web3.utils.toWei(
       await this.getAddressAllowance(address, spender), 'ether') < window.web3.utils.toWei(LPTokenBalance, 'ether');
