@@ -242,6 +242,12 @@ export class Web3Service {
   }
 
   // tslint:disable-next-line:typedef
+  async getLockerPrice() {
+    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
+    return await lockLiquidityContract.methods.lockServicePrice().call();
+  }
+
+  // tslint:disable-next-line:typedef
   getBalance() {
     return window.web3.eth.getBalance(this.currentAccountSubject.value);
   }
@@ -478,12 +484,11 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
     const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
-    const a = await lockLiquidityContract.methods.lockTokens(await this.getPair(await this.getWethAddress(), tokenAddress),
+    return await lockLiquidityContract.methods.lockTokens(await this.getPair(await this.getWethAddress(), tokenAddress),
       this.currentAccountSubject.value, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).send({
       from: this.currentAccountSubject.value,
-      value: '80000000000000000'
+      value: await this.getLockerPrice()
     });
-    return a;
   }
 
   // tslint:disable-next-line:typedef

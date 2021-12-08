@@ -41,7 +41,7 @@ export class AddLiquidityComponent implements OnInit {
     tokenAmount: 0,
   };
   constructor(public web3Service: Web3Service,
-              private formBuilder: FormBuilder, 
+              private formBuilder: FormBuilder,
               private notificationUtils: NotificationUtils,
               public dialog: MatDialog) {
     this.createForm();
@@ -177,7 +177,7 @@ export class AddLiquidityComponent implements OnInit {
       )
         .toFixed(8)
         .toString();
-      
+
       console.log(this.isAllowed);
     } else {
       this.tokenBalance = 0;
@@ -311,6 +311,15 @@ export class AddLiquidityComponent implements OnInit {
       0,
       this.tokenBalance
     );
+
+    const value2 = this.mapValue(
+      Number(this.addLiquidityForm.tokenAmount),
+      0,
+      this.tokenBalance,
+      0,
+      100
+    );
+    this.addLiquidityBnbSlider.value = value2;
   }
 
   // tslint:disable-next-line:typedef
@@ -377,7 +386,7 @@ export class AddLiquidityComponent implements OnInit {
       this.tokenBalance = 0;
     }
   }
-  
+
   async openRemoveLiquidityDialog() {
     const pairAddress = await this.getPair(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
     const dialogRef = this.dialog.open(RemoveLiquidityDialogComponent, {
@@ -410,7 +419,7 @@ export class AddLiquidityComponent implements OnInit {
           await this.web3Service.getBalance(),
           'ether'
         );
-      } 
+      }
 
 
     });
@@ -452,9 +461,9 @@ export class AddLiquidityComponent implements OnInit {
       const isValid = /^0x[a-fA-F0-9]{40}$/.test(
         address
       );
-      if (!isValid) {   
+      if (!isValid) {
         throw new Error(msg);
-        
+
       };
     }
     catch(e) {

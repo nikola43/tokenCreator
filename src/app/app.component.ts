@@ -12,7 +12,7 @@ import {NoWalletDialogComponent} from './components/no-wallet-dialog/no-wallet-d
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnDestroy , OnInit {
+export class AppComponent implements OnDestroy, OnInit {
   buttonLabel = 'Connect';
   account: any = undefined;
   mobileQuery: MediaQueryList;
@@ -46,7 +46,7 @@ export class AppComponent implements OnDestroy , OnInit {
 
     });
 
-    if(this.web3Service.web3) {
+    if (this.web3Service.web3) {
       this.web3Service.web3.on('accountsChanged', (accounts: string[]) => {
         if (accounts.length === 0) {
           this.account = undefined;
@@ -60,9 +60,9 @@ export class AppComponent implements OnDestroy , OnInit {
             accounts[0].charAt(accounts[0].length - 1);
         }
       });
-  
+
       this.web3Service.web3.on('networkChanged', (data) => {
-  
+
         if (this.web3Service.enable) {
           this.web3Service.getAccount().then(async (r) => {
             const accounts = [r];
@@ -74,7 +74,7 @@ export class AppComponent implements OnDestroy , OnInit {
               accounts[0].charAt(accounts[0].length - 1);
           });
         }
-  
+
       });
     }
 
@@ -128,18 +128,22 @@ export class AppComponent implements OnDestroy , OnInit {
     this.selectedNetwork = event;
 
     console.log({
-     n: this.selectedNetwork
-    })
+      n: this.selectedNetwork
+    });
 
     this.web3Service.setNetworkId(this.selectedNetwork);
   }
-  onOpenDialog() {
+
+  onOpenDialog(): void {
     this.dialog.open(NoWalletDialogComponent);
   }
 
-  conectWeb3Btn() {
-    if(this.web3Service.web3)this.connectWeb3();
-    else this.onOpenDialog();
+  conectWeb3Btn(): void {
+    if (this.web3Service.web3) {
+      this.connectWeb3();
+    } else {
+      this.onOpenDialog();
+    }
   }
 
   // tslint:disable-next-line:typedef

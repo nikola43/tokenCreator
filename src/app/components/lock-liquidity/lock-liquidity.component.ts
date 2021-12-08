@@ -1,13 +1,13 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Web3Service } from '../../services/web3.service';
-import { MatSliderChange } from '@angular/material/slider';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Web3Service} from '../../services/web3.service';
+import {MatSliderChange} from '@angular/material/slider';
 import {
   NotificationUtils,
   SnackBarColorEnum,
 } from 'src/utils/NotificationUtil';
-import { CountdownModule } from 'ngx-countdown';
-import { faLock, faLockOpen,faCheck, faExclamationTriangle, IconDefinition } from '@fortawesome/free-solid-svg-icons';
+import {CountdownModule} from 'ngx-countdown';
+import {faLock, faLockOpen, faCheck, faExclamationTriangle, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 
 declare let require: any;
 const Web3 = require('web3');
@@ -39,6 +39,7 @@ export class LockLiquidityComponent implements OnInit {
   isLoading = false;
   isLocking = false;
   isAllowed = false;
+
   constructor(
     private formBuilder: FormBuilder,
     public web3Service: Web3Service,
@@ -51,6 +52,7 @@ export class LockLiquidityComponent implements OnInit {
   async getTokenBalance(tokenAddress) {
     return await this.web3Service.getTokensBalance(tokenAddress);
   }
+
   // tslint:disable-next-line:typedef
   async tokenInputKeyUp() {
     console.log(
@@ -82,7 +84,10 @@ export class LockLiquidityComponent implements OnInit {
       this.tokenBalance = 0;
     }
   }
-  ngOnInit(): void {}
+
+  ngOnInit(): void {
+  }
+
   // tslint:disable-next-line:typedef
   formatLabel(value: number) {
     if (value >= 1000) {
@@ -101,7 +106,7 @@ export class LockLiquidityComponent implements OnInit {
     const tokenAmount = this.lockLiquidityForm.lpAmount.toString();
     const routerAddress = this.web3Service.getRouterAddress();
     await this.web3Service
-      .approveToken(tokenAddress,routerAddress, tokenAmount)
+      .approveToken(tokenAddress, routerAddress, tokenAmount)
       .then((r) => {
         if (r) {
           this.isAllowed = true;
@@ -125,11 +130,12 @@ export class LockLiquidityComponent implements OnInit {
 
     // const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
   }
+
   // tslint:disable-next-line:typedef
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
     this.isLocking = true;
     try {
-      const r = await this.web3Service.lockLiquidity(tokenAddress,time,tokenAmount);
+      const r = await this.web3Service.lockLiquidity(tokenAddress, time, tokenAmount);
       this.notificationUtils.showSnackBar(
         'Liquidity locked Successfully.',
         SnackBarColorEnum.Green
@@ -143,10 +149,12 @@ export class LockLiquidityComponent implements OnInit {
       this.isLocking = false;
     }
   }
+
   // tslint:disable-next-line:typedef
   mapValue(x, inMin, inMax, outMin, outMax) {
     return ((x - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
   }
+
   // tslint:disable-next-line:typedef
   onSlideLockLP(event: MatSliderChange) {
     this.lockTokenLiquidityPercent = Number(event.value);
@@ -192,9 +200,9 @@ export class LockLiquidityComponent implements OnInit {
       )
         .toFixed(18)
         .toString();
-        this.isAllowed = await this.web3Service.isAllowed(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value, this.web3Service.getLockedAddress());
-          console.log(this.isAllowed);
-        /* Get my locks */
+      this.isAllowed = await this.web3Service.isAllowed(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value, this.web3Service.getLockedAddress());
+      console.log(this.isAllowed);
+      /* Get my locks */
       this.web3Service
         .getLocks()
         .then((r) => {
