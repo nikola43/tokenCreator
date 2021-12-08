@@ -192,6 +192,7 @@ footer h3 {
   }
   .navbar {
     padding: 0;
+    margin: 0;
   }
   .home-text {
     justify-content: center;
@@ -227,6 +228,21 @@ footer h3 {
   .navbar-toggler {
     width: 50px;
     padding: 0.2rem 0.4rem;
+  }
+  #navbar {
+    align-items: initial;
+  }
+  .launch-app-btn {
+    width: 150px;
+    line-height: 25px;
+  }
+  .navbar-collapse {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .navbar .container-fluid {
+    background-color: #231d56c7;
+    padding-bottom: 3vh;
   }
 }
 @media screen and (min-width: 768px) {}
