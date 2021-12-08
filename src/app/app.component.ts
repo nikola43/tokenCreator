@@ -1,8 +1,11 @@
 import {MediaMatcher} from '@angular/cdk/layout';
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Web3Service} from './services/web3.service';
 import Typewriter from 'typewriter-effect/dist/core';
 import {faBurn, faLock, faCoins, faAtom, faBook, faFunnelDollar} from '@fortawesome/free-solid-svg-icons';
+import {MatDialog} from '@angular/material/dialog';
+import {NoWalletDialogComponent} from './components/no-wallet-dialog/no-wallet-dialog.component';
+
 
 @Component({
   selector: 'app-root',
@@ -23,73 +26,58 @@ export class AppComponent implements OnDestroy , OnInit {
   fabook = faBook;
   fadollar = faFunnelDollar;
 
-  constructor(public web3Service: Web3Service, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(public web3Service: Web3Service, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public dialog: MatDialog) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
     this.connectWeb3().then((r) => {
-      console.log({r});
 
       if (this.web3Service.enable) {
         this.web3Service.getAccount().then(async (account: string) => {
 
-          console.log({
-            account
-          });
-
           this.account = account;
           this.buttonLabel = account.charAt(0) + '' + account.charAt(1) + '' +
             account.charAt(2) + '' + account.charAt(4) + account.charAt(5) + '' +
-            account.charAt(6) + '' + '...' + account.charAt(account.length - 4) + '' +
+            account.charAt(6) + '...' + account.charAt(account.length - 4) + '' +
             account.charAt(account.length - 3) + '' + account.charAt(account.length - 2) + '' + account.charAt(account.length - 1);
         });
       }
 
     });
 
-
-
-    this.web3Service.web3.on('accountsChanged', (accounts: string[]) => {
-      console.log(accounts);
-      if (accounts.length === 0) {
-        this.account = undefined;
-        this.buttonLabel = 'Connect';
-      } else {
-        this.account = accounts[0];
-        this.buttonLabel = accounts[0].charAt(0) + '' + accounts[0].charAt(1) + '' +
-          accounts[0].charAt(2) + '' + accounts[0].charAt(4) + accounts[0].charAt(5) + '' +
-          accounts[0].charAt(6) + '' + '...' + accounts[0].charAt(accounts[0].length - 4) + '' +
-          accounts[0].charAt(accounts[0].length - 3) + '' + accounts[0].charAt(accounts[0].length - 2) + '' +
-          accounts[0].charAt(accounts[0].length - 1);
-      }
-    });
-
-    this.web3Service.web3.on('networkChanged', (data) => {
-      console.log({
-        data
-      });
-
-
-
-      if (this.web3Service.enable) {
-        this.web3Service.getAccount().then(async (r) => {
-          console.log({
-            r
-          });
-
-          const accounts = [r];
+    if(this.web3Service.web3) {
+      this.web3Service.web3.on('accountsChanged', (accounts: string[]) => {
+        if (accounts.length === 0) {
+          this.account = undefined;
+          this.buttonLabel = 'Connect';
+        } else {
           this.account = accounts[0];
           this.buttonLabel = accounts[0].charAt(0) + '' + accounts[0].charAt(1) + '' +
             accounts[0].charAt(2) + '' + accounts[0].charAt(4) + accounts[0].charAt(5) + '' +
-            accounts[0].charAt(6) + '' + '...' + accounts[0].charAt(accounts[0].length - 4) + '' +
+            accounts[0].charAt(6) + '...' + accounts[0].charAt(accounts[0].length - 4) + '' +
             accounts[0].charAt(accounts[0].length - 3) + '' + accounts[0].charAt(accounts[0].length - 2) + '' +
             accounts[0].charAt(accounts[0].length - 1);
+        }
+      });
+  
+      this.web3Service.web3.on('networkChanged', (data) => {
+  
+        if (this.web3Service.enable) {
+          this.web3Service.getAccount().then(async (r) => {
+            const accounts = [r];
+            this.account = accounts[0];
+            this.buttonLabel = accounts[0].charAt(0) + '' + accounts[0].charAt(1) + '' +
+              accounts[0].charAt(2) + '' + accounts[0].charAt(4) + accounts[0].charAt(5) + '' +
+              accounts[0].charAt(6) + '...' + accounts[0].charAt(accounts[0].length - 4) + '' +
+              accounts[0].charAt(accounts[0].length - 3) + '' + accounts[0].charAt(accounts[0].length - 2) + '' +
+              accounts[0].charAt(accounts[0].length - 1);
+          });
+        }
+  
+      });
+    }
 
-        });
-      }
-
-    });
   }
 
   ngOnInit(): void {
@@ -137,7 +125,6 @@ export class AppComponent implements OnDestroy , OnInit {
 
   // tslint:disable-next-line:typedef
   onNetworkChanged(event: any) {
-    console.log({event});
     this.selectedNetwork = event;
 
     console.log({
@@ -145,6 +132,14 @@ export class AppComponent implements OnDestroy , OnInit {
     })
 
     this.web3Service.setNetworkId(this.selectedNetwork);
+  }
+  onOpenDialog() {
+    this.dialog.open(NoWalletDialogComponent);
+  }
+
+  conectWeb3Btn() {
+    if(this.web3Service.web3)this.connectWeb3();
+    else this.onOpenDialog();
   }
 
   // tslint:disable-next-line:typedef
@@ -158,9 +153,11 @@ export class AppComponent implements OnDestroy , OnInit {
         this.account = account;
         this.buttonLabel = account.charAt(0) + '' + account.charAt(1) + '' +
           account.charAt(2) + '' + account.charAt(4) + account.charAt(5) + '' +
-          account.charAt(6) + '' + '...' + account.charAt(account.length - 4) + '' +
+          account.charAt(6) + '...' + account.charAt(account.length - 4) + '' +
           account.charAt(account.length - 3) + '' + account.charAt(account.length - 2) + '' + account.charAt(account.length - 1);
       }
+    }).catch(() => {
+      console.log('Non-Blockchain browser detected. Please install Metamask or any eth wallet.');
     });
   }
 }

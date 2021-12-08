@@ -23,11 +23,11 @@ export class RemoveLiquidityDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<RemoveLiquidityDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    console.log(data);
+    // console.log(data);
 
-    this.tokenAddress = data.address;
-    this.pairAddress = data.pairAddress;
-    this.lpTokenBalance = data.lpTokenBalance;
+    // this.tokenAddress = data.address;
+    // this.pairAddress = data.pairAddress;
+    // this.lpTokenBalance = data.lpTokenBalance;
   }
 
   onNoClick(): void {
@@ -95,7 +95,6 @@ export class RemoveLiquidityDialogComponent implements OnInit {
     await this.web3Service
       .removeLPTokens(this.tokenAddress, this.pairAddress, this.removeLPTokensForm.amount)
       .then((r) => {
-        console.log(r);
         this.isLoading = false;
         this.dialogRef.close(true);
       })

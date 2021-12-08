@@ -13,6 +13,7 @@ import {AngularEmojisModule} from 'angular-emojis';
 import {TokenGeneratorComponent} from './components/token-generator/token-generator.component';
 import {BurnDialogComponent} from './components/burn-dialog/burn-dialog.component';
 import {CreateTokenDialogComponent} from './components/create-token-dialog/create-token-dialog.component';
+import {NoWalletDialogComponent} from './components/no-wallet-dialog/no-wallet-dialog.component';
 import {CreateTokenComponent} from './components/create-token/create-token.component';
 import {AddLiquidityComponent} from './components/add-liquidity/add-liquidity.component';
 import {LockLiquidityComponent} from './components/lock-liquidity/lock-liquidity.component';
@@ -41,6 +42,7 @@ export function playerFactory() {
     BurnDialogComponent,
     RemoveLiquidityDialogComponent,
     CreateTokenDialogComponent,
+    NoWalletDialogComponent,
     CreateTokenComponent,
     AddLiquidityComponent,
     LockLiquidityComponent,
