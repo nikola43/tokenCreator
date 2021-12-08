@@ -47,7 +47,6 @@ export class AddLiquidityComponent implements OnInit {
     this.createForm();
 
     this.connectWeb3().then((r) => {
-      console.log(r);
     });
 
     if (this.web3Service.enable) {
@@ -68,7 +67,6 @@ export class AddLiquidityComponent implements OnInit {
   // tslint:disable-next-line:typedef
   public async connectWeb3() {
     this.web3Service.enableMetaMaskAccount().then(async (r) => {
-      console.log(r);
       if (r?.length === 0) {
         this.account = undefined;
         this.buttonLabel = 'Connect';

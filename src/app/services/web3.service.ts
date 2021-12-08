@@ -11,6 +11,8 @@ import {LPTokenAbi} from './LPTokenAbi.js';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {INetwork} from '../../../models/network.interface';
 import {ProdNetworks} from "./Networks";
+import { MatDialog } from '@angular/material/dialog';
+import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil.js';
 
 
 declare let require: any;
@@ -37,10 +39,8 @@ export class Web3Service {
   wethAddress: string;
   networks: any = ProdNetworks;
 
-  constructor(private http: HttpClient) {
-    if (window.ethereum === undefined) {
-      alert('Non-Ethereum browser detected. Install MetaMask');
-    } else {
+  constructor(private http: HttpClient,private notificationUtils: NotificationUtils, public dialog: MatDialog) {
+    if (window.ethereum !== undefined) {
       if (typeof window.web3 !== 'undefined') {
         this.web3 = window.web3.currentProvider;
       } else {
@@ -123,6 +123,11 @@ export class Web3Service {
     await new Promise((resolve, reject) => {
       enable = window.ethereum.enable();
       this.enable = enable;
+    }).catch(() => {
+      this.notificationUtils.showSnackBar(
+        `Non-Blockchain browser detected. Please install Metamask or any eth wallet.`,
+        SnackBarColorEnum.Red,
+      );
     });
     return Promise.resolve(enable);
   }
@@ -630,7 +635,6 @@ export class Web3Service {
     );
 
     const r = x.toString('hex').substring(8);
-    console.log(r);
     return r;
   }
 

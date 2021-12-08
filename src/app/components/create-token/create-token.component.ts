@@ -58,7 +58,6 @@ export class CreateTokenComponent implements OnInit {
 
     this.createForm();
     this.connectWeb3().then((r) => {
-      console.log(r);
     });
 
     if (this.web3Service.enable) {
@@ -90,48 +89,34 @@ export class CreateTokenComponent implements OnInit {
       });
     }
 
-    this.web3Service.web3.on('accountsChanged', (accounts) => {
-      console.log(accounts);
-      if (accounts.length === 0) {
-        this.account = undefined;
-        // this.buttonLabel = 'Connect';
-      } else {
-        this.account = accounts[0];
-        // this.buttonLabel = accounts[0];
-      }
-    });
-
-    this.web3Service.web3.on('networkChanged', (networkId) => {
-      // this.networkId = networkId.toString(16);
-      // console.log({ networkId });
-
-
-      //this.networkId = networkId.toString(16);
-      this.web3Service.currentNetworkId.subscribe((nID) => {
-        this.networkId = nID;
-        console.log({
-          nID
-        });
+    if(this.web3Service.web3) {
+      this.web3Service.web3.on('accountsChanged', (accounts) => {
+        console.log(accounts);
+        if (accounts.length === 0) {
+          this.account = undefined;
+          // this.buttonLabel = 'Connect';
+        } else {
+          this.account = accounts[0];
+          // this.buttonLabel = accounts[0];
+        }
       });
-      console.log({networkId});
+  
+      this.web3Service.web3.on('networkChanged', (networkId) => {
 
-      /*
-      console.log(accounts);
-      if (accounts.length === 0) {
-        this.account = undefined;
-        this.buttonLabel = 'Connect';
-      } else {
-        this.account = accounts[0];
-        this.buttonLabel = accounts[0];
-      }
-      */
-    });
+        this.web3Service.currentNetworkId.subscribe((nID) => {
+          this.networkId = nID;
+          console.log({
+            nID
+          });
+        });
+        console.log({networkId});
+      });
+    }
   }
 
   // tslint:disable-next-line:typedef
   public async connectWeb3() {
     this.web3Service.enableMetaMaskAccount().then(async (r) => {
-      console.log(r);
       if (r?.length === 0) {
         this.account = undefined;
         // this.buttonLabel = 'Connect';
@@ -155,6 +140,8 @@ export class CreateTokenComponent implements OnInit {
         this.formGroup.controls.MaxTxPercent.setValue('100');
         this.formGroup.controls.FeeReceiverWallet.setValue(this.account);
       }
+    }).catch(() => {
+      console.log('catch');
     });
   }
 
@@ -341,7 +328,6 @@ export class CreateTokenComponent implements OnInit {
         this.networkId
       )
       .then(async (r) => {
-        console.log(r);
         this.createButtonLabel = 'Verifying Token';
 
         await this.sleep(5000);

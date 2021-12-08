@@ -95,7 +95,6 @@ export class RemoveLiquidityDialogComponent implements OnInit {
     await this.web3Service
       .removeLPTokens(this.tokenAddress, this.pairAddress, this.removeLPTokensForm.amount)
       .then((r) => {
-        console.log(r);
         this.isLoading = false;
         this.dialogRef.close(true);
       })

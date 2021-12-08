@@ -35,7 +35,6 @@ export class BurnDialogComponent implements OnInit {
   burn(): void {
     this.isLoading = true;
     this.web3Service.burnTokens(this.tokenAddress, this.amount).then((r) => {
-      console.log(r);
       this.isLoading = false;
       this.dialogRef.close(true);
     }).catch((err) => {
