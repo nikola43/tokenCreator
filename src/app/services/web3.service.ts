@@ -11,8 +11,8 @@ import {LPTokenAbi} from './LPTokenAbi.js';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {INetwork} from '../../../models/network.interface';
 import {DevNetworks} from "./Networks";
-import { MatDialog } from '@angular/material/dialog';
-import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil.js';
+import {MatDialog} from '@angular/material/dialog';
+import {NotificationUtils, SnackBarColorEnum} from 'src/utils/NotificationUtil.js';
 
 
 declare let require: any;
@@ -39,7 +39,7 @@ export class Web3Service {
   wethAddress: string;
   networks: any = DevNetworks;
 
-  constructor(private http: HttpClient,private notificationUtils: NotificationUtils, public dialog: MatDialog) {
+  constructor(private http: HttpClient, private notificationUtils: NotificationUtils, public dialog: MatDialog) {
     if (window.ethereum !== undefined) {
       if (typeof window.web3 !== 'undefined') {
         this.web3 = window.web3.currentProvider;
@@ -49,15 +49,7 @@ export class Web3Service {
       window.web3 = new Web3(window.ethereum);
       this.enable = this.enableMetaMaskAccount();
       this.pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[0].routerAddress);
-      //this.wethAddress = '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd';
-      this.wethAddress = '0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270';
 
-      /*
-      this.pancakeRouter.methods.WETH().call().then((x) => {
-        this.wethAddress = x;
-        console.log({x});
-      });
-      */
       this.currentNetworkIdSubject = new BehaviorSubject<number>(0);
       this.currentNetworkId = this.currentNetworkIdSubject.asObservable();
     }
@@ -76,7 +68,8 @@ export class Web3Service {
     return {id: networdID};
   }
 
-  getWethAddress(): string {
+  async getWethAddress(): Promise<string> {
+    this.wethAddress = await this.pancakeRouter.methods.WETH().call();
     return this.wethAddress;
   }
 
@@ -176,14 +169,11 @@ export class Web3Service {
     const createdToken = new window.web3.eth.Contract(TokenGeneratorAbi, this.networks[networkId].tokenCreatorContractAddress);
 
 
-
     tokenSupply = Web3.utils.toWei(tokenSupply.toString(), 'ether');
     const createPrice = await createdToken.methods.creationTokenPrice().call();
     const ownerAddress = await createdToken.methods.owner().call();
     const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : (paymentToken !== this.wethAddress ? 0 : createPrice);
-    console.log({
-
-    });
+    console.log({});
 
 
     const fees = [

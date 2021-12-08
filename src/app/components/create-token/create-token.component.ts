@@ -66,7 +66,7 @@ export class CreateTokenComponent implements OnInit {
 
         this.selectedPayToken = {
           id: 0,
-          address: this.web3Service.getWethAddress(),
+          address: await this.web3Service.getWethAddress(),
         };
 
         console.log(this.account);
@@ -89,7 +89,7 @@ export class CreateTokenComponent implements OnInit {
       });
     }
 
-    if(this.web3Service.web3) {
+    if (this.web3Service.web3) {
       this.web3Service.web3.on('accountsChanged', (accounts) => {
         console.log(accounts);
         if (accounts.length === 0) {
@@ -100,7 +100,7 @@ export class CreateTokenComponent implements OnInit {
           // this.buttonLabel = accounts[0];
         }
       });
-  
+
       this.web3Service.web3.on('networkChanged', (networkId) => {
 
         this.web3Service.currentNetworkId.subscribe((nID) => {
