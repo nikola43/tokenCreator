@@ -381,7 +381,7 @@ export class AddLiquidityComponent implements OnInit {
 
         this.tokenBalance = Number(
           Web3.utils.fromWei(
-            await this.getTokenBalance(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value),
+            await this.getTokenBalance(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value),
             'ether'
           )
         )
@@ -402,6 +402,7 @@ export class AddLiquidityComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async getTokenBalance(tokenAddress) {
+    console.log(tokenAddress);
     return await this.web3Service.getTokensBalance(tokenAddress);
   }
 

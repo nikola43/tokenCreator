@@ -25,9 +25,9 @@ export class RemoveLiquidityDialogComponent implements OnInit {
   ) {
     // console.log(data);
 
-    // this.tokenAddress = data.address;
-    // this.pairAddress = data.pairAddress;
-    // this.lpTokenBalance = data.lpTokenBalance;
+    this.tokenAddress = data.address;
+    this.pairAddress = data.pairAddress;
+    this.lpTokenBalance = data.lpTokenBalance;
   }
 
   onNoClick(): void {

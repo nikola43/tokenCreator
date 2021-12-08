@@ -539,7 +539,7 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async isAllowed(address, spender) {
-    const pairAddress = await this.getPair(await this.getWethAddress(), address);
+    // const pairAddress = await this.getPair(await this.getWethAddress(), address);
     const LPTokenBalance = await this.getLPTokensBalance(address);
     const isAddresAllowed = window.web3.utils.toWei(
       await this.getAddressAllowance(address, spender), 'ether') < window.web3.utils.toWei(LPTokenBalance, 'ether');
