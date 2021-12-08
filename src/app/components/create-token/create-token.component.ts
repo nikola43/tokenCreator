@@ -10,7 +10,7 @@ import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import {MatSelectChange} from '@angular/material/select';
 import {faCheck, IconDefinition} from '@fortawesome/free-solid-svg-icons';
 import {CreateTokenDialogComponent} from '../create-token-dialog/create-token-dialog.component';
-import {ProdNetworks} from "../../services/Networks";
+import {DevNetworks} from "../../services/Networks";
 
 declare let require: any;
 declare let window: any;
@@ -22,7 +22,7 @@ const Web3 = require('web3');
   styleUrls: ['./create-token.component.scss'],
 })
 export class CreateTokenComponent implements OnInit {
-  networks: any = ProdNetworks;
+  networks: any = DevNetworks;
   createdTokenAddress = '';
   networkId = 0;
   formGroup: FormGroup;

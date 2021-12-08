@@ -124,6 +124,12 @@ mat-sidenav {
 ::ng-deep .mat-button-wrapper {
   color: white !important;
 }
+::ng-deep .mat-raised-button.mat-primary:hover {
+  background-color: #35407a;
+}
+::ng-deep .mat-raised-button.mat-primary:disabled:hover {
+  background-color: rgba(0, 0, 0, 0.12);
+}
 :host ::ng-deep .soon-advise {
   margin-left: 1vh;
   font-weight: 900;
