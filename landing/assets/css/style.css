@@ -12,7 +12,7 @@ html {
    color: #fff;
    font-size: 1.2rem;
 }
-h1,h2,h3 {
+h1,h2,h3,h4,h6 {
   font-family: "Montserrat", sans-serif;
   font-weight: 900;
 }
@@ -163,26 +163,40 @@ footer h3 {
   padding-left: 1rem;
 }
 @media screen and (max-width: 768px) {
+  p{
+    font-size: .8rem;
+  }
   .mobile-hidden {
     display: none;
   }
+  #home {
+    background-image: url('../img/home-mobile.png');
+  }
   #about {
-    background-image: url('../img/about.png');
+    background-image: url('../img/about-mobile.png');
   }
   #chains {
-    background-image: url('../img/chains.png');
+    background-image: url('../img/chains-mobile.png');
   }
-  #contact {
-    background-image: url('../img/contact.png');
+  #contact-mobile-first,
+  #contact-mobile-second {
+    background-image: url('../img/contact-mobile.png');
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-top: 5px solid black;
+  }
+  #contact-mobile-second {
+    background-image: url('../img/contact-mobile-second.png');
   }
   .navbar {
-    padding: 0 20px;
+    padding: 0;
   }
   .home-text {
     justify-content: center;
     padding: 0 15vw 0 15vw;
     text-align: center;
-    height: 75%;
     align-items: center;
   }
   #home p {
@@ -194,8 +208,25 @@ footer h3 {
     font-size: 1rem;
     margin-top: 2vh;
   }
-  .container-fuild>div.row {
+  .container-fluid>div.row {
     height: 100vh;
+  }
+  #home .home-text {
+    height: 75%;
+  }
+  #chains h2 {
+    margin-bottom: 2vh;
+  }
+  .what-text {
+    justify-content: flex-start;
+    margin-top: 2vh;
+  }
+  h4 {
+    font-size: 1rem;
+  }
+  .navbar-toggler {
+    width: 50px;
+    padding: 0.2rem 0.4rem;
   }
 }
 @media screen and (min-width: 768px) {}
