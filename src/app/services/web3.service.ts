@@ -145,29 +145,6 @@ export class Web3Service {
     networkId
   ) {
 
-    console.log({
-      paymentToken,
-      tokenName,
-      tokenSymbol,
-      tokenSupply,
-      tokenDecimals,
-      TxFeePercentToHolders,
-      TxFeePercentToLP,
-      TxFeePercentToBurned,
-      TxFeePercentToWallet,
-      TxFeePercentToBuybackTokens,
-      MaxWalletPercent,
-      MaxTxPercent,
-      FeeReceiverWallet,
-      networkId
-    });
-
-    console.log("sssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss");
-
-    console.log({
-      nets: this.networks[networkId].tokenCreatorContractAddress
-    })
-
     const createdToken = new window.web3.eth.Contract(TokenGeneratorAbi, this.networks[networkId].tokenCreatorContractAddress);
 
 
@@ -175,7 +152,6 @@ export class Web3Service {
     const createPrice = await createdToken.methods.creationTokenPrice().call();
     const ownerAddress = await createdToken.methods.owner().call();
     const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : (paymentToken !== await this.getWethAddress() ? 0 : createPrice);
-    console.log({});
 
 
     const fees = [
@@ -208,10 +184,6 @@ export class Web3Service {
 
     const contractAddress = b.logs[0].address;
     create.contractAddress = contractAddress;
-
-    console.log({
-      a: this.networks[networkId].routerAddress
-    });
 
     this.verifyContract({
       tokenName,
@@ -264,19 +236,6 @@ export class Web3Service {
       FeeReceiverWallet,
      */
 
-
-    console.log({
-      account: this.currentAccountSubject.value,
-      tokenName: constructorArguments.tokenName,
-      tokenSymbol: constructorArguments.tokenSymbol,
-      decimal: constructorArguments.tokenDecimals,
-      amountOfTokenWei: constructorArguments.tokenSupply,
-      MaxTxPercent: constructorArguments.MaxTxPercent,
-      MaxWalletPercent: constructorArguments.MaxWalletPercent,
-      feeWallet: constructorArguments.FeeReceiverWallet,
-      routerAddress: constructorArguments.routerAddress,
-    });
-
     const encodedConstructorArguments = this.encodeTokenConstructor({
       account: this.currentAccountSubject.value,
       tokenName: constructorArguments.tokenName,
@@ -292,9 +251,6 @@ export class Web3Service {
 
     const apiKey = this.networks[networkId].explorerApiKey;
     const verifyApiUrl = this.networks[networkId].verifyApiUrl;
-    console.log({
-      explorerApiKey: apiKey
-    });
 
     const data = {
       apikey: apiKey,                     // A valid API-Key is required
@@ -607,7 +563,6 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   encodeTokenConstructor(data: any) {
-    console.log({data});
     /*
           account: this.currentAccountSubject.value,
       tokenName: constructorArguments.tokenName,

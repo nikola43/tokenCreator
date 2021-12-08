@@ -46,8 +46,6 @@ export class ServiceTokenPaymentSelectorComponent implements OnInit {
     const res = this.networks.find(x => x.params.chainId === '0x' +
       ('0' + (Number(this.networkId).toString(16))).slice(-2).toUpperCase());
     if (res) { this.networkId = res.index; }
-
-    console.log({i: this.networkId});
     // this.selectedTokenAddres.emit({...this.networks[this.networkId].acceptedPaymentTokens[changeEvent.value], id:changeEvent.value});
     // this.currentToken = changeEvent.value;
   }

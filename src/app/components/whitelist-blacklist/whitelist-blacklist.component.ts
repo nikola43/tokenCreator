@@ -26,12 +26,6 @@ export class WhitelistBlacklistComponent implements OnInit {
     private notificationUtils: NotificationUtils
   ) {
     this.createForm();
-    console.log(
-      'getwhitelist',
-      this.web3Service.getTokenBlacklist(
-        '0x49F131D0B6B1b618B0dF4D757eC77D9E66553b3e'
-      )
-    );
   }
   ngOnInit(): void {}
   // tslint:disable-next-line:typedef

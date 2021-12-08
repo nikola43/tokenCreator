@@ -27,7 +27,6 @@ export class NetworkSelectorComponent implements OnInit {
         method: 'wallet_switchEthereumChain',
         params: [{chainId: this.networks[changeEvent.value].params.chainId}],
       });
-      console.log({changeNetworkResult});
     } catch (switchError) {
       // This error code indicates that the chain has not been added to MetaMask.
       if (switchError.code === 4902) {
@@ -36,17 +35,12 @@ export class NetworkSelectorComponent implements OnInit {
             method: 'wallet_addEthereumChain',
             params: [this.networks[changeEvent.value].params],
           });
-          console.log({addNetworkResult});
         } catch (addError) {
           // handle "add" error
-          console.log(addError);
           this.currentNetwork = this.lastCurrentNetwork;
           return false;
         }
       }
-      // handle other "switch" errors
-      console.log(switchError);
-
       // rejected
       if (switchError.code === 4001) {
       }
@@ -55,7 +49,6 @@ export class NetworkSelectorComponent implements OnInit {
       return false;
     }
     this.lastCurrentNetwork = this.currentNetwork;
-    console.log(this.currentNetwork);
     this.selectedNetwork.emit(this.currentNetwork);
   }
 }

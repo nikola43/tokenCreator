@@ -68,8 +68,6 @@ export class CreateTokenComponent implements OnInit {
           id: 0,
           address: await this.web3Service.getWethAddress(),
         };
-
-        console.log(this.account);
         // this.buttonLabel = r;
         this.bnbBalance = Web3.utils.fromWei(
           await this.web3Service.getBalance(),
@@ -91,7 +89,6 @@ export class CreateTokenComponent implements OnInit {
 
     if (this.web3Service.web3) {
       this.web3Service.web3.on('accountsChanged', (accounts) => {
-        console.log(accounts);
         if (accounts.length === 0) {
           this.account = undefined;
           // this.buttonLabel = 'Connect';
@@ -105,11 +102,7 @@ export class CreateTokenComponent implements OnInit {
 
         this.web3Service.currentNetworkId.subscribe((nID) => {
           this.networkId = nID;
-          console.log({
-            nID
-          });
         });
-        console.log({networkId});
       });
     }
   }
@@ -141,7 +134,6 @@ export class CreateTokenComponent implements OnInit {
         this.formGroup.controls.FeeReceiverWallet.setValue(this.account);
       }
     }).catch(() => {
-      console.log('catch');
     });
   }
 
@@ -227,7 +219,6 @@ export class CreateTokenComponent implements OnInit {
     const tokenAddress = this.selectedPayToken.address;
     const tokenAmount =
       '115792089237316195423570985008687907853269984665640564039457584007913129639935';
-    console.log({tokenAddress});
 
     await this.web3Service
       .approveToken(
@@ -247,8 +238,6 @@ export class CreateTokenComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async numberFieldKeyup(event, maxValue, controlName) {
-    console.log(this.formGroup.get(controlName).value);
-    console.log(maxValue);
     if (this.formGroup.get(controlName).value > maxValue) {
       this.formGroup.controls[controlName].setValue(maxValue);
     }
@@ -275,7 +264,6 @@ export class CreateTokenComponent implements OnInit {
         },
       });
 
-      console.log('Thanks for your interest!');
       this.addToMetamaskButtonLabel = 'Token added to metamask successfully';
       this.tokenAddedToMetamask = true;
     } catch (error) {
@@ -294,7 +282,6 @@ export class CreateTokenComponent implements OnInit {
     this.createButtonLabel = 'Deploying token';
     if (this.selectedPayToken?.id !== 0) {
       await this.approveToken();
-      console.log('d');
     }
 
     this.tokenDialogRef = this.dialog.open(CreateTokenDialogComponent, {
@@ -363,8 +350,6 @@ export class CreateTokenComponent implements OnInit {
               .post(verifyApiUrl, formData)
               .subscribe(
                 async (response: any) => {
-                  console.log('response');
-                  console.log(response);
 
                   if (response.status === '1') {
                     clearInterval(interval); // time is up;
@@ -400,8 +385,6 @@ export class CreateTokenComponent implements OnInit {
                 },
                 (error) => {
                   this.hasError = true;
-                  console.log('error');
-                  console.log(error);
                   this.tokenDialogRef.close();
                 }
               );
@@ -412,7 +395,6 @@ export class CreateTokenComponent implements OnInit {
         }
       })
       .catch((e) => {
-        console.log({e});
         this.tokenDialogRef.close();
         if (e.code === 4001) {
           this.notificationUtils.showSnackBar(
@@ -447,8 +429,6 @@ export class CreateTokenComponent implements OnInit {
   // tslint:disable-next-line:typedef
   async numberFieldKeydown(event, maxValue, controlName) {
     if (event.code !== 'Backspace') {
-      console.log(event.key);
-      console.log(isNaN(Number(event.key)));
 
       if (isNaN(Number(event.key))) {
         event.preventDefault();

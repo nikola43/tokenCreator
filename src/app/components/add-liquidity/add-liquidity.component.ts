@@ -89,12 +89,6 @@ export class AddLiquidityComponent implements OnInit {
     const minTokenAmount = Number(Number(tokenAmount) - Number(this.percentage(Number(tokenAmount), 1)));
     const minBnbTokenAmount = Number(Number(bnbAmount) - Number(this.percentage(Number(bnbAmount), 1)));
 
-    console.log({
-      bnbAmount,
-      tokenAmount,
-      minTokenAmount,
-      minBnbTokenAmount,
-    });
     const tokenAddress = this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value;
     this.web3Service
       .addLiquidity(
@@ -161,8 +155,6 @@ export class AddLiquidityComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async tokenInputKeyUp() {
-    console.log(this.burnTokenAddressInputFormGroup.controls.burnTokenAddress);
-
     const isValid = /^0x[a-fA-F0-9]{40}$/.test(
       this.burnTokenAddressInputFormGroup.controls.burnTokenAddress.value
     );
@@ -177,8 +169,6 @@ export class AddLiquidityComponent implements OnInit {
       )
         .toFixed(8)
         .toString();
-
-      console.log(this.isAllowed);
     } else {
       this.tokenBalance = 0;
     }
@@ -192,7 +182,6 @@ export class AddLiquidityComponent implements OnInit {
       this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value;
     const bnbAmount = this.addLiquidityForm.bnbAmount.toString();
     const tokenAmount = this.addLiquidityForm.tokenAmount.toString();
-    console.log({tokenAddress});
     const routerAddress = this.web3Service.getRouterAddress();
     await this.web3Service
       .approveToken(tokenAddress,routerAddress, tokenAmount)
@@ -204,7 +193,6 @@ export class AddLiquidityComponent implements OnInit {
         }
       })
       .catch((err) => {
-        console.log(err);
         this.isAllowed = false;
         this.isApproving = false;
         this.approveButtonLabel = 'Not Approved';
@@ -248,9 +236,6 @@ export class AddLiquidityComponent implements OnInit {
     const estimate = await this.web3Service.getEstimatedTokensForBNB(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
     const ratio = estimate['0'] / estimate['1'];
     const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
-    console.log({estimate});
-    console.log({ratio});
-    console.log({addLiquidityTokenAmount});
 
     if (!isNaN(Number(addLiquidityTokenAmount))) {
       const value2 = this.mapValue(
@@ -268,14 +253,9 @@ export class AddLiquidityComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async bnbInputKeyUp() {
-    console.log(this.addLiquidityForm.bnbAmount);
-
     const estimate = await this.web3Service.getEstimatedTokensForBNB(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
     const ratio = estimate['0'] / estimate['1'];
     const addLiquidityTokenAmount = ratio * this.addLiquidityForm.bnbAmount;
-    console.log({estimate});
-    console.log({ratio});
-    console.log({addLiquidityTokenAmount});
 
 
     const value = this.mapValue(
@@ -363,8 +343,6 @@ export class AddLiquidityComponent implements OnInit {
     );
 
     if (isValid) {
-      console.log('petaso')
-      console.log(this.tokenBalance);
       this.tokenBalance = Number(
         Web3.utils.fromWei(
           await this.getTokenBalance(
@@ -375,13 +353,10 @@ export class AddLiquidityComponent implements OnInit {
       )
         .toFixed(8)
         .toString();
-      console.log('lptokenbalance')
       this.lpTokenBalance = Number(
         Web3.utils.fromWei(await this.getLPTokenBalance(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value), 'ether')
       );
-      console.log('swdsdsd');
       this.isAllowed = await this.web3Service.isAllowed(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value, this.web3Service.getRouterAddress());
-      console.log(this.isAllowed);
     } else {
       this.tokenBalance = 0;
     }

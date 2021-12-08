@@ -127,10 +127,6 @@ export class AppComponent implements OnDestroy, OnInit {
   onNetworkChanged(event: any) {
     this.selectedNetwork = event;
 
-    console.log({
-      n: this.selectedNetwork
-    });
-
     this.web3Service.setNetworkId(this.selectedNetwork);
   }
 
@@ -149,7 +145,6 @@ export class AppComponent implements OnDestroy, OnInit {
   // tslint:disable-next-line:typedef
   async connectWeb3() {
     this.web3Service.enableMetaMaskAccount().then(async (account: string) => {
-      console.log({account});
       if (account?.length === 0) {
         this.account = undefined;
         this.buttonLabel = 'Connect';

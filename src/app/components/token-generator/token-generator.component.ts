@@ -113,9 +113,6 @@ export class TokenGeneratorComponent implements OnInit {
   // tslint:disable-next-line:typedef
   async numberFieldKeydown(event, maxValue, controlName) {
     if (event.code !== 'Backspace') {
-      console.log(event.key);
-      console.log(isNaN(Number(event.key)));
-
       if (isNaN(Number(event.key))) {
         event.preventDefault();
         event.stopImmediatePropagation();

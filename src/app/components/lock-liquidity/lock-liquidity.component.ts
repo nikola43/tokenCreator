@@ -55,11 +55,6 @@ export class LockLiquidityComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async tokenInputKeyUp() {
-    console.log(
-      this.lockLiquidityTokenAddressInputFormGroup.controls
-        .lockLiquidityTokenAddress
-    );
-
     const isValid = /^0x[a-fA-F0-9]{40}$/.test(
       this.lockLiquidityTokenAddressInputFormGroup.controls.burnTokenAddress
         .value
@@ -115,7 +110,6 @@ export class LockLiquidityComponent implements OnInit {
         }
       })
       .catch((err) => {
-        console.log(err);
         this.isAllowed = false;
         this.isApproving = false;
         this.approveButtonLabel = 'Not Approved';
@@ -201,7 +195,6 @@ export class LockLiquidityComponent implements OnInit {
         .toFixed(18)
         .toString();
       this.isAllowed = await this.web3Service.isAllowed(this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value, this.web3Service.getLockedAddress());
-      console.log(this.isAllowed);
       /* Get my locks */
       this.web3Service
         .getLocks()

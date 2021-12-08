@@ -18,7 +18,6 @@ export class BurnDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<BurnDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    console.log(data);
 
     this.tokenAddress = data.tokenAddress;
     this.amount = data.amount;
@@ -38,7 +37,6 @@ export class BurnDialogComponent implements OnInit {
       this.isLoading = false;
       this.dialogRef.close(true);
     }).catch((err) => {
-      console.log(err);
       this.isLoading = false;
     });
   }
