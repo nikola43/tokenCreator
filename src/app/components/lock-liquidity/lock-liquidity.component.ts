@@ -45,6 +45,7 @@ export class LockLiquidityComponent implements OnInit {
   isLoading = false;
   isLocking = false;
   isAllowed = false;
+  isFetchingLpBalance = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -60,7 +61,17 @@ export class LockLiquidityComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  async tokenInputKeyUp() {}
+  async tokenInputKeyUp() {
+    const value = this.mapValue(
+      Number(this.lockLiquidityForm.lpAmount),
+      0,
+      this.lpTokenBalance,
+      0,
+      100
+    );
+    console.log(value);
+    this.slider.value = value;
+  }
 
   ngOnInit(): void {}
 
@@ -228,6 +239,7 @@ export class LockLiquidityComponent implements OnInit {
     const isValid = /^0x[a-fA-F0-9]{40}$/.test(address);
 
     if (isValid) {
+      this.isFetchingLpBalance = true;
       this.lpTokenBalance = Number(
         Web3.utils.fromWei(
           await this.web3Service.getLPTokensBalance(address),
@@ -250,6 +262,7 @@ export class LockLiquidityComponent implements OnInit {
       this.web3Service
         .getLocks()
         .then((r) => {
+          console.log(r);
           r.map(
             async (x) =>
               (x._tokenName = await this.getLPTokenName(
@@ -257,9 +270,11 @@ export class LockLiquidityComponent implements OnInit {
                   .lockLiquidityTokenAddress.value
               ))
           );
+          this.isFetchingLpBalance = false;
           this.myLocks = r;
         })
         .catch((err) => {
+          this.isFetchingLpBalance = false;
           console.log(err);
         });
     } else {

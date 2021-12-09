@@ -13,16 +13,16 @@
   </form>
 
 
-  <div class="mx-auto">
+  <div class="mx-auto text-center">
     <span *ngIf="isFetchingLpBalance" class="spinner-border spinner-border-sm" style="color: white; margin: auto !important;"></span>
   </div>
   <mat-card *ngIf="lpTokenBalance > 0" class="glassContainer">
     <div class="container">
       <div class="row">
         <div class="col-sm">
-          <h5 style="color: white">LP Token Balance {{lpTokenBalance}}</h5>
+          <h5>LP Token Balance {{lpTokenBalance}}</h5>
         </div>
-        <div class="col-sm">
+        <div class="col-sm remove-liquidity-div">
           <button (click)="openRemoveLiquidityDialog()" color="primary" type="button" mat-raised-button>Remove</button>
         </div>
       </div>

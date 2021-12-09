@@ -32,6 +32,10 @@
   padding: 1vh 5vw;
   color: white;
 }
+::ng-deep .mat-dialog-container p {
+  font-size: 1.2rem;
+  font-weight: 500;
+}
 
 
 .dialog-divider {

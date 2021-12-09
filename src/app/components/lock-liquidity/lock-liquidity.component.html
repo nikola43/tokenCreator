@@ -10,6 +10,9 @@
       </mat-error>
     </mat-form-field>
   </form>
+  <div class="mx-auto text-center mb-4">
+    <span *ngIf="isFetchingLpBalance" class="spinner-border spinner-border-sm" style="color: white; margin: auto !important;"></span>
+  </div>
   <mat-card class="lock-liquidity-form-container">
     <div class="input-label">
       <span style="font-weight: bold">TOKEN</span>

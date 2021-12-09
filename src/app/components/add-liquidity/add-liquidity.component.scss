@@ -1,3 +1,14 @@
 :host ::ng-deep .mat-form-field-outline:not(:invalid) {
    color: white;
 }
+
+.remove-liquidity-div {
+   display: flex;
+   justify-content: end;
+   align-items: center;
+}
+
+.glassContainer h5 {
+   margin-bottom: 0;
+   color: white;
+}
