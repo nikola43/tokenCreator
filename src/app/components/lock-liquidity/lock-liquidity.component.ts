@@ -111,15 +111,41 @@ export class LockLiquidityComponent implements OnInit {
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
     this.isLocking = true;
     try {
-      const r = await this.web3Service.lockLiquidity(tokenAddress, time, tokenAmount);
+      const res = await this.web3Service.lockLiquidity(tokenAddress, time, tokenAmount);
+      console.log({res});
       this.notificationUtils.showSnackBar(
         'Liquidity locked Successfully.',
         SnackBarColorEnum.Green
       );
       this.isLocking = false;
+
+      this.lpTokenBalance = Number(
+        Web3.utils.fromWei(await this.web3Service.getLPTokensBalance(tokenAddress), 'ether')
+      )
+        .toFixed(18)
+        .toString();
+
+      this.lockLiquidityForm.lpAmount = this.mapValue(
+        Number(0),
+        0,
+        100,
+        0,
+        this.lpTokenBalance
+      );
+
+      // Get my locks
+      this.web3Service
+        .getLocks()
+        .then((r1: any[]) => {
+          this.myLocks = r1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
     } catch (e) {
       this.notificationUtils.showSnackBar(
-        'Fail to lock liqquidity. Try again please',
+        'Fail to lock liquidity. Try again please',
         SnackBarColorEnum.Red
       );
       this.isLocking = false;
@@ -172,17 +198,10 @@ export class LockLiquidityComponent implements OnInit {
       });
       this.isAllowed = await this.web3Service.isLPAllowed(address, lockerAddress);
 
-
       // Get my locks
       this.web3Service
         .getLocks()
         .then((r) => {
-          r.map(
-            async (x) =>
-              (x._tokenName = await this.getLPTokenName(
-                address
-              ))
-          );
           this.myLocks = r;
         })
         .catch((err) => {
@@ -225,6 +244,16 @@ export class LockLiquidityComponent implements OnInit {
         'Successful withdraw.',
         SnackBarColorEnum.Green
       );
+      // Get my locks
+      this.web3Service
+        .getLocks()
+        .then((r1: any[]) => {
+          this.myLocks = r1;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       return res;
     } catch (e) {
       this.notificationUtils.showSnackBar(
