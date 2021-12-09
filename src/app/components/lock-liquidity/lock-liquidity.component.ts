@@ -1,13 +1,19 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Web3Service} from '../../services/web3.service';
-import {MatSliderChange} from '@angular/material/slider';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Web3Service } from '../../services/web3.service';
+import { MatSliderChange } from '@angular/material/slider';
 import {
   NotificationUtils,
   SnackBarColorEnum,
 } from 'src/utils/NotificationUtil';
-import {CountdownModule} from 'ngx-countdown';
-import {faLock, faLockOpen, faCheck, faExclamationTriangle, IconDefinition} from '@fortawesome/free-solid-svg-icons';
+import { CountdownModule } from 'ngx-countdown';
+import {
+  faLock,
+  faLockOpen,
+  faCheck,
+  faExclamationTriangle,
+  IconDefinition,
+} from '@fortawesome/free-solid-svg-icons';
 
 declare let require: any;
 const Web3 = require('web3');
@@ -19,7 +25,7 @@ const Web3 = require('web3');
 })
 export class LockLiquidityComponent implements OnInit {
   @ViewChild('lockLiquidityTokenAddress') tokenAddressInput: ElementRef;
-  @ViewChild('lockLpAmountSlider') lockLpAmountSlider;
+  @ViewChild('lockLpAmountSlider') slider;
   lockLiquidityTokenAddressInputFormGroup: FormGroup;
   bnbBalance: any;
   myLocks = [];
@@ -54,13 +60,9 @@ export class LockLiquidityComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  async tokenInputKeyUp() {
+  async tokenInputKeyUp() {}
 
-
-  }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   // tslint:disable-next-line:typedef
   formatLabel(value: number) {
@@ -75,7 +77,9 @@ export class LockLiquidityComponent implements OnInit {
   async approveToken() {
     this.isApproving = true;
     this.approveButtonLabel = 'Approving';
-    const tokenAddress = this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value;
+    const tokenAddress =
+      this.lockLiquidityTokenAddressInputFormGroup.controls
+        .lockLiquidityTokenAddress.value;
     const tokenAmount = this.lockLiquidityForm.lpAmount.toString();
     const lockedAddress = this.web3Service.getLockedAddress();
 
@@ -102,7 +106,6 @@ export class LockLiquidityComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   addEvent(type, event) {
-
     this.lockLiquidityForm.locktime = event.value.getTime() / 1000;
 
     // const deadline = Math.floor(Date.now() / 1000) + 60 * 10;
@@ -112,8 +115,12 @@ export class LockLiquidityComponent implements OnInit {
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
     this.isLocking = true;
     try {
-      const res = await this.web3Service.lockLiquidity(tokenAddress, time, tokenAmount);
-      console.log({res});
+      const res = await this.web3Service.lockLiquidity(
+        tokenAddress,
+        time,
+        tokenAmount
+      );
+      console.log({ res });
       this.notificationUtils.showSnackBar(
         'Liquidity locked Successfully.',
         SnackBarColorEnum.Green
@@ -121,7 +128,10 @@ export class LockLiquidityComponent implements OnInit {
       this.isLocking = false;
 
       this.lpTokenBalance = Number(
-        Web3.utils.fromWei(await this.web3Service.getLPTokensBalance(tokenAddress), 'ether')
+        Web3.utils.fromWei(
+          await this.web3Service.getLPTokensBalance(tokenAddress),
+          'ether'
+        )
       )
         .toFixed(18)
         .toString();
@@ -134,20 +144,25 @@ export class LockLiquidityComponent implements OnInit {
         this.lpTokenBalance
       );
 
-      this.lockLpAmountSlider.value = 0;
+      this.slider.value = 0;
 
       // Get my locks
       this.web3Service
         .getLocks()
-        .then((r1: any[]) => {
-          this.myLocks = r1;
+        .then((r) => {
+          console.log(r);
+          r.map(
+            async (x) =>
+              (x._tokenName = await this.getLPTokenName(
+                this.lockLiquidityTokenAddressInputFormGroup.controls
+                  .lockLiquidityTokenAddress.value
+              ))
+          );
+          this.myLocks = r;
         })
         .catch((err) => {
           console.log(err);
         });
-
-
-
     } catch (e) {
       this.notificationUtils.showSnackBar(
         'Fail to lock liquidity. Try again please',
@@ -175,6 +190,27 @@ export class LockLiquidityComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
+  percentage(percent, total) {
+    return (percent / 100) * total;
+  }
+
+  // tslint:disable-next-line:typedef
+  setTokenPercent(percent) {
+    this.lockLiquidityForm.lpAmount = this.percentage(
+      percent,
+      this.lpTokenBalance
+    );
+    const value = this.mapValue(
+      Number(this.lockLiquidityForm.lpAmount),
+      0,
+      this.lpTokenBalance,
+      0,
+      100
+    );
+    this.slider.value = value;
+  }
+
+  // tslint:disable-next-line:typedef
   createForm() {
     this.lockLiquidityTokenAddressInputFormGroup = this.formBuilder.group({
       lockLiquidityTokenAddress: [
@@ -186,27 +222,41 @@ export class LockLiquidityComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async onLockLiquidityTokenAddressKeyup() {
-    const address = this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value;
+    const address =
+      this.lockLiquidityTokenAddressInputFormGroup.controls
+        .lockLiquidityTokenAddress.value;
     const isValid = /^0x[a-fA-F0-9]{40}$/.test(address);
 
     if (isValid) {
       this.lpTokenBalance = Number(
-        Web3.utils.fromWei(await this.web3Service.getLPTokensBalance(address), 'ether')
+        Web3.utils.fromWei(
+          await this.web3Service.getLPTokensBalance(address),
+          'ether'
+        )
       )
         .toFixed(18)
         .toString();
 
-
       const lockerAddress = this.web3Service.getLockedAddress();
       console.log({
-        lockerAddress
+        lockerAddress,
       });
-      this.isAllowed = await this.web3Service.isLPAllowed(address, lockerAddress);
+      this.isAllowed = await this.web3Service.isLPAllowed(
+        address,
+        lockerAddress
+      );
 
       // Get my locks
       this.web3Service
         .getLocks()
         .then((r) => {
+          r.map(
+            async (x) =>
+              (x._tokenName = await this.getLPTokenName(
+                this.lockLiquidityTokenAddressInputFormGroup.controls
+                  .lockLiquidityTokenAddress.value
+              ))
+          );
           this.myLocks = r;
         })
         .catch((err) => {

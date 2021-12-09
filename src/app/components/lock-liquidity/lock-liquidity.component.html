@@ -19,7 +19,7 @@
     <div class="input-label">
       <input [(ngModel)]="lockLiquidityForm.lpAmount" appTwoDigitDecimaNumber matInput maxlength="18"
         placeholder="e.g. 1000" (keyup)="tokenInputKeyUp()">
-      <button color="primary" type="button" mat-raised-button>
+      <button (click)="setTokenPercent(100)" color="primary" type="button" mat-raised-button>
         Max
       </button>
     </div>
