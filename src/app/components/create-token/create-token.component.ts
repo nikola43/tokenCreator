@@ -278,6 +278,19 @@ export class CreateTokenComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async onSubmit(value: any) {
+
+    if (this.formGroup.get('tokenName').value.length === 0 ||
+      this.formGroup.get('tokenSymbol').value.length === 0) {
+      this.notificationUtils.showSnackBar(
+        'Check creation token form values',
+        SnackBarColorEnum.Red,
+        5000,
+        'top',
+        'center'
+      );
+      return false;
+    }
+
     this.isLoading = true;
     this.createButtonLabel = 'Deploying token';
     if (this.selectedPayToken?.id !== 0) {

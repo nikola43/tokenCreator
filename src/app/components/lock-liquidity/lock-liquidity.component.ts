@@ -23,7 +23,6 @@ export class LockLiquidityComponent implements OnInit {
   bnbBalance: any;
   myLocks = [];
   lpTokenBalance: any;
-  tokenBalance: any;
   lockLiquidityForm = {
     lpAmount: 0,
     locktime: 0,
@@ -55,29 +54,8 @@ export class LockLiquidityComponent implements OnInit {
 
   // tslint:disable-next-line:typedef
   async tokenInputKeyUp() {
-    const isValid = /^0x[a-fA-F0-9]{40}$/.test(
-      this.lockLiquidityTokenAddressInputFormGroup.controls.burnTokenAddress
-        .value
-    );
-    if (isValid) {
-      this.tokenBalance = Number(
-        Web3.utils.fromWei(
-          await this.getTokenBalance(
-            this.lockLiquidityTokenAddressInputFormGroup.controls
-              .lockLiquidityTokenAddress.value
-          ),
-          'ether'
-        )
-      )
-        .toFixed(18)
-        .toString();
-      console.log(
-        this.lockLiquidityTokenAddressInputFormGroup.controls
-          .lockLiquidityTokenAddress.value
-      );
-    } else {
-      this.tokenBalance = 0;
-    }
+
+
   }
 
   ngOnInit(): void {
@@ -96,12 +74,16 @@ export class LockLiquidityComponent implements OnInit {
   async approveToken() {
     this.isApproving = true;
     this.approveButtonLabel = 'Approving';
-    const tokenAddress =
-      this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value;
+    const tokenAddress = this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value;
     const tokenAmount = this.lockLiquidityForm.lpAmount.toString();
-    const routerAddress = this.web3Service.getRouterAddress();
+    const lockedAddress = this.web3Service.getLockedAddress();
+
+    console.log({
+      lockedAddress,
+    });
+
     await this.web3Service
-      .approveToken(tokenAddress, routerAddress, tokenAmount)
+      .approveLPToken(tokenAddress, lockedAddress, tokenAmount)
       .then((r) => {
         if (r) {
           this.isAllowed = true;
@@ -172,38 +154,33 @@ export class LockLiquidityComponent implements OnInit {
   }
 
   // tslint:disable-next-line:typedef
-  async getLPTokenBalance(tokenAddress) {
-    return await this.web3Service.getLPTokensBalance(tokenAddress);
-  }
-
-  // tslint:disable-next-line:typedef
   async onLockLiquidityTokenAddressKeyup() {
-    const isValid = /^0x[a-fA-F0-9]{40}$/.test(
-      this.lockLiquidityTokenAddressInputFormGroup.controls
-        .lockLiquidityTokenAddress.value
-    );
+    const address = this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value;
+    const isValid = /^0x[a-fA-F0-9]{40}$/.test(address);
+
     if (isValid) {
       this.lpTokenBalance = Number(
-        Web3.utils.fromWei(
-          await this.getLPTokenBalance(
-            this.lockLiquidityTokenAddressInputFormGroup.controls
-              .lockLiquidityTokenAddress.value
-          ),
-          'ether'
-        )
+        Web3.utils.fromWei(await this.web3Service.getLPTokensBalance(address), 'ether')
       )
         .toFixed(18)
         .toString();
-      this.isAllowed = await this.web3Service.isAllowed(await this.web3Service.getPair(await this.web3Service.getWethAddress(), this.lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value), this.web3Service.getLockedAddress());
-      /* Get my locks */
+
+
+      const lockerAddress = this.web3Service.getLockedAddress();
+      console.log({
+        lockerAddress
+      });
+      this.isAllowed = await this.web3Service.isLPAllowed(address, lockerAddress);
+
+
+      // Get my locks
       this.web3Service
         .getLocks()
         .then((r) => {
           r.map(
             async (x) =>
               (x._tokenName = await this.getLPTokenName(
-                this.lockLiquidityTokenAddressInputFormGroup.controls
-                  .lockLiquidityTokenAddress.value
+                address
               ))
           );
           this.myLocks = r;
@@ -216,17 +193,19 @@ export class LockLiquidityComponent implements OnInit {
     }
   }
 
-  async getLPTokenName(tokenAddress) {
+  async getLPTokenName(tokenAddress): Promise<string> {
     let name = await this.web3Service.getTokensName(tokenAddress);
     name = name + ' - BNB LP';
     return name;
   }
 
+  // tslint:disable-next-line:typedef
   onClickEvent(e) {
     this.tokenAddressInput.nativeElement.focus();
     return this.checkValue(e, 'Please enter a valid token.');
   }
 
+  // tslint:disable-next-line:typedef
   checkValue(address: string, msg: string = 'The address is invalid.') {
     try {
       const isValid = /^0x[a-fA-F0-9]{40}$/.test(address);
@@ -238,6 +217,7 @@ export class LockLiquidityComponent implements OnInit {
     }
   }
 
+  // tslint:disable-next-line:typedef
   async withdraw(id: string) {
     try {
       const res = await this.web3Service.withdrawLockedTokens(id);

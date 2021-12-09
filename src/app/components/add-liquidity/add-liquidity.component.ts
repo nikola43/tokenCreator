@@ -1,11 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Web3Service} from '../../services/web3.service';
-import {BnbTokenAddress} from '../../services/BnbTokenAbi';
 import {MatSliderChange} from '@angular/material/slider';
 import {faCheck, faExclamationTriangle, IconDefinition} from '@fortawesome/free-solid-svg-icons';
-import { NotificationUtils, SnackBarColorEnum } from 'src/utils/NotificationUtil';
-import { MatDialog } from '@angular/material/dialog';
+import {NotificationUtils, SnackBarColorEnum} from 'src/utils/NotificationUtil';
+import {MatDialog} from '@angular/material/dialog';
 import {RemoveLiquidityDialogComponent} from '../remove-liquidity-dialog/remove-liquidity-dialog.component';
 
 declare let require: any;
@@ -40,6 +39,7 @@ export class AddLiquidityComponent implements OnInit {
     bnbAmount: 0,
     tokenAmount: 0,
   };
+
   constructor(public web3Service: Web3Service,
               private formBuilder: FormBuilder,
               private notificationUtils: NotificationUtils,
@@ -139,6 +139,7 @@ export class AddLiquidityComponent implements OnInit {
         console.log(err);
       });
   }
+
   // tslint:disable-next-line:typedef
   mapValue(x, inMin, inMax, outMin, outMax) {
     return ((x - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
@@ -184,7 +185,7 @@ export class AddLiquidityComponent implements OnInit {
     const tokenAmount = this.addLiquidityForm.tokenAmount.toString();
     const routerAddress = this.web3Service.getRouterAddress();
     await this.web3Service
-      .approveToken(tokenAddress,routerAddress, tokenAmount)
+      .approveToken(tokenAddress, routerAddress, tokenAmount)
       .then((r) => {
         if (r) {
           this.isAllowed = true;
@@ -331,11 +332,6 @@ export class AddLiquidityComponent implements OnInit {
     }
   }
 
-  // tslint:disable-next-line:typedef
-  async getPair(address) {
-    return await this.web3Service.getPair(BnbTokenAddress, address);
-  }
-
 // tslint:disable-next-line:typedef
   async onLiquidityTokenAddressKeyup() {
     const isValid = /^0x[a-fA-F0-9]{40}$/.test(
@@ -356,19 +352,21 @@ export class AddLiquidityComponent implements OnInit {
       this.lpTokenBalance = Number(
         Web3.utils.fromWei(await this.getLPTokenBalance(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value), 'ether')
       );
-      this.isAllowed = await this.web3Service.isAllowed(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value, this.web3Service.getRouterAddress());
+      this.isAllowed = await this.web3Service.isAllowed(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value,
+        this.web3Service.getRouterAddress());
     } else {
       this.tokenBalance = 0;
     }
   }
 
-  async openRemoveLiquidityDialog() {
-    const pairAddress = await this.getPair(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
+  async openRemoveLiquidityDialog(): Promise<void> {
+    const pairAddress = await this.web3Service.getPair(await this.web3Service.getWethAddress(),
+      this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value);
     const dialogRef = this.dialog.open(RemoveLiquidityDialogComponent, {
       data: {
         lpTokenBalance: this.lpTokenBalance,
         address: this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value,
-        pairAddress: pairAddress
+        pairAddress
       },
     });
 
@@ -427,12 +425,14 @@ export class AddLiquidityComponent implements OnInit {
     return await this.web3Service.getLPTokensBalance(tokenAddress);
   }
 
+  // tslint:disable-next-line:typedef
   onClickEvent(e) {
     this.tokenAddressInput.nativeElement.focus();
     return this.checkValue(e, 'Please enter a valid token.');
   }
 
-  checkValue(address:string,msg:string = 'The address is invalid.') {
+  // tslint:disable-next-line:typedef
+  checkValue(address: string, msg: string = 'The address is invalid.') {
     try {
       const isValid = /^0x[a-fA-F0-9]{40}$/.test(
         address
@@ -440,9 +440,8 @@ export class AddLiquidityComponent implements OnInit {
       if (!isValid) {
         throw new Error(msg);
 
-      };
-    }
-    catch(e) {
+      }
+    } catch (e) {
       this.notificationUtils.showSnackBar(
         msg,
         SnackBarColorEnum.Red,

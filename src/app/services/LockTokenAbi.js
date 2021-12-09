@@ -1,5 +1,3 @@
-export const LockLiquidityContractAddress = "0x9e0F236b63Af4eB83bEB40800B4D681b924138dD"
-
 export const LockLiquidityContractAbi = [
   {
     "anonymous": false,

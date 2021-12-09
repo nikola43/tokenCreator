@@ -5,12 +5,12 @@ import {TokenSourceCode} from './TokenSourceCode.js';
 import {TokenAbi} from './TokenAbi.js';
 import {MinTokenAbi} from './MinTokenAbi.js';
 import {PancakeRouterAbi} from './PancakeRouterAbi.js';
-import {LockLiquidityContractAbi, LockLiquidityContractAddress} from './LockTokenAbi.js';
+import {LockLiquidityContractAbi} from './LockTokenAbi.js';
 import {PancakeFactoryAbi, PancakeFactoryAddress} from './PancakeFactoryAbi.js';
 import {LPTokenAbi} from './LPTokenAbi.js';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {INetwork} from '../../../models/network.interface';
-import {DevNetworks} from "./Networks";
+import {DevNetworks} from './Networks';
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationUtils, SnackBarColorEnum} from 'src/utils/NotificationUtil.js';
 
@@ -151,7 +151,8 @@ export class Web3Service {
     tokenSupply = Web3.utils.toWei(tokenSupply.toString(), 'ether');
     const createPrice = await createdToken.methods.creationTokenPrice().call();
     const ownerAddress = await createdToken.methods.owner().call();
-    const sendedValue = this.currentAccountSubject.value === ownerAddress ? 0 : (paymentToken !== await this.getWethAddress() ? 0 : createPrice);
+    const sendedValue = this.currentAccountSubject.value === ownerAddress ?
+      0 : (paymentToken !== await this.getWethAddress() ? 0 : createPrice);
 
 
     const fees = [
@@ -215,7 +216,8 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async getLockerPrice() {
-    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
+    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi,
+      this.networks[this.currentNetworkIdSubject.value].lockLiquidityContractAddress);
     return await lockLiquidityContract.methods.lockServicePrice().call();
   }
 
@@ -307,7 +309,8 @@ export class Web3Service {
   // tslint:disable-next-line:typedef
   async burnTokens(tokenAddress: string, amount) {
     const token = new window.web3.eth.Contract(TokenAbi, tokenAddress);
-    const burnResult = await token.methods.burn(Web3.utils.toWei(amount.toString(), 'ether')).send({from: this.currentAccountSubject.value});
+    const burnResult = await token.methods.burn(Web3.utils.toWei(amount.toString(), 'ether'))
+      .send({from: this.currentAccountSubject.value});
 
     return burnResult;
   }
@@ -391,7 +394,8 @@ export class Web3Service {
         const minA = Aout - this.percentage(1, Aout);
         const minB = Bout - this.percentage(1, Bout);
 
-        const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi, this.networks[this.currentNetworkIdSubject.value].routerAddress);
+        const pancakeRouter = new window.web3.eth.Contract(PancakeRouterAbi,
+          this.networks[this.currentNetworkIdSubject.value].routerAddress);
 
         const trans = await pancakeRouter.methods.removeLiquidityETHWithPermitSupportingFeeOnTransferTokens(tokenAddress,
           Web3.utils.toWei(amount.toString(),
@@ -439,9 +443,13 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async lockLiquidity(tokenAddress: string, time: number, tokenAmount: number) {
-    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
-    return await lockLiquidityContract.methods.lockTokens(await this.getPair(await this.getWethAddress(), tokenAddress),
-      this.currentAccountSubject.value, Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).send({
+    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi,
+      this.networks[this.currentNetworkIdSubject.value].lockLiquidityContractAddress);
+    return await lockLiquidityContract.methods.lockTokens(
+      await this.getPair(await this.getWethAddress(), tokenAddress),
+      this.currentAccountSubject.value,
+      Web3.utils.toWei(tokenAmount.toString(), 'ether'), time).
+    send({
       from: this.currentAccountSubject.value,
       value: await this.getLockerPrice()
     });
@@ -449,13 +457,15 @@ export class Web3Service {
 
   // tslint:disable-next-line:typedef
   async withdrawLockedTokens(lockId) {
-    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
+    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi,
+      this.networks[this.currentNetworkIdSubject.value].lockLiquidityContractAddress);
     return await lockLiquidityContract.methods.withdrawTokens(lockId).send({from: this.currentAccountSubject.value});
   }
 
   // tslint:disable-next-line:typedef
   async getLocks() {
-    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi, LockLiquidityContractAddress);
+    const lockLiquidityContract = new window.web3.eth.Contract(LockLiquidityContractAbi,
+      this.networks[this.currentNetworkIdSubject.value].lockLiquidityContractAddress);
     const locksList = await lockLiquidityContract.methods.getDepositsByWithdrawalAddress(this.currentAccountSubject.value).call();
     const locksDetails = [];
 
@@ -547,6 +557,14 @@ export class Web3Service {
   }
 
   // tslint:disable-next-line:typedef
+  async isLPAllowed(address, spender) {
+    const LPTokenBalance = await this.getLPTokensBalance(address);
+    const isAddresAllowed = window.web3.utils.toWei(
+      await this.getLPAddressAllowance(address, spender), 'ether') < window.web3.utils.toWei(LPTokenBalance, 'ether');
+    return isAddresAllowed;
+  }
+
+  // tslint:disable-next-line:typedef
   async getAddressAllowance(address, spender) {
     const contract = new window.web3.eth.Contract(MinTokenAbi, address);
     const contractAllowance = await contract.methods.allowance(this.currentAccountSubject.value, spender)
@@ -555,8 +573,25 @@ export class Web3Service {
   }
 
   // tslint:disable-next-line:typedef
+  async getLPAddressAllowance(address, spender) {
+    const pairAddress = await this.getPair(await this.getWethAddress(), address);
+    const contract = new window.web3.eth.Contract(LPTokenAbi, pairAddress);
+    const contractAllowance = await contract.methods.allowance(this.currentAccountSubject.value, spender)
+      .call(); // 29803630997051883414242659
+    return contractAllowance;
+  }
+
+  // tslint:disable-next-line:typedef
   async approveToken(address, spender, amount) {
     const token = new window.web3.eth.Contract(MinTokenAbi, address);
+    const approveResult = await token.methods.approve(spender, '115792089237316195423570985008687907853269984665640564039457584007913129639935').send({from: this.currentAccountSubject.value});
+    return approveResult;
+  }
+
+  // tslint:disable-next-line:typedef
+  async approveLPToken(address, spender, amount) {
+    const pairAddress = await this.getPair(await this.getWethAddress(), address);
+    const token = new window.web3.eth.Contract(LPTokenAbi, pairAddress);
     const approveResult = await token.methods.approve(spender, '115792089237316195423570985008687907853269984665640564039457584007913129639935').send({from: this.currentAccountSubject.value});
     return approveResult;
   }
