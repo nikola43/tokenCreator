@@ -101,7 +101,7 @@
       </button>
     </div>
     <br>
-    <mat-slider min="0" step="1" [disabled]="!tokenAddressInputFormGroup.controls['liquidityTokenAddress'].valid && tokenBalance > 0" thumbLabel #slider (click)="onClickEvent(tokenAddressInputFormGroup.controls.liquidityTokenAddress.value)" (input)="onSlideToken($event)" [displayWith]="formatLabel"
+    <mat-slider min="0" step="1" [disabled]="!this.tokenAddressInputFormGroup.controls['liquidityTokenAddress'].valid && this.tokenBalance == 0" thumbLabel #slider (click)="onClickEvent(tokenAddressInputFormGroup.controls.liquidityTokenAddress.value)" (input)="onSlideToken($event)" [displayWith]="formatLabel"
                 max="100"></mat-slider>
   </mat-card>
   <br>
