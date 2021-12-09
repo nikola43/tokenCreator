@@ -10,7 +10,7 @@ import {PancakeFactoryAbi, PancakeFactoryAddress} from './PancakeFactoryAbi.js';
 import {LPTokenAbi} from './LPTokenAbi.js';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {INetwork} from '../../../models/network.interface';
-import {DevNetworks} from './Networks';
+import {ProdNetworks} from './Networks';
 import {MatDialog} from '@angular/material/dialog';
 import {NotificationUtils, SnackBarColorEnum} from 'src/utils/NotificationUtil.js';
 
@@ -36,7 +36,7 @@ export class Web3Service {
   private currentNetworkIdSubject: BehaviorSubject<number>;
   public currentNetworkId: Observable<number>;
   pancakeRouter: any;
-  networks: any = DevNetworks;
+  networks: any = ProdNetworks;
 
   constructor(private http: HttpClient, private notificationUtils: NotificationUtils, public dialog: MatDialog) {
     if (window.ethereum !== undefined) {

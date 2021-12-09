@@ -1,7 +1,7 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {MatSelectChange} from '@angular/material/select';
 import {Web3Service} from '../../services/web3.service';
-import {DevNetworks} from '../../services/Networks.js';
+import {ProdNetworks} from '../../services/Networks.js';
 
 @Component({
   selector: 'app-service-token-payment-selector',
@@ -9,7 +9,7 @@ import {DevNetworks} from '../../services/Networks.js';
   styleUrls: ['./service-token-payment-selector.component.scss']
 })
 export class ServiceTokenPaymentSelectorComponent implements OnInit {
-  networks: any = DevNetworks;
+  networks: any = ProdNetworks;
   currentToken = 0;
   networkId = 0;
 
