@@ -19,6 +19,7 @@ const Web3 = require('web3');
 })
 export class LockLiquidityComponent implements OnInit {
   @ViewChild('lockLiquidityTokenAddress') tokenAddressInput: ElementRef;
+  @ViewChild('lockLpAmountSlider') lockLpAmountSlider;
   lockLiquidityTokenAddressInputFormGroup: FormGroup;
   bnbBalance: any;
   myLocks = [];
@@ -133,6 +134,8 @@ export class LockLiquidityComponent implements OnInit {
         this.lpTokenBalance
       );
 
+      this.lockLpAmountSlider.value = 0;
+
       // Get my locks
       this.web3Service
         .getLocks()
@@ -142,6 +145,8 @@ export class LockLiquidityComponent implements OnInit {
         .catch((err) => {
           console.log(err);
         });
+
+
 
     } catch (e) {
       this.notificationUtils.showSnackBar(

@@ -25,6 +25,7 @@
     </div>
     <br>
     <mat-slider min="0" step="1"
+                #lockLpAmountSlider
       [disabled]="!lockLiquidityTokenAddressInputFormGroup.controls['lockLiquidityTokenAddress'].valid"
       (click)="onClickEvent(lockLiquidityTokenAddressInputFormGroup.controls.lockLiquidityTokenAddress.value)"
       thumbLabel (input)="onSlideLockLP($event)" [displayWith]="formatLabel" max="100">
@@ -73,12 +74,12 @@
     <mat-card class="row lock-liquidity-form-container" *ngFor="let lock of myLocks" style="margin-bottom: 15px">
       <div class="col-sm liquidity-locked">
         <div>
-          <h5>Locked {{lock[2] | fromWei }} {{lock['_tokenName']}} </h5>
+          <h5><span style="color: #d43322">Locked</span> {{lock[2] | fromWei }} {{lock['_tokenName']}} </h5>
           <p *ngIf="now < lock[3]*1000">
             <fa-icon style="color: #d43322" [icon]="falock"></fa-icon> Unlocks {{lock[3]*1000 | date:'dd/MM/yyyy hh:mm'}}
           </p>
           <p *ngIf="now >= lock[3]*1000">
-            <fa-icon style="color: #00C851" [icon]="falockopen"></fa-icon> Unlocked now!
+            <fa-icon style="color: #00C851" [icon]="falockopen"></fa-icon> <span style="color: #00C851"> Unlocked now!</span>
           </p>
         </div>
         <div>
@@ -87,7 +88,7 @@
             <p>Press withdraw to get your tokens.</p>
           </div>
         </div>
-        <button (click)="withdraw(lock['id'])" class="remove-lock-btn" color="warn" type="button"
+        <button [disabled]="now < lock[3]*1000" (click)="withdraw(lock['id'])" class="remove-lock-btn" color="warn" type="button"
           mat-raised-button>Withdraw</button>
       </div>
     </mat-card>

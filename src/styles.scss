@@ -35,6 +35,9 @@ input {
   font-weight: bold !important;
 }
 
+.mat-raised-button[disabled]{
+  background-color: #2c2c2c !important;
+}
 
 .liquidity-form-container {
   backdrop-filter: blur(3px) saturate(150%);
