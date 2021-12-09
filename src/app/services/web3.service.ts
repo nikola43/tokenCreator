@@ -560,7 +560,7 @@ export class Web3Service {
   async isLPAllowed(address, spender) {
     const LPTokenBalance = await this.getLPTokensBalance(address);
     const isAddresAllowed = window.web3.utils.toWei(
-      await this.getLPAddressAllowance(address, spender), 'ether') < window.web3.utils.toWei(LPTokenBalance, 'ether');
+      await this.getLPAddressAllowance(address, spender), 'ether') >= window.web3.utils.toWei(LPTokenBalance, 'ether');
     return isAddresAllowed;
   }
 

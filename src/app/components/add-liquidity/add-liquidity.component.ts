@@ -39,6 +39,7 @@ export class AddLiquidityComponent implements OnInit {
     bnbAmount: 0,
     tokenAmount: 0,
   };
+  isFetchingLpBalance = false;
 
   constructor(public web3Service: Web3Service,
               private formBuilder: FormBuilder,
@@ -100,6 +101,8 @@ export class AddLiquidityComponent implements OnInit {
       )
       .then(async (r2) => {
 
+        this.isFetchingLpBalance = true;
+
         this.tokenBalance = Number(
           Web3.utils.fromWei(
             await this.getTokenBalance(tokenAddress),
@@ -124,16 +127,12 @@ export class AddLiquidityComponent implements OnInit {
         );
         */
 
-
-        const value2 = this.mapValue(
-          Number(0),
-          0,
-          this.tokenBalance,
-          0,
-          100
-        );
-        this.slider.value = value2;
+        this.slider.value = 0;
         this.addLiquidityForm.tokenAmount = 0;
+        this.addLiquidityBnbSlider.value = 0;
+        this.addLiquidityForm.bnbAmount = 0;
+
+        this.isFetchingLpBalance = false;
       })
       .catch((err) => {
         console.log(err);
@@ -339,6 +338,8 @@ export class AddLiquidityComponent implements OnInit {
     );
 
     if (isValid) {
+      this.isFetchingLpBalance = true;
+
       this.tokenBalance = Number(
         Web3.utils.fromWei(
           await this.getTokenBalance(
@@ -354,6 +355,8 @@ export class AddLiquidityComponent implements OnInit {
       );
       this.isAllowed = await this.web3Service.isAllowed(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value,
         this.web3Service.getRouterAddress());
+
+      this.isFetchingLpBalance = false;
     } else {
       this.tokenBalance = 0;
     }
@@ -377,6 +380,8 @@ export class AddLiquidityComponent implements OnInit {
           SnackBarColorEnum.Green,
         );
 
+        this.isFetchingLpBalance = true;
+
         this.tokenBalance = Number(
           Web3.utils.fromWei(
             await this.getTokenBalance(this.tokenAddressInputFormGroup.controls.liquidityTokenAddress.value),
@@ -394,7 +399,7 @@ export class AddLiquidityComponent implements OnInit {
         );
       }
 
-
+      this.isFetchingLpBalance = false;
     });
   }
 

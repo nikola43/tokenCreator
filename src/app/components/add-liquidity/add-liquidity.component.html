@@ -12,7 +12,11 @@
     </mat-form-field>
   </form>
 
-  <mat-card *ngIf="lpTokenBalance !== undefined" class="glassContainer">
+
+  <div class="mx-auto">
+    <span *ngIf="isFetchingLpBalance" class="spinner-border spinner-border-sm" style="color: white; margin: auto !important;"></span>
+  </div>
+  <mat-card *ngIf="lpTokenBalance > 0" class="glassContainer">
     <div class="container">
       <div class="row">
         <div class="col-sm">
