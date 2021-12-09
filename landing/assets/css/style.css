@@ -256,7 +256,7 @@ img.why-images {
   background-color: #893d8a5c;
 }
 
-/* .what-animation {
+.what-animation {
   animation-duration: 3s;
   animation-name: fadeWhat;
 }
@@ -264,7 +264,7 @@ img.why-images {
 @keyframes fadeWhat {
   from { opacity   : 0; }
   to   { opacity   : 1; }
-} */
+}
 
 @media screen and (max-width: 768px) {
   .menu-icon {
