@@ -376,60 +376,6 @@ export const DevNetworks = [
 export const ProdNetworks = [
   {
     index: 0,
-    name: 'Polygon (MATIC)',
-    image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
-    routerAddress: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff',
-    tokenCreatorContractAddress: '0xA90654767d1f00a306A54aA6Fc37B5b5dD781B8e',
-    lockLiquidityContractAddress: '0x118cbB6BFAe71E4Fe10d5f83429C439281dA319b',
-    explorerApiKey: 'C88WPK1DEGCHQRS74BNNR78QV7ZDRBRRS9',
-    verifyApiUrl: 'https://api.polygonscan.com/api',
-    params: {
-      network_id: '0x89',
-      chainId: '0x89',
-      chainName: 'Polygon (MATIC)',
-      nativeCurrency: {
-        name: 'MATIC',
-        symbol: 'MATIC',
-        decimals: 18
-      },
-      rpcUrls: ['https://rpc-mumbai.matic.today'],
-      blockExplorerUrls: ['https://explorer.matic.network/']
-    },
-    acceptedPaymentTokens: [
-      {
-        symbol: "MATIC",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
-        address: "0x0000000000000000000000000000000000001010"
-      },
-      {
-        symbol: "BNB",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
-        address: "0x3BA4c387f786bFEE076A58914F5Bd38d668B42c3"
-      },
-      {
-        symbol: "BUSD",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png',
-        address: "0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7"
-      },
-      {
-        symbol: "DAI",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png',
-        address: "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063"
-      },
-      {
-        symbol: "USDT",
-        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png',
-        address: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
-      },
-      {
-        symbol: "ETHER",
-        image: 'https://polygonscan.com/token/images/wETH_32.png',
-        address: "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"
-      },
-    ]
-  },
-  {
-    index: 1,
     image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
     name: 'Binance Smart Chain',
     routerAddress: '0x10ED43C718714eb63d5aA57B78B54704E256024E',
@@ -486,6 +432,60 @@ export const ProdNetworks = [
       },
     ]
   },
+  {
+    index: 1,
+    name: 'Polygon (MATIC)',
+    image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
+    routerAddress: '0xa5E0829CaCEd8fFDD4De3c43696c57F7D7A678ff',
+    tokenCreatorContractAddress: '0xA90654767d1f00a306A54aA6Fc37B5b5dD781B8e',
+    lockLiquidityContractAddress: '0x118cbB6BFAe71E4Fe10d5f83429C439281dA319b',
+    explorerApiKey: 'C88WPK1DEGCHQRS74BNNR78QV7ZDRBRRS9',
+    verifyApiUrl: 'https://api.polygonscan.com/api',
+    params: {
+      network_id: '0x89',
+      chainId: '0x89',
+      chainName: 'Polygon (MATIC)',
+      nativeCurrency: {
+        name: 'MATIC',
+        symbol: 'MATIC',
+        decimals: 18
+      },
+      rpcUrls: ['https://rpc-mumbai.matic.today'],
+      blockExplorerUrls: ['https://explorer.matic.network/']
+    },
+    acceptedPaymentTokens: [
+      {
+        symbol: "MATIC",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/3890.png',
+        address: "0x0000000000000000000000000000000000001010"
+      },
+      {
+        symbol: "BNB",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1839.png',
+        address: "0x3BA4c387f786bFEE076A58914F5Bd38d668B42c3"
+      },
+      {
+        symbol: "BUSD",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4687.png',
+        address: "0xdab529f40e671a1d4bf91361c21bf9f0c9712ab7"
+      },
+      {
+        symbol: "DAI",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/4943.png',
+        address: "0x8f3cf7ad23cd3cadbd9735aff958023239c6a063"
+      },
+      {
+        symbol: "USDT",
+        image: 'https://s2.coinmarketcap.com/static/img/coins/64x64/825.png',
+        address: "0xc2132d05d31c914a87c6611c10748aeb04b58e8f"
+      },
+      {
+        symbol: "ETHER",
+        image: 'https://polygonscan.com/token/images/wETH_32.png',
+        address: "0x7ceb23fd6bc0add59e62ac25578270cff1b9f619"
+      },
+    ]
+  }
   // {
   //   index: 1,
   //   name: 'Ethereum',
