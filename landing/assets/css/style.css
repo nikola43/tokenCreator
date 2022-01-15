@@ -382,8 +382,62 @@ img.why-images {
       bottom: 80px;
     }
   }
+  #home .home-text {
+    padding: 10vh 10vw 2vh 7vw !important;
+  }
+  .navbar-toggler-icon img {
+    width: 50px;
+  }
 }
 @media screen and (min-width: 991px) {
+  body,
+  html {
+    height: 100%;
+  }
+  .screen-hidden {
+    display: none;
+  }
+  #home,
+  #contact,
+  #about,
+  #chains {
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  #home {
+    background-image: url("../img/home.jpg");
+  }
+  #contact {
+    background-image: url("../img/contact.png");
+  }
+  #about {
+    background-image: url("../img/about.png");
+  }
+  #chains {
+    background-image: url("../img/chains.png");
+  }
+  .home-text {
+    padding: 0 2vw 0 3vw;
+  }
+  .down-images img {
+    width: 90%;
+  }
+  .launch-app-btn {
+    width: 175px;
+    line-height: 25px;
+  }
+  @keyframes MoveUpDown {
+    0%,
+    100% {
+      bottom: 0;
+    }
+    50% {
+      bottom: 80px;
+    }
+  }
+}
+@media screen and (min-width: 1201px) {
   body,
   html {
     height: 100%;
@@ -399,18 +453,6 @@ img.why-images {
   #about,
   #chains {
     height: 100vh;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-  }
-  #home {
-    background-image: url("../img/home.jpg");
-  }
-  #contact {
-    background-image: url("../img/contact.png");
-  }
-  #about {
-    background-image: url("../img/about.png");
   }
   #about h1 {
     font-size: 8vw;
@@ -418,9 +460,6 @@ img.why-images {
   #about p {
     font-size: 1.3rem;
     line-height: 1.8;
-  }
-  #chains {
-    background-image: url("../img/chains.png");
   }
   #contact p {
     font-size: 1rem;
